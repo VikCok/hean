@@ -56,6 +56,11 @@
     font-size:18px;font-weight:700;letter-spacing:1px;
     text-decoration:none;color:var(--text);
   }
+  /* 品牌右侧页面副标签（如"禾安·光遇助手"） */
+  .brand .brand-tag{
+    font-size:13px;font-weight:400;letter-spacing:0;
+    color:var(--sub);padding-left:10px;border-left:1px solid var(--line);
+  }
   /* 主页 / 导航页 胶囊按钮（带图标） */
   .home-btn,.nav-btn{
     display:inline-flex;align-items:center;gap:6px;
@@ -195,7 +200,7 @@
 <body>
 <header class="topbar">
   <div class="left">
-    <a class="brand" href="index.html">HEAN</a>
+    <a class="brand" href="index.html">HEAN<span class="brand-tag">禾安·光遇助手</span></a>
     <a class="home-btn" href="index.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M3 11l9-8 9 8"/>
