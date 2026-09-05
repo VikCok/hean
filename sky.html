@@ -451,7 +451,7 @@
     });
 
   /* ===== 今日免费魔法：t1qq 接口（magic[].text 列表） ===== */
-  fetch("/t1proxy/api/sky/mf/mf")
+  fetch("/t1proxy/api/sky/mf/mf?key=aN4ga1sIvr4we5IfkAjhY68JOc")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var el = document.getElementById("mf-text");
@@ -505,7 +505,7 @@
     });
 
   /* ===== 今日大蜡地图：季蜡位置 + 大蜡位置 + 地图小图 ===== */
-  fetch("/t1proxy/api/sky/sc/lzwz")
+  fetch("/t1proxy/api/sky/sc/lzwz?key=aN4ga1sIvr4we5IfkAjhY68JOc")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var el = document.getElementById("lzwz-text");
@@ -535,7 +535,7 @@
     });
 
   /* ===== 季节剩余时间：剩余天数 + 毕业所需季蜡明细 ===== */
-  fetch("/t1proxy/api/sky/sc/gf/djs")
+  fetch("/t1proxy/api/sky/sc/gf/djs?key=aN4ga1sIvr4we5IfkAjhY68JOc")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var d1 = document.getElementById("djs-days");
