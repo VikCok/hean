@@ -115,7 +115,7 @@
   .mf-text{font-size:14px;color:var(--muted);line-height:1.8}
   .db-text{font-size:14px;color:var(--sub)}
   .cards-gap-top{margin-top:16px}
-  /* 文字攻略 / 官方公告 卡片（正文超长时可滚动） */
+  /* 官方公告 卡片（正文超长时可滚动） */
   .gg-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
@@ -127,26 +127,21 @@
     font-size:14px;color:var(--muted);line-height:1.9;white-space:pre-line;
     max-height:320px;overflow-y:auto;
   }
-  /* 文字攻略（网格半宽卡片版） */
-  .gg-card{
-    display:flex;flex-direction:column;gap:10px;
-    background:var(--panel);border:1px solid var(--btn-border);
-    border-radius:12px;padding:20px 24px;
-  }
+  /* 今日代币（独立卡片，位于任务/魔法下方） */
+  .db-block-alone{margin-top:16px}
   /* 浅色底栏：位于页脚上方，与内容和页脚做视觉区分 */
   .bottom-band{
     background:var(--band-bg);
     border-top:1px solid var(--line);
     padding:20px;
   }
-  .band-inner{
+  /* 底栏按钮行：三个跳转按钮居中挨在一起 */
+  .band-links{
     max-width:1080px;margin:0 auto;
-    display:flex;align-items:center;justify-content:space-between;
-    gap:16px;flex-wrap:wrap;
+    display:flex;align-items:center;justify-content:center;
+    gap:10px;flex-wrap:wrap;
   }
-  .band-left{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-  .band-links{display:flex;gap:10px;flex-wrap:wrap}
-  /* 底栏胶囊按钮：光遇官方微博 / 光遇官网 */
+  /* 底栏胶囊按钮：光遇官方微博 / 光遇官网 / HEAN 主页 */
   .footer-btn{
     display:inline-flex;align-items:center;gap:6px;
     padding:6px 16px;border:1px solid var(--btn-border);border-radius:999px;
@@ -154,17 +149,11 @@
     transition:color .15s,border-color .15s;
   }
   .footer-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
-  /* 底栏声明：非官方工具提示 */
-  .footer-note{font-size:12px;color:var(--sub);line-height:1.8}
-  /* 底栏右侧：HEAN 主页按钮 */
-  .band-home{
-    flex:none;
-    display:inline-flex;align-items:center;gap:6px;
-    padding:8px 18px;border:1px solid var(--btn-border);border-radius:999px;
-    color:var(--muted);font-size:14px;text-decoration:none;
-    transition:color .15s,border-color .15s;
+  /* 底栏声明：非官方工具提示（居中） */
+  .footer-note{
+    max-width:1080px;margin:10px auto 0;text-align:center;
+    font-size:12px;color:var(--sub);line-height:1.8;
   }
-  .band-home:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
 </style>
 </head>
 <body>
@@ -211,17 +200,11 @@
       <div class="mf-text" id="mf-text">魔法列表加载中…</div>
     </div>
   </div>
-  <!-- 第二行双列：今日代币 | 文字攻略 -->
-  <div class="cards cards-gap-top">
-    <div class="db-block">
-      <div class="card-title">今日代币</div>
-      <div class="db-text" id="db-text">加载中…</div>
-      <img class="db-img" id="db-img" alt="今日代币">
-    </div>
-    <div class="gg-card">
-      <div class="card-title">文字攻略</div>
-      <div class="gg-text" id="guide-text">加载中…</div>
-    </div>
+  <!-- 今日代币（文字攻略栏已删除） -->
+  <div class="db-block db-block-alone">
+    <div class="card-title">今日代币</div>
+    <div class="db-text" id="db-text">加载中…</div>
+    <img class="db-img" id="db-img" alt="今日代币">
   </div>
   <!-- 官方公告（全宽） -->
   <div class="gg-block">
@@ -230,18 +213,14 @@
     <div class="gg-text" id="gg-text"></div>
   </div>
 </main>
-<!-- 浅色底栏：光遇外部链接 + 非官方声明 + HEAN 主页按钮 -->
+<!-- 浅色底栏：三个跳转按钮居中挨在一起 + 居中非官方声明 -->
 <div class="bottom-band">
-  <div class="band-inner">
-    <div class="band-left">
-      <div class="band-links">
-        <a class="footer-btn" href="https://weibo.com/u/6355968578" target="_blank" rel="noopener">光遇官方微博</a>
-        <a class="footer-btn" href="https://sky.163.com" target="_blank" rel="noopener">光遇官网</a>
-      </div>
-      <p class="footer-note">本站为非官方工具，与 TGC [Thatgamecompany] 无关联。游戏内活动与红石信息可能变化，请同时留意社区更新</p>
-    </div>
-    <a class="band-home" href="index.html">HEAN 主页</a>
+  <div class="band-links">
+    <a class="footer-btn" href="https://weibo.com/u/6355968578" target="_blank" rel="noopener">光遇官方微博</a>
+    <a class="footer-btn" href="https://sky.163.com" target="_blank" rel="noopener">光遇官网</a>
+    <a class="footer-btn" href="index.html">HEAN 主页</a>
   </div>
+  <p class="footer-note">本站为非官方工具，与 TGC [Thatgamecompany] 无关联。游戏内活动与红石信息可能变化，请同时留意社区更新</p>
 </div>
 <div id="site-footer"></div>
 <script>window.SITE_TAG="禾安·光遇助手";</script>
@@ -457,18 +436,6 @@
     .catch(function () {
       var t = document.getElementById("db-text");
       if (t) t.textContent = "代币加载失败";
-    });
-
-  /* ===== 文字攻略：当日完整攻略摘要（任务/季蜡/大蜡/落石点/复刻等） ===== */
-  fetch("/qmkproxy/gyapi/text/")
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-      var el = document.getElementById("guide-text");
-      if (el && data.summary) el.textContent = data.summary;
-    })
-    .catch(function () {
-      var el = document.getElementById("guide-text");
-      if (el) el.textContent = "攻略加载失败";
     });
 })();
 </script>
