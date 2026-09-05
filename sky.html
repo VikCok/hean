@@ -105,6 +105,9 @@
     border-radius:12px;padding:20px 24px;
   }
   .task-text{font-size:15px;color:var(--muted);line-height:1.9;white-space:pre-line}
+  /* 任务刷新倒计时：每日 0 点（北京时间）重置，标注为刷新时间 */
+  .refresh-line{font-size:12px;color:var(--sub);display:flex;align-items:baseline;gap:6px}
+  .refresh-line b{font-variant-numeric:tabular-nums;color:var(--text)}
   /* 今日免费魔法 / 今日代币 卡片 */
   .mf-block,.db-block{
     display:flex;flex-direction:column;gap:10px;
@@ -115,6 +118,13 @@
   .mf-text{font-size:14px;color:var(--muted);line-height:1.8}
   .db-text{font-size:14px;color:var(--sub)}
   .cards-gap-top{margin-top:16px}
+  /* 长文本卡片正文：保留换行 */
+  .long-text{font-size:14px;color:var(--muted);line-height:1.9;white-space:pre-line}
+  /* 大蜡地图图片行：地图小图并排 */
+  .lzwz-imgs{display:flex;gap:8px;flex-wrap:wrap}
+  .lzwz-imgs img{height:96px;width:auto;border-radius:8px;border:1px solid var(--btn-border)}
+  /* 季节剩余大数字 */
+  .djs-days{font-size:20px;font-weight:800;color:#f59e0b}
   /* 官方公告 卡片（正文超长时可滚动） */
   .gg-block{
     display:flex;flex-direction:column;gap:10px;
@@ -192,12 +202,38 @@
   <div class="cards">
     <div class="task-block">
       <div class="card-title">今日任务</div>
+      <!-- 刷新时间：每日 0 点（北京时间）任务重置，倒计时精确到秒 -->
+      <div class="refresh-line">刷新时间 <b id="task-refresh">--:--:--</b></div>
       <div class="task-text" id="task-text">小陈跑路中…</div>
     </div>
     <div class="mf-block">
       <div class="card-title">今日免费魔法</div>
       <img class="mf-img" src="https://api.qmkjcm.cn/api/gy/mf/images/sc_image.jpg" alt="今日免费魔法">
       <div class="mf-text" id="mf-text">魔法列表加载中…</div>
+    </div>
+  </div>
+  <!-- 第二行双列：活动日历 | 今日活动（落石点） -->
+  <div class="cards cards-gap-top">
+    <div class="mf-block">
+      <div class="card-title">活动日历</div>
+      <div class="long-text" id="rl-text">日历加载中…</div>
+    </div>
+    <div class="mf-block">
+      <div class="card-title">今日活动</div>
+      <div class="long-text" id="lsd-text">活动加载中…</div>
+    </div>
+  </div>
+  <!-- 第三行双列：今日大蜡地图 | 季节剩余时间 -->
+  <div class="cards cards-gap-top">
+    <div class="mf-block">
+      <div class="card-title">今日大蜡地图</div>
+      <div class="long-text" id="lzwz-text">大蜡位置加载中…</div>
+      <div class="lzwz-imgs" id="lzwz-imgs"></div>
+    </div>
+    <div class="mf-block">
+      <div class="card-title">季节剩余时间</div>
+      <div class="djs-days" id="djs-days">加载中…</div>
+      <div class="long-text" id="djs-text"></div>
     </div>
   </div>
   <!-- 今日代币（文字攻略栏已删除） -->
@@ -283,6 +319,16 @@
 
     /* 右侧：当前时间精确到秒 */
     elNow.textContent = pad2(h) + ":" + pad2(m) + ":" + pad2(s);
+
+    /* 任务刷新倒计时：每日 0 点（北京时间）重置 */
+    var elRef = document.getElementById("task-refresh");
+    if (elRef) {
+      var refSec = (1440 - curMin) * 60 - s;
+      if (refSec < 0) refSec = 0;
+      elRef.textContent = pad2(Math.floor(refSec / 3600)) + ":" +
+                          pad2(Math.floor((refSec % 3600) / 60)) + ":" +
+                          pad2(refSec % 60);
+    }
 
     /* 判断当前是否在某个派发时段内（用于高亮圆点） */
     var activeIdx = -1;
@@ -404,18 +450,14 @@
       if (t) t.textContent = "公告加载失败";
     });
 
-  /* ===== 今日免费魔法文本：接口返回 <pre> 包裹的 JSON，先清洗再解析 ===== */
-  fetch("/qmkproxy/api/gy/mfwz/")
-    .then(function (res) { return res.text(); })
-    .then(function (txt) {
+  /* ===== 今日免费魔法：t1qq 接口（magic[].text 列表） ===== */
+  fetch("/t1proxy/api/sky/mf/mf")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
       var el = document.getElementById("mf-text");
-      if (!el) return;
-      try {
-        var data = JSON.parse(txt.replace(/^<pre>/, "").replace(/<\/pre>$/, ""));
-        if (data.magic && data.magic.length) {
-          el.textContent = "今日免费魔法：" + data.magic.map(function (m) { return m.text; }).join("、");
-        }
-      } catch (e) {}
+      if (el && data.magic && data.magic.length) {
+        el.textContent = "今日免费魔法：" + data.magic.map(function (m) { return m.text; }).join("、");
+      }
     })
     .catch(function () {
       var el = document.getElementById("mf-text");
@@ -436,6 +478,83 @@
     .catch(function () {
       var t = document.getElementById("db-text");
       if (t) t.textContent = "代币加载失败";
+    });
+
+  /* ===== 活动日历：每日日程提醒（魔法商店 / 家具刷新 / 季节进度等） ===== */
+  fetch("/qmkproxy/gyapi/rwt/rl/")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var el = document.getElementById("rl-text");
+      if (el && data.text) el.textContent = data.text;
+    })
+    .catch(function () {
+      var el = document.getElementById("rl-text");
+      if (el) el.textContent = "日历加载失败";
+    });
+
+  /* ===== 今日活动（落石点）：位置 + 时段 + 落石机制说明 ===== */
+  fetch("/qmkproxy/gyapi/rwt/lsd/")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var el = document.getElementById("lsd-text");
+      if (el && data.text) el.textContent = data.text;
+    })
+    .catch(function () {
+      var el = document.getElementById("lsd-text");
+      if (el) el.textContent = "活动加载失败";
+    });
+
+  /* ===== 今日大蜡地图：季蜡位置 + 大蜡位置 + 地图小图 ===== */
+  fetch("/t1proxy/api/sky/sc/lzwz")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var el = document.getElementById("lzwz-text");
+      var box = document.getElementById("lzwz-imgs");
+      if (el) {
+        var parts = [];
+        if (data.jlwz && data.jlwz.text) parts.push("季蜡位置：" + data.jlwz.text);
+        if (data.dlwz && data.dlwz.text) parts.push("大蜡位置：" + data.dlwz.text.join(" / "));
+        el.textContent = parts.length ? parts.join("\n") : "今日暂无大蜡";
+      }
+      if (box) {
+        var imgs = [];
+        if (data.jlwz && data.jlwz.img) imgs = imgs.concat(data.jlwz.img);
+        if (data.dlwz && data.dlwz.img) imgs = imgs.concat(data.dlwz.img);
+        box.innerHTML = "";
+        imgs.forEach(function (src) {
+          var img = document.createElement("img");
+          img.src = src;
+          img.alt = "大蜡地图";
+          box.appendChild(img);
+        });
+      }
+    })
+    .catch(function () {
+      var el = document.getElementById("lzwz-text");
+      if (el) el.textContent = "大蜡位置加载失败";
+    });
+
+  /* ===== 季节剩余时间：剩余天数 + 毕业所需季蜡明细 ===== */
+  fetch("/t1proxy/api/sky/sc/gf/djs")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var d1 = document.getElementById("djs-days");
+      var d2 = document.getElementById("djs-text");
+      if (d1 && data.data && data.data.days) d1.textContent = data.data.days;
+      if (d2 && data.data && data.data.data) {
+        var dd = data.data.data;
+        d2.textContent = [
+          "有季卡完全毕业：" + dd.seasonal,
+          "无季卡完全毕业：" + dd.notSeasonal,
+          "有季卡可获得：" + dd.reward + " 季蜡",
+          "无季卡可获得：" + dd.orderReward + " 季蜡",
+          "季节毕业所需：" + dd.grad + " 季蜡"
+        ].join("\n");
+      }
+    })
+    .catch(function () {
+      var d1 = document.getElementById("djs-days");
+      if (d1) d1.textContent = "季节剩余加载失败";
     });
 
 })();
