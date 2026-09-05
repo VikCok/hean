@@ -176,6 +176,17 @@
   }
   footer a:hover{color:var(--btn-hover)}
   footer .sep{color:var(--line);margin:0 2px}
+  /* 页脚按钮行：光遇官方微博 / 光遇官网（胶囊样式） */
+  .footer-links{display:flex;justify-content:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+  .footer-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:6px 16px;border:1px solid var(--btn-border);border-radius:999px;
+    color:var(--muted);font-size:13px;text-decoration:none;
+    transition:color .15s,border-color .15s;
+  }
+  .footer-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+  /* 页脚底部声明：非官方工具提示 */
+  .footer-note{font-size:12px;color:var(--sub);margin-top:8px;line-height:1.8}
 </style>
 </head>
 <body>
@@ -272,7 +283,12 @@
   </div>
 </main>
 <footer>
+  <div class="footer-links">
+    <a class="footer-btn" href="https://weibo.com/u/6355968578" target="_blank" rel="noopener">光遇官方微博</a>
+    <a class="footer-btn" href="https://sky.163.com" target="_blank" rel="noopener">光遇官网</a>
+  </div>
   <p>Copyright © 2026 hean.me All Rights Reserved <a href="disclaimer.html">免责声明</a><span class="sep">|</span><a href="about.html">关于本站</a></p>
+  <p class="footer-note">本站为非官方工具，与 TGC [Thatgamecompany] 无关联。游戏内活动与红石信息可能变化，请同时留意社区更新</p>
 </footer>
 <script>
 (function () {
