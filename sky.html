@@ -73,8 +73,8 @@
     background:rgba(255,255,255,.58);z-index:0;pointer-events:none;
   }
   body.dark .gc-block-big::after{background:rgba(18,18,18,.64)}
-  /* 栏内所有内容置于视频与遮罩之上 */
-  .gc-block-big>*{position:relative;z-index:1}
+  /* 栏内所有内容置于视频与遮罩之上（排除 video 本身，否则会覆盖其绝对定位） */
+  .gc-block-big>*:not(.gc-video-bg){position:relative;z-index:1}
   .gc-title-big{font-size:22px;font-weight:800;color:var(--text)}
   /* 光遇一言：位于老奶奶横版栏下方 */
   .yiyan{
