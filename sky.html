@@ -20,6 +20,7 @@
     --active-text:#ffffff;
     --input-border:#333333;
     --clock-face:#f6f6f6;
+    --band-bg:#f3f3f3;
   }
   /* ===== 主题变量：暗黑模式（body 加 dark 类时覆盖） ===== */
   body.dark{
@@ -35,6 +36,7 @@
     --active-text:#121212;
     --input-border:#666666;
     --clock-face:#262626;
+    --band-bg:#1a1a1a;
   }
   /* 基础重置：清除默认边距，统一盒模型 */
   *{margin:0;padding:0;box-sizing:border-box}
@@ -182,8 +184,20 @@
   }
   footer a:hover{color:var(--btn-hover)}
   footer .sep{color:var(--line);margin:0 2px}
-  /* 页脚按钮行：光遇官方微博 / 光遇官网（胶囊样式） */
-  .footer-links{display:flex;justify-content:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+  /* 浅色底栏：位于页脚上方，与内容和页脚做视觉区分 */
+  .bottom-band{
+    background:var(--band-bg);
+    border-top:1px solid var(--line);
+    padding:20px;
+  }
+  .band-inner{
+    max-width:1080px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;
+  }
+  .band-left{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+  .band-links{display:flex;gap:10px;flex-wrap:wrap}
+  /* 底栏胶囊按钮：光遇官方微博 / 光遇官网 */
   .footer-btn{
     display:inline-flex;align-items:center;gap:6px;
     padding:6px 16px;border:1px solid var(--btn-border);border-radius:999px;
@@ -191,8 +205,17 @@
     transition:color .15s,border-color .15s;
   }
   .footer-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
-  /* 页脚底部声明：非官方工具提示 */
-  .footer-note{font-size:12px;color:var(--sub);margin-top:8px;line-height:1.8}
+  /* 底栏声明：非官方工具提示 */
+  .footer-note{font-size:12px;color:var(--sub);line-height:1.8}
+  /* 底栏右侧：HEAN 主页按钮 */
+  .band-home{
+    flex:none;
+    display:inline-flex;align-items:center;gap:6px;
+    padding:8px 18px;border:1px solid var(--btn-border);border-radius:999px;
+    color:var(--muted);font-size:14px;text-decoration:none;
+    transition:color .15s,border-color .15s;
+  }
+  .band-home:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
 </style>
 </head>
 <body>
@@ -283,14 +306,22 @@
     <div class="gg-text" id="gg-text"></div>
   </div>
 </main>
-<footer>
-  <div class="footer-links">
-    <a class="footer-btn" href="https://weibo.com/u/6355968578" target="_blank" rel="noopener">光遇官方微博</a>
-    <a class="footer-btn" href="https://sky.163.com" target="_blank" rel="noopener">光遇官网</a>
+<!-- 浅色底栏：光遇外部链接 + 非官方声明 + HEAN 主页按钮 -->
+<div class="bottom-band">
+  <div class="band-inner">
+    <div class="band-left">
+      <div class="band-links">
+        <a class="footer-btn" href="https://weibo.com/u/6355968578" target="_blank" rel="noopener">光遇官方微博</a>
+        <a class="footer-btn" href="https://sky.163.com" target="_blank" rel="noopener">光遇官网</a>
+      </div>
+      <p class="footer-note">本站为非官方工具，与 TGC [Thatgamecompany] 无关联。游戏内活动与红石信息可能变化，请同时留意社区更新</p>
+    </div>
+    <a class="band-home" href="index.html">HEAN 主页</a>
   </div>
+</div>
+<footer>
   <p><a href="disclaimer.html">免责声明</a><span class="sep">|</span><a href="about.html">关于本站</a></p>
   <p>Copyright © 2026 hean.me All Rights Reserved</p>
-  <p class="footer-note">本站为非官方工具，与 TGC [Thatgamecompany] 无关联。游戏内活动与红石信息可能变化，请同时留意社区更新</p>
 </footer>
 <script>
 (function () {
