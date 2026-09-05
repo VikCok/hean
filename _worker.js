@@ -19,6 +19,9 @@ const PROXIES = [
   { prefix: "/t1proxy/", target: "https://api.t1qq.com" }
 ];
 
+/* 浏览器 UA：部分上游接口会拒绝非浏览器 UA 的请求 */
+const BROWSER_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36";
+
 export default {
   /**
    * 所有请求的统一入口。
@@ -33,25 +36,38 @@ export default {
       if (url.pathname.startsWith(p.prefix)) {
         // 去掉代理前缀，拼回目标域名，保留原查询参数（如 ?key=xxx&refresh=1）
         const target = p.target + url.pathname.replace(new RegExp("^" + p.prefix), "") + url.search;
-
-        // 转发请求（设置 UA，部分接口对空 UA 有要求）
-        const resp = await fetch(target, {
-          headers: { "User-Agent": "HEAN-Site/1.0" }
-        });
-
-        // 取回响应文本，原样透传，并补上 CORS 头（浏览器端即可直接 fetch）
-        const body = await resp.text();
-        return new Response(body, {
-          status: resp.status,
-          headers: {
-            // 透传原 Content-Type（JSON / 图片类型保持一致）
-            "Content-Type": resp.headers.get("Content-Type") || "application/json",
-            // 允许任意来源跨域访问
-            "Access-Control-Allow-Origin": "*",
-            // 接口数据缓存 10 分钟，减少上游请求、节省免费额度
-            "Cache-Control": "public, max-age=600"
-          }
-        });
+        try {
+          // 转发请求（使用浏览器 UA，规避上游对 UA 的限制）
+          const resp = await fetch(target, {
+            headers: { "User-Agent": BROWSER_UA }
+          });
+          // 取回响应文本，原样透传，并补上 CORS 头（浏览器端即可直接 fetch）
+          const body = await resp.text();
+          return new Response(body, {
+            status: resp.status,
+            headers: {
+              // 透传原 Content-Type（JSON / 图片类型保持一致）
+              "Content-Type": resp.headers.get("Content-Type") || "application/json",
+              // 允许任意来源跨域访问
+              "Access-Control-Allow-Origin": "*",
+              // 接口数据缓存 10 分钟，减少上游请求、节省免费额度
+              "Cache-Control": "public, max-age=600"
+            }
+          });
+        } catch (e) {
+          // 上游网络失败：返回具体错误信息便于诊断（上线后如有问题可直接从响应查看）
+          return new Response(JSON.stringify({
+            error: "proxy_fail",
+            msg: String((e && e.message) || e),
+            target: target
+          }), {
+            status: 502,
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            }
+          });
+        }
       }
     }
 
