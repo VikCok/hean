@@ -54,13 +54,27 @@
     width:100%;max-width:1080px;margin:0 auto;
     padding:40px 24px 56px;
   }
-  /* 大老奶奶横版栏：全宽置顶，替换原页面大标题 */
+  /* 大老奶奶横版栏：全宽置顶，替换原页面大标题，背景为 skyhome_bg.mp4 动画视频（本地压缩版，原片 skyhome.mp4 保留在 assets） */
   .gc-block-big{
+    position:relative;overflow:hidden;
     display:flex;flex-direction:column;gap:12px;
     background:var(--panel);border:1px solid var(--btn-border);
     border-radius:16px;padding:28px 32px;
     max-width:960px;
   }
+  /* 背景视频：铺满容器、裁切适配、静音循环自动播放 */
+  .gc-video-bg{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;z-index:0;pointer-events:none;
+  }
+  /* 半透明遮罩：日间浅色、夜间深色，保证上方文字可读 */
+  .gc-block-big::after{
+    content:"";position:absolute;inset:0;
+    background:rgba(255,255,255,.58);z-index:0;pointer-events:none;
+  }
+  body.dark .gc-block-big::after{background:rgba(18,18,18,.64)}
+  /* 栏内所有内容置于视频与遮罩之上 */
+  .gc-block-big>*{position:relative;z-index:1}
   .gc-title-big{font-size:22px;font-weight:800;color:var(--text)}
   /* 光遇一言：位于老奶奶横版栏下方 */
   .yiyan{
@@ -94,11 +108,11 @@
   /* 右侧状态行：派发中显示"派发馒头"（橙色高亮），否则显示"现在没饭吃" */
   .gc-state{font-size:15px;font-weight:700;color:var(--sub)}
   .gc-state.active{color:#f59e0b}
-  /* 双列卡片网格 */
+  /* 双列卡片网格（干饭 | 任务，魔法 | 代币） */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:960px}
   /* 卡片通用标题 */
   .card-title{font-size:16px;font-weight:700;color:var(--text)}
-  /* 今日任务卡片（独立全宽） */
+  /* 今日任务卡片 */
   .task-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
@@ -109,7 +123,7 @@
   /* 任务刷新倒计时：每日 0 点（北京时间）重置，标注为刷新时间 */
   .refresh-line{font-size:12px;color:var(--sub);display:flex;align-items:baseline;gap:6px}
   .refresh-line b{font-variant-numeric:tabular-nums;color:var(--text)}
-  /* 通用数据卡片 */
+  /* 今日免费魔法 / 今日代币 卡片 */
   .mf-block,.db-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
@@ -125,7 +139,7 @@
   .lzwz-imgs img{height:96px;width:auto;border-radius:8px;border:1px solid var(--btn-border)}
   /* 季节剩余大数字 */
   .djs-days{font-size:20px;font-weight:800;color:#f59e0b}
-  /* 官方公告 卡片（默认折叠 5 行，展开后显示全文） */
+  /* 官方公告 卡片（正文超长时可滚动） */
   .gg-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
@@ -145,7 +159,7 @@
     color:var(--muted);font-size:12px;cursor:pointer;transition:color .15s,border-color .15s;
   }
   .gg-more:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
-  /* 复刻先祖（独立卡片） */
+  /* 今日代币（独立卡片，位于任务/魔法下方） */
   .db-block-alone{margin-top:16px}
   /* 浅色底栏：位于页脚上方，与内容和页脚做视觉区分 */
   .bottom-band{
@@ -183,6 +197,8 @@
 <main class="page">
   <!-- 大老奶奶横版栏：替换原页面大标题 -->
   <div class="gc-block-big">
+    <!-- 背景动画：光遇游戏画面（静音/循环/自动播放） -->
+    <video class="gc-video-bg" src="assets/skyhome_bg.mp4" autoplay muted loop playsinline preload="auto"></video>
     <div class="gc-title-big">老奶奶干饭时间</div>
     <div class="gc-next" id="gc-next">计算中…</div>
     <div class="gc-clock-wrap">
@@ -217,7 +233,7 @@
     <div class="refresh-line">刷新时间 <b id="task-refresh">--:--:--</b></div>
     <div class="task-text" id="task-text">小陈跑路中…</div>
   </div>
-  <!-- 第二行双列：活动日历 | 今日黑暗侵蚀 -->
+  <!-- 第二行双列：活动日历 | 今日活动（落石点） -->
   <div class="cards cards-gap-top">
     <div class="mf-block">
       <div class="card-title">活动日历</div>
@@ -246,7 +262,7 @@
     <div class="db-text" id="db-text">加载中…</div>
     <img class="db-img" id="db-img" alt="复刻先祖">
   </div>
-  <!-- 官方公告（全宽，默认折叠 5 行） -->
+  <!-- 官方公告（全宽） -->
   <div class="gg-block">
     <div class="card-title">官方公告</div>
     <div class="gg-title" id="gg-title">加载中…</div>
@@ -468,7 +484,8 @@
       if (t) t.textContent = "公告加载失败";
     });
 
-  /* ===== 复刻先祖：显示日期 + 当日先祖位置图片 ===== */
+
+  /* ===== 今日代币：显示日期 + 当日代币位置图片 ===== */
   fetch("/qmkproxy/gyapi/rwt/db/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
