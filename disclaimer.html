@@ -6,6 +6,7 @@
 <title>Summer&Hean · 免责声明</title>
 <link rel="icon" href="assets/favicon.ico">
 <style>
+  /* ===== 主题变量：日间模式（默认） ===== */
   :root{
     --bg:#ffffff;
     --text:#333333;
@@ -19,6 +20,7 @@
     --active-text:#ffffff;
     --input-border:#333333;
   }
+  /* ===== 主题变量：暗黑模式（body 加 dark 类时覆盖） ===== */
   body.dark{
     --bg:#121212;
     --text:#e8e8e8;
@@ -39,6 +41,7 @@
     background:var(--bg);color:var(--text);
     transition:background .2s,color .2s;
   }
+  /* 顶栏：左侧品牌与导航按钮，右侧主题开关 */
   .topbar{
     display:flex;align-items:center;justify-content:space-between;
     padding:12px 20px;border-bottom:1px solid var(--line);
@@ -49,6 +52,7 @@
     font-size:18px;font-weight:700;letter-spacing:1px;
     text-decoration:none;color:var(--text);
   }
+  /* 主页 / 导航页 胶囊按钮（带图标） */
   .home-btn,.nav-btn{
     display:inline-flex;align-items:center;gap:6px;
     padding:8px 16px;border:1px solid var(--btn-border);border-radius:999px;
@@ -57,6 +61,7 @@
   }
   .home-btn:hover,.nav-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
   .home-btn svg,.nav-btn svg{width:16px;height:16px}
+  /* 日间/夜间切换：胶囊滑块开关（内嵌太阳/月亮 SVG） */
   .mode-switch{
     position:relative;flex:none;
     width:58px;height:30px;
@@ -79,6 +84,7 @@
   body.dark .mode-switch .icon-moon{display:block}
   .mode-switch:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}
   main{flex:1}
+  /* 正文页容器：居中限宽，画幅放宽 */
   .page{max-width:1080px;margin:0 auto;padding:40px 24px 56px}
   .page h1{font-size:28px;font-weight:700}
   .page .kicker{font-size:13px;color:var(--sub);letter-spacing:2px;margin:8px 0 28px}
@@ -86,6 +92,7 @@
   .page p{color:var(--muted);font-size:15px;line-height:1.9;margin-bottom:10px}
   .page ul{margin:0 0 12px 20px;color:var(--muted);font-size:15px;line-height:1.9}
   .page li{margin-bottom:6px}
+  /* 页脚：版权 + 免责声明 / 关于本站 */
   footer{
     padding:18px 20px;text-align:center;
     font-size:13px;color:var(--sub);border-top:1px solid var(--line);
@@ -158,6 +165,7 @@
 <script>
 (function () {
   "use strict";
+  /* 主题切换：localStorage 存储 key=hean-theme，实现夜间模式跨页记忆 */
   var btn = document.getElementById("mode-btn");
   if (!btn) return;
   var KEY = "hean-theme";
