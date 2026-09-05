@@ -543,13 +543,8 @@
       if (d1 && data.data && data.data.days) d1.textContent = data.data.days;
       if (d2 && data.data && data.data.data) {
         var dd = data.data.data;
-        d2.textContent = [
-          "有季卡完全毕业：" + dd.seasonal,
-          "无季卡完全毕业：" + dd.notSeasonal,
-          "有季卡可获得：" + dd.reward + " 季蜡",
-          "无季卡可获得：" + dd.orderReward + " 季蜡",
-          "季节毕业所需：" + dd.grad + " 季蜡"
-        ].join("\n");
+        /* 接口字段自带中文前缀（如"有季卡完全毕业：66天"），直接原样展示 */
+        d2.textContent = [dd.seasonal, dd.notSeasonal, dd.reward, dd.orderReward, dd.grad].join("\n");
       }
     })
     .catch(function () {
