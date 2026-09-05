@@ -67,12 +67,12 @@
     position:absolute;inset:0;width:100%;height:100%;
     object-fit:cover;z-index:0;pointer-events:none;
   }
-  /* 半透明遮罩：日间浅色、夜间深色，保证上方文字可读 */
+  /* 半透明遮罩：仅覆盖5%灰度，保证视频画面清晰可见 */
   .gc-block-big::after{
     content:"";position:absolute;inset:0;
-    background:rgba(255,255,255,.58);z-index:0;pointer-events:none;
+    background:rgba(255,255,255,.05);z-index:0;pointer-events:none;
   }
-  body.dark .gc-block-big::after{background:rgba(18,18,18,.64)}
+  body.dark .gc-block-big::after{background:rgba(18,18,18,.05)}
   /* 栏内所有内容置于视频与遮罩之上（排除 video 本身，否则会覆盖其绝对定位） */
   .gc-block-big>*:not(.gc-video-bg){position:relative;z-index:1}
   .gc-title-big{font-size:22px;font-weight:800;color:var(--text)}
@@ -83,10 +83,8 @@
     font-size:15px;color:var(--muted);line-height:1.8;
   }
   .yiyan-src{font-size:13px;color:var(--sub)}
-  /* 时钟上方：下一次干饭时间点（派发中则显示派发状态） */
-  .gc-next{font-size:15px;font-weight:700;color:var(--text)}
-  /* 时钟 + 右侧信息：水平并排 */
-  .gc-clock-wrap{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+  /* 时钟 + 右侧信息：水平并排，间距加大 */
+  .gc-clock-wrap{display:flex;align-items:center;gap:48px;flex-wrap:wrap}
   .gc-clock{flex:none;width:280px;height:280px}
   /* 圆形时钟：表盘 / 白色实心时间点 / 时间文字 / 指针 */
   .gc-clock .face{fill:var(--clock-face);stroke:var(--btn-border);stroke-width:1.5}
@@ -98,17 +96,17 @@
   .gc-clock .hand-min{stroke-width:3}
   .gc-clock .hand-sec{stroke:#f59e0b;stroke-width:1.6}
   .gc-clock .hub{fill:var(--text)}
-  /* 右侧信息：当前时间与倒计时同字号、精确到秒 */
-  .gc-info{display:flex;flex-direction:column;gap:4px;min-width:170px}
-  .gc-info-label{font-size:12px;color:var(--sub)}
+  /* 右侧信息：当前时间与倒计时同字号、精确到秒，区域加宽加大 */
+  .gc-info{display:flex;flex-direction:column;gap:8px;min-width:260px}
+  .gc-info-label{font-size:14px;color:var(--sub)}
   .gc-num{
-    font-size:24px;font-weight:700;letter-spacing:1px;
+    font-size:32px;font-weight:700;letter-spacing:1px;
     font-variant-numeric:tabular-nums;
   }
   /* 右侧状态行：派发中显示"派发馒头"（橙色高亮），否则显示"现在没饭吃" */
-  .gc-state{font-size:15px;font-weight:700;color:var(--sub)}
+  .gc-state{font-size:18px;font-weight:700;color:var(--sub)}
   .gc-state.active{color:#f59e0b}
-  /* 双列卡片网格（干饭 | 任务，魔法 | 代币） */
+  /* 双列卡片网格 */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:960px}
   /* 卡片通用标题 */
   .card-title{font-size:16px;font-weight:700;color:var(--text)}
@@ -123,7 +121,7 @@
   /* 任务刷新倒计时：每日 0 点（北京时间）重置，标注为刷新时间 */
   .refresh-line{font-size:12px;color:var(--sub);display:flex;align-items:baseline;gap:6px}
   .refresh-line b{font-variant-numeric:tabular-nums;color:var(--text)}
-  /* 今日免费魔法 / 今日代币 卡片 */
+  /* 通用数据卡片 */
   .mf-block,.db-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
@@ -139,7 +137,7 @@
   .lzwz-imgs img{height:96px;width:auto;border-radius:8px;border:1px solid var(--btn-border)}
   /* 季节剩余大数字 */
   .djs-days{font-size:20px;font-weight:800;color:#f59e0b}
-  /* 官方公告 卡片（正文超长时可滚动） */
+  /* 官方公告 卡片（默认折叠5行） */
   .gg-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
@@ -159,7 +157,7 @@
     color:var(--muted);font-size:12px;cursor:pointer;transition:color .15s,border-color .15s;
   }
   .gg-more:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
-  /* 今日代币（独立卡片，位于任务/魔法下方） */
+  /* 复刻先祖（独立卡片） */
   .db-block-alone{margin-top:16px}
   /* 浅色底栏：位于页脚上方，与内容和页脚做视觉区分 */
   .bottom-band{
@@ -200,7 +198,6 @@
     <!-- 背景动画：光遇游戏画面（静音/循环/自动播放） -->
     <video class="gc-video-bg" src="assets/skyhome_bg.mp4" autoplay muted loop playsinline preload="auto"></video>
     <div class="gc-title-big">老奶奶干饭时间</div>
-    <div class="gc-next" id="gc-next">计算中…</div>
     <div class="gc-clock-wrap">
       <svg class="gc-clock" id="gc-clock" viewBox="0 0 260 260" role="img" aria-label="干饭时间时钟">
         <!-- 表盘：无刻度线，仅标注 6 个时间点（由脚本生成圆点与文字） -->
@@ -233,7 +230,7 @@
     <div class="refresh-line">刷新时间 <b id="task-refresh">--:--:--</b></div>
     <div class="task-text" id="task-text">小陈跑路中…</div>
   </div>
-  <!-- 第二行双列：活动日历 | 今日活动（落石点） -->
+  <!-- 第二行双列：活动日历 | 今日黑暗侵蚀 -->
   <div class="cards cards-gap-top">
     <div class="mf-block">
       <div class="card-title">活动日历</div>
@@ -262,7 +259,7 @@
     <div class="db-text" id="db-text">加载中…</div>
     <img class="db-img" id="db-img" alt="复刻先祖">
   </div>
-  <!-- 官方公告（全宽） -->
+  <!-- 官方公告（全宽，默认折叠5行） -->
   <div class="gg-block">
     <div class="card-title">官方公告</div>
     <div class="gg-title" id="gg-title">加载中…</div>
@@ -289,13 +286,13 @@
      6 个派发时段（北京时间 08:00/10:00/12:00/16:00/18:00/20:00，各 30 分钟）。
      时钟为无刻度表盘，圆周上按 60° 间隔标注 6 个时间点：
      08:00 位于正上方，顺时针依次 10:00 / 12:00 / 16:00 / 18:00 / 20:00，
-     每个时间点内侧放一个白色实心圆点，当前派发时段圆点高亮为橙色。 */
+     每个时间点内侧放一个白色实心圆点（位于表盘边缘），当前派发时段圆点高亮为橙色。 */
   var FEED_TIMES = [[8, 0], [10, 0], [12, 0], [16, 0], [18, 0], [20, 0]];
   var FEED_DUR = 30;
   /* 数字补零：8 -> "08" */
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
 
-  /* 构建时钟：为每个时间点生成白色实心圆点 + 时间文字 */
+  /* 构建时钟：为每个时间点生成白色实心圆点（边缘放大） + 时间文字 */
   (function buildClock() {
     var svg = document.getElementById("gc-clock");
     if (!svg) return;
@@ -304,18 +301,18 @@
     FEED_TIMES.forEach(function (t, i) {
       /* 角度：-90°（正上方）为起点，每 60° 顺时针排列一个时间点 */
       var ang = (-90 + i * 60) * Math.PI / 180;
-      /* 白色实心圆点：位于半径 82 处（时间文字内侧） */
+      /* 白色实心圆点：位于半径 98 处（靠近表盘边缘），放大到半径 9 */
       var dot = document.createElementNS(NS, "circle");
-      dot.setAttribute("cx", cx + 82 * Math.cos(ang));
-      dot.setAttribute("cy", cy + 82 * Math.sin(ang));
-      dot.setAttribute("r", 6);
+      dot.setAttribute("cx", cx + 98 * Math.cos(ang));
+      dot.setAttribute("cy", cy + 98 * Math.sin(ang));
+      dot.setAttribute("r", 9);
       dot.setAttribute("class", "dot");
       dot.setAttribute("id", "feed-dot-" + i);
       svg.appendChild(dot);
-      /* 时间文字（如 08:00）：位于半径 110 处（圆点外侧） */
+      /* 时间文字（如 08:00）：位于半径 112 处（圆点外侧，避免与放大圆点重叠） */
       var txt = document.createElementNS(NS, "text");
-      txt.setAttribute("x", cx + 110 * Math.cos(ang));
-      txt.setAttribute("y", cy + 110 * Math.sin(ang));
+      txt.setAttribute("x", cx + 112 * Math.cos(ang));
+      txt.setAttribute("y", cy + 112 * Math.sin(ang));
       txt.setAttribute("class", "tlabel");
       txt.textContent = pad2(t[0]) + ":" + pad2(t[1]);
       svg.appendChild(txt);
@@ -326,7 +323,6 @@
   function tickFeed() {
     var elNow = document.getElementById("gc-now");
     var elCount = document.getElementById("gc-countdown");
-    var elNext = document.getElementById("gc-next");
     var elLabel = document.getElementById("gc-count-label");
     var elState = document.getElementById("gc-state");
     var handHr = document.getElementById("hand-hr");
@@ -370,7 +366,6 @@
     /* 倒计时秒数：派发中为本时段剩余，非派发为距下次开始 */
     var totalSec;
     if (activeIdx >= 0) {
-      elNext.textContent = "老奶奶正在派发馒头";
       if (elLabel) elLabel.textContent = "本次派发剩余";
       /* 右侧状态行：派发时段内显示橙色高亮的派发提示 */
       if (elState) {
@@ -379,7 +374,6 @@
       }
       totalSec = (FEED_TIMES[activeIdx][0] * 60 + FEED_TIMES[activeIdx][1] + FEED_DUR) * 60 - (curMin * 60 + s);
     } else {
-      elNext.textContent = (crossDay ? "明天 " : "今天 ") + "干饭：" + pad2(FEED_TIMES[nextIdx][0]) + ":" + pad2(FEED_TIMES[nextIdx][1]);
       if (elLabel) elLabel.textContent = "距离下次干饭";
       /* 右侧状态行：非派发时段显示"现在没饭吃"（常规灰色） */
       if (elState) {
@@ -485,7 +479,7 @@
     });
 
 
-  /* ===== 今日代币：显示日期 + 当日代币位置图片 ===== */
+  /* ===== 复刻先祖：显示日期 + 当日先祖位置图片 ===== */
   fetch("/qmkproxy/gyapi/rwt/db/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -501,14 +495,12 @@
       if (t) t.textContent = "代币加载失败";
     });
 
-  /* ===== 活动日历：每日日程提醒（魔法商店 / 家具刷新 / 季节进度等） =====
-     剔除接口末尾的微博话题标签（如 #超话创作官##光遇##sky光遇#） */
+  /* ===== 活动日历：每日日程提醒，剔除接口末尾的微博话题标签 ===== */
   fetch("/qmkproxy/gyapi/rwt/rl/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var el = document.getElementById("rl-text");
       if (el && data.text) {
-        /* 从 #超话创作官 起删到末尾，再压缩多余空行 */
         el.textContent = data.text
           .replace(/#超话创作官[\s\S]*$/, "")
           .replace(/\n{2,}/g, "\n")
@@ -520,7 +512,7 @@
       if (el) el.textContent = "日历加载失败";
     });
 
-  /* ===== 今日黑暗侵蚀（落石点）：只保留位置 / 性质 / 时间三行，丢弃机制说明等 ===== */
+  /* ===== 今日黑暗侵蚀（落石点）：只保留位置 / 性质 / 时间三行 ===== */
   fetch("/qmkproxy/gyapi/rwt/lsd/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -568,7 +560,7 @@
       if (el) el.textContent = "大蜡位置加载失败";
     });
 
-  /* ===== 季节剩余时间：只输出剩余时间（如"梵高季剩余时间：27天"） ===== */
+  /* ===== 季节剩余时间：只输出剩余时间 ===== */
   fetch("/t1proxy/api/sky/sc/gf/djs?key=aN4ga1sIvr4we5IfkAjhY68JOc")
     .then(function (res) { return res.json(); })
     .then(function (data) {
