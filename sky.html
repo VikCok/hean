@@ -132,6 +132,9 @@
     font-size:24px;font-weight:700;letter-spacing:1px;
     font-variant-numeric:tabular-nums;
   }
+  /* 右侧状态行：派发中显示"派发馒头"（橙色高亮），否则显示"现在没饭吃" */
+  .gc-state{font-size:15px;font-weight:700;color:var(--sub)}
+  .gc-state.active{color:#f59e0b}
   /* 双列卡片网格（干饭 | 任务，魔法 | 代币） */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:960px}
   /* 卡片通用标题 */
@@ -250,6 +253,7 @@
           <span class="gc-num" id="gc-now">--:--:--</span>
           <span class="gc-info-label" id="gc-count-label">距离下次干饭</span>
           <span class="gc-num" id="gc-countdown">--:--:--</span>
+          <span class="gc-state" id="gc-state">--</span>
         </div>
       </div>
     </div>
@@ -360,6 +364,7 @@
     var elCount = document.getElementById("gc-countdown");
     var elNext = document.getElementById("gc-next");
     var elLabel = document.getElementById("gc-count-label");
+    var elState = document.getElementById("gc-state");
     var handHr = document.getElementById("hand-hr");
     var handMin = document.getElementById("hand-min");
     var handSec = document.getElementById("hand-sec");
@@ -393,10 +398,20 @@
     if (activeIdx >= 0) {
       elNext.textContent = "老奶奶正在派发馒头";
       if (elLabel) elLabel.textContent = "本次派发剩余";
+      /* 右侧状态行：派发时段内显示橙色高亮的派发提示 */
+      if (elState) {
+        elState.textContent = "老奶奶正在派发馒头";
+        elState.classList.add("active");
+      }
       totalSec = (FEED_TIMES[activeIdx][0] * 60 + FEED_TIMES[activeIdx][1] + FEED_DUR) * 60 - (curMin * 60 + s);
     } else {
       elNext.textContent = (crossDay ? "明天 " : "今天 ") + "干饭：" + pad2(FEED_TIMES[nextIdx][0]) + ":" + pad2(FEED_TIMES[nextIdx][1]);
       if (elLabel) elLabel.textContent = "距离下次干饭";
+      /* 右侧状态行：非派发时段显示"现在没饭吃"（常规灰色） */
+      if (elState) {
+        elState.textContent = "现在没饭吃";
+        elState.classList.remove("active");
+      }
       var diffMin = nextStart - curMin;
       if (diffMin <= 0) diffMin += 1440;
       totalSec = diffMin * 60 - s;
