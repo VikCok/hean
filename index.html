@@ -62,28 +62,20 @@
   }
   .home-btn:hover,.nav-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
   .home-btn svg,.nav-btn svg{width:16px;height:16px}
-  /* 日间/夜间切换：胶囊滑块开关（内嵌太阳/月亮 SVG） */
-  .mode-switch{
-    position:relative;flex:none;
-    width:58px;height:30px;
-    border:1px solid var(--btn-border);border-radius:999px;
+  /* 日间/夜间切换：圆形按钮（内嵌太阳/月亮 SVG，无滑块） */
+  .mode-btn{
+    display:flex;align-items:center;justify-content:center;
+    flex:none;width:34px;height:34px;
+    border:1px solid var(--btn-border);border-radius:50%;
     background:var(--panel);cursor:pointer;
     transition:background .25s,border-color .25s;
   }
-  .mode-switch .thumb{
-    position:absolute;top:2px;left:2px;
-    width:24px;height:24px;border-radius:50%;
-    background:#fdfdfd;
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:0 1px 3px rgba(0,0,0,.25);
-    transition:transform .25s,background .25s;
-  }
-  body.dark .mode-switch .thumb{transform:translateX(30px)}
-  .mode-switch .icon{width:14px;height:14px}
-  .mode-switch .icon-moon{display:none}
-  body.dark .mode-switch .icon-sun{display:none}
-  body.dark .mode-switch .icon-moon{display:block}
-  .mode-switch:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}
+  .mode-btn:hover{border-color:var(--btn-hover)}
+  .mode-btn .icon{width:16px;height:16px}
+  .mode-btn .icon-moon{display:none}
+  body.dark .mode-btn .icon-sun{display:none}
+  body.dark .mode-btn .icon-moon{display:block}
+  .mode-btn:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}
   /* 主体区域：垂直居中排列 */
   main{flex:1;display:flex;flex-direction:column;align-items:center;padding:44px 20px 36px}
   .main-title{
@@ -176,11 +168,12 @@
   }
   .quote-line{display:flex;align-items:baseline;justify-content:center;gap:12px;flex-wrap:wrap}
   .quote #quote-src{font-size:13px;color:var(--sub)}
-  /* 页脚：版权 + 免责声明 / 关于本站 */
+  /* 页脚：免责声明/关于本站 + 版权信息 */
   footer{
     padding:18px 20px;text-align:center;
     font-size:13px;color:var(--sub);border-top:1px solid var(--line);
   }
+  footer p+p{margin-top:6px}
   footer a{
     color:var(--muted);text-decoration:none;margin:0 4px;
     transition:color .15s;
@@ -194,31 +187,27 @@
 <header class="topbar">
   <div class="left">
     <a class="brand" href="index.html">HEAN</a>
-    <a class="home-btn" href="index.html">
+    <a class="home-btn" href="index.html" title="主页">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M3 11l9-8 9 8"/>
         <path d="M5 10v10h14V10"/>
       </svg>
-      主页
     </a>
-    <a class="nav-btn" href="nav.html">
+    <a class="nav-btn" href="nav.html" title="导航页">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="10"/>
         <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
       </svg>
-      导航页
     </a>
   </div>
-  <button class="mode-switch" id="mode-btn" type="button" role="switch" aria-checked="false" aria-label="切换日间/夜间模式">
-    <span class="thumb">
-      <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="4.2"/>
-        <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/>
-      </svg>
-      <svg class="icon icon-moon" viewBox="0 0 24 24" fill="#8b7cff" aria-hidden="true">
-        <path d="M21 12.8A9 9 0 1 1 11.2 3a7.2 7.2 0 0 0 9.8 9.8z"/>
-      </svg>
-    </span>
+  <button class="mode-btn" id="mode-btn" type="button" aria-label="切换日间/夜间模式">
+    <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4.2"/>
+      <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/>
+    </svg>
+    <svg class="icon icon-moon" viewBox="0 0 24 24" fill="#8b7cff" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7.2 7.2 0 0 0 9.8 9.8z"/>
+    </svg>
   </button>
 </header>
 
@@ -231,7 +220,6 @@
       <button type="button" data-engine="bing" class="active"><img class="e-icon" src="assets/logo-bing.png" alt="Bing">微软Bing</button>
       <button type="button" data-engine="baidu"><img class="e-icon" src="assets/logo-baidu.png" alt="百度">百度</button>
       <button type="button" data-engine="google"><img class="e-icon" src="assets/logo-google.png" alt="Google">Google</button>
-      <button type="button" data-engine="yandex"><img class="e-icon" src="assets/logo-yandex.png" alt="Yandex">Yandex</button>
     </div>
     <form id="search-form" action="javascript:void(0)">
       <input type="text" id="search-input" placeholder="搜索一下" autocomplete="off">
@@ -274,7 +262,8 @@
 </main>
 
 <footer>
-  <p>Copyright © 2026 hean.me All Rights Reserved <a href="disclaimer.html">免责声明</a><span class="sep">|</span><a href="about.html">关于本站</a></p>
+  <p><a href="disclaimer.html">免责声明</a><span class="sep">|</span><a href="about.html">关于本站</a></p>
+  <p>Copyright © 2026 hean.me All Rights Reserved</p>
 </footer>
 
 <script>
@@ -282,12 +271,11 @@
   "use strict";
 
   /* ===== 搜索引擎配置 =====
-     四个引擎的搜索地址前缀，切换标签后提交搜索即跳转对应引擎 */
+     三个引擎的搜索地址前缀，切换标签后提交搜索即跳转对应引擎 */
   var engines = {
     bing: "https://www.bing.com/search?q=",
     baidu: "https://www.baidu.com/s?wd=",
     google: "https://www.google.com/search?q=",
-    yandex: "https://yandex.com/search/?text="
   };
   var current = "bing";
 
