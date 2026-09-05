@@ -6,7 +6,6 @@
 <title>HEAN 新闻</title>
 <link rel="icon" href="assets/favicon.ico">
 <style>
-  /* ===== 主题变量：日间模式（默认） ===== */
   :root{
     --bg:#ffffff;
     --text:#333333;
@@ -20,7 +19,6 @@
     --active-text:#ffffff;
     --input-border:#333333;
   }
-  /* ===== 主题变量：暗黑模式（body 加 dark 类时覆盖） ===== */
   body.dark{
     --bg:#121212;
     --text:#e8e8e8;
@@ -41,7 +39,6 @@
     background:var(--bg);color:var(--text);
     transition:background .2s,color .2s;
   }
-  /* 顶栏：左侧品牌与导航按钮，右侧主题开关 */
   .topbar{
     display:flex;align-items:center;justify-content:space-between;
     padding:12px 20px;border-bottom:1px solid var(--line);
@@ -52,7 +49,6 @@
     font-size:18px;font-weight:700;letter-spacing:1px;
     text-decoration:none;color:var(--text);
   }
-  /* 主页 / 导航页 胶囊按钮（带图标） */
   .home-btn,.nav-btn{
     display:inline-flex;align-items:center;gap:6px;
     padding:8px 16px;border:1px solid var(--btn-border);border-radius:999px;
@@ -61,34 +57,25 @@
   }
   .home-btn:hover,.nav-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
   .home-btn svg,.nav-btn svg{width:16px;height:16px}
-  /* 日间/夜间切换：胶囊滑块开关（内嵌太阳/月亮 SVG） */
-  .mode-switch{
-    position:relative;flex:none;
-    width:58px;height:30px;
-    border:1px solid var(--btn-border);border-radius:999px;
+  .mode-btn{
+    display:flex;align-items:center;justify-content:center;
+    flex:none;width:34px;height:34px;
+    border:1px solid var(--btn-border);border-radius:50%;
     background:var(--panel);cursor:pointer;
     transition:background .25s,border-color .25s;
   }
-  .mode-switch .thumb{
-    position:absolute;top:2px;left:2px;
-    width:24px;height:24px;border-radius:50%;
-    background:#fdfdfd;
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:0 1px 3px rgba(0,0,0,.25);
-    transition:transform .25s,background .25s;
-  }
-  body.dark .mode-switch .thumb{transform:translateX(30px)}
-  .mode-switch .icon{width:14px;height:14px}
-  .mode-switch .icon-moon{display:none}
-  body.dark .mode-switch .icon-sun{display:none}
-  body.dark .mode-switch .icon-moon{display:block}
-  .mode-switch:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}
+  .mode-btn:hover{border-color:var(--btn-hover)}
+  .mode-btn .icon{width:16px;height:16px}
+  .mode-btn .icon-moon{display:none}
+  body.dark .mode-btn .icon-sun{display:none}
+  body.dark .mode-btn .icon-moon{display:block}
+  .mode-btn:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}
   main{flex:1}
-  /* 页脚：版权 + 免责声明 / 关于本站 */
   footer{
     padding:18px 20px;text-align:center;
     font-size:13px;color:var(--sub);border-top:1px solid var(--line);
   }
+  footer p+p{margin-top:6px}
   footer a{
     color:var(--muted);text-decoration:none;margin:0 4px;
     transition:color .15s;
@@ -116,21 +103,20 @@
       导航页
     </a>
   </div>
-  <button class="mode-switch" id="mode-btn" type="button" role="switch" aria-checked="false" aria-label="切换日间/夜间模式">
-    <span class="thumb">
-      <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="4.2"/>
-        <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/>
-      </svg>
-      <svg class="icon icon-moon" viewBox="0 0 24 24" fill="#8b7cff" aria-hidden="true">
-        <path d="M21 12.8A9 9 0 1 1 11.2 3a7.2 7.2 0 0 0 9.8 9.8z"/>
-      </svg>
-    </span>
+  <button class="mode-btn" id="mode-btn" type="button" aria-label="切换日间/夜间模式">
+    <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4.2"/>
+      <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/>
+    </svg>
+    <svg class="icon icon-moon" viewBox="0 0 24 24" fill="#8b7cff" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7.2 7.2 0 0 0 9.8 9.8z"/>
+    </svg>
   </button>
 </header>
 <main></main>
 <footer>
-  <p>Copyright © 2026 hean.me All Rights Reserved <a href="disclaimer.html">免责声明</a><span class="sep">|</span><a href="about.html">关于本站</a></p>
+  <p><a href="disclaimer.html">免责声明</a><span class="sep">|</span><a href="about.html">关于本站</a></p>
+  <p>Copyright © 2026 hean.me All Rights Reserved</p>
 </footer>
 <script>
 (function () {
