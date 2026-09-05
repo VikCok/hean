@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>禾安聚合</title>
+<link rel="icon" href="assets/favicon.ico">
+<style>
+  :root{
+    --bg:#ffffff;
+    --text:#333333;
+    --sub:#888888;
+    --muted:#555555;
+    --line:#e5e5e5;
+    --btn-border:#cccccc;
+    --btn-hover:#111111;
+    --panel:#ffffff;
+    --active-bg:#333333;
+    --active-text:#ffffff;
+    --input-border:#333333;
+  }
+  body.dark{
+    --bg:#121212;
+    --text:#e8e8e8;
+    --sub:#9a9a9a;
+    --muted:#aaaaaa;
+    --line:#2e2e2e;
+    --btn-border:#3f3f3f;
+    --btn-hover:#ffffff;
+    --panel:#1e1e1e;
+    --active-bg:#e8e8e8;
+    --active-text:#121212;
+    --input-border:#666666;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;
+    background:var(--bg);color:var(--text);
+    transition:background .2s,color .2s;
+  }
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 20px;border-bottom:1px solid var(--line);
+  }
+  .left{display:flex;align-items:center;gap:14px}
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    font-size:18px;font-weight:700;letter-spacing:1px;
+    text-decoration:none;color:var(--text);
+  }
+  #logo{width:32px;height:32px;object-fit:contain}
+  .home-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:8px 16px;border:1px solid var(--btn-border);border-radius:999px;
+    color:var(--muted);font-size:14px;text-decoration:none;
+    transition:color .15s,border-color .15s;
+  }
+  .home-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+  .home-btn svg{width:16px;height:16px}
+  .mode-btn{
+    display:inline-flex;align-items:center;
+    padding:8px 18px;border:1px solid var(--btn-border);border-radius:999px;
+    background:var(--panel);color:var(--muted);font-size:14px;cursor:pointer;
+    transition:color .15s,border-color .15s;
+  }
+  .mode-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+  main{flex:1;display:flex;flex-direction:column;align-items:center;padding:60px 20px}
+  .main-title{
+    font-size:clamp(40px,8vw,72px);font-weight:800;letter-spacing:6px;
+    text-align:center;line-height:1.2;
+  }
+  .sub-title{
+    margin-top:10px;margin-bottom:30px;text-align:center;
+    font-size:15px;color:var(--sub);letter-spacing:2px;
+  }
+  .search-box{width:100%;max-width:640px}
+  .divider{
+    width:100%;max-width:640px;height:1px;background:var(--line);
+    margin:30px 0;
+  }
+  .quick-links{
+    display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+    margin-bottom:6px;
+  }
+  .quick-links a{
+    padding:8px 22px;border:1px solid var(--btn-border);border-radius:999px;
+    color:var(--muted);font-size:14px;text-decoration:none;
+    transition:color .15s,border-color .15s;
+  }
+  .quick-links a:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+  .engine-tabs{display:flex;gap:8px;margin-bottom:10px}
+  .engine-tabs button{
+    padding:6px 14px;border:1px solid var(--btn-border);border-radius:6px;
+    background:var(--panel);color:var(--muted);cursor:pointer;font-size:14px;
+    transition:color .15s,border-color .15s;
+  }
+  .engine-tabs button.active{background:var(--active-bg);color:var(--active-text);border-color:var(--active-bg)}
+  #search-form{display:flex;gap:0}
+  #search-input{
+    flex:1;min-height:46px;padding:0 16px;border:2px solid var(--input-border);
+    border-radius:8px 0 0 8px;font-size:16px;outline:none;
+    background:var(--panel);color:var(--text);
+  }
+  #search-form button{
+    min-height:46px;padding:0 24px;border:none;border-radius:0 8px 8px 0;
+    background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer;
+  }
+  .quote{
+    margin-top:24px;max-width:640px;text-align:center;
+    font-size:15px;color:var(--muted);line-height:1.8;
+  }
+  .quote #quote-src{font-size:13px;color:var(--sub)}
+  footer{
+    padding:18px 20px;text-align:center;
+    font-size:13px;color:var(--sub);border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="left">
+    <a class="brand" href="index.html">
+      <img id="logo" src="assets/logo.png" alt="HEAN 图标" onerror="this.style.display='none'">
+      <span>HEAN</span>
+    </a>
+    <a class="home-btn" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 11l9-8 9 8"/>
+        <path d="M5 10v10h14V10"/>
+      </svg>
+      主页
+    </a>
+  </div>
+  <button class="mode-btn" id="mode-btn" type="button">暗黑</button>
+</header>
+
+<main>
+  <h1 class="main-title">HEAN 禾安聚合</h1>
+  <p class="sub-title">Hean Core</p>
+
+  <section class="search-box">
+    <div class="engine-tabs" id="engine-tabs">
+      <button type="button" data-engine="bing" class="active">微软Bing</button>
+      <button type="button" data-engine="baidu">百度</button>
+      <button type="button" data-engine="sogou">搜狗</button>
+      <button type="button" data-engine="google">Google</button>
+      <button type="button" data-engine="yandex">Yandex</button>
+    </div>
+    <form id="search-form" action="javascript:void(0)">
+      <input type="text" id="search-input" placeholder="🔍探索世界" autocomplete="off">
+      <button type="submit">搜索</button>
+    </form>
+  </section>
+
+  <section class="quote">
+    <p id="quote-text">加载中…</p>
+    <p id="quote-src"></p>
+  </section>
+
+  <div class="divider"></div>
+  <nav class="quick-links">
+    <a href="cs2.html">cs2</a>
+    <a href="sky.html">光遇</a>
+    <a href="nav.html">导航页</a>
+    <a href="news.html">新闻</a>
+    <a href="test.html">测试页</a>
+  </nav>
+</main>
+
+<footer>
+  <p>Copyright © 2026 vikc.dpdns.org All Rights Reserved</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var engines = {
+    bing: "https://www.bing.com/search?q=",
+    baidu: "https://www.baidu.com/s?wd=",
+    sogou: "https://www.sogou.com/web?query=",
+    google: "https://www.google.com/search?q=",
+    yandex: "https://yandex.com/search/?text="
+  };
+  var current = "bing";
+
+  var tabs = document.getElementById("engine-tabs");
+  var input = document.getElementById("search-input");
+  var form = document.getElementById("search-form");
+
+  tabs.addEventListener("click", function (e) {
+    var btn = e.target.closest("button");
+    if (!btn) return;
+    current = btn.getAttribute("data-engine");
+    tabs.querySelectorAll("button").forEach(function (b) {
+      b.classList.toggle("active", b === btn);
+    });
+    input.focus();
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    if (q === "") return;
+    window.open(engines[current] + encodeURIComponent(q), "_blank");
+  });
+
+  fetch("https://v1.hitokoto.cn/")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      document.getElementById("quote-text").textContent = data.hitokoto;
+      document.getElementById("quote-src").textContent = data.from ? "—— " + data.from : "";
+    })
+    .catch(function () {
+      document.getElementById("quote-text").textContent = "每日一言加载失败，请稍后刷新重试。";
+    });
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+  var btn = document.getElementById("mode-btn");
+  if (!btn) return;
+  btn.addEventListener("click", function () {
+    var dark = document.body.classList.toggle("dark");
+    btn.textContent = dark ? "白色" : "暗黑";
+  });
+})();
+</script>
+
+</body>
+</html>
