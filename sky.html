@@ -94,28 +94,28 @@
   /* 右侧状态行：派发中显示"派发馒头"（橙色高亮），否则显示"现在没饭吃" */
   .gc-state{font-size:15px;font-weight:700;color:var(--sub)}
   .gc-state.active{color:#f59e0b}
-  /* 双列卡片网格（干饭 | 任务，魔法 | 代币） */
+  /* 双列卡片网格 */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:960px}
   /* 卡片通用标题 */
   .card-title{font-size:16px;font-weight:700;color:var(--text)}
-  /* 今日任务卡片 */
+  /* 今日任务卡片（独立全宽） */
   .task-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
     border-radius:12px;padding:20px 24px;
+    max-width:960px;
   }
   .task-text{font-size:15px;color:var(--muted);line-height:1.9;white-space:pre-line}
   /* 任务刷新倒计时：每日 0 点（北京时间）重置，标注为刷新时间 */
   .refresh-line{font-size:12px;color:var(--sub);display:flex;align-items:baseline;gap:6px}
   .refresh-line b{font-variant-numeric:tabular-nums;color:var(--text)}
-  /* 今日免费魔法 / 今日代币 卡片 */
+  /* 通用数据卡片 */
   .mf-block,.db-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
     border-radius:12px;padding:20px 24px;
   }
-  .mf-img,.db-img{width:100%;height:auto;border-radius:8px;display:block}
-  .mf-text{font-size:14px;color:var(--muted);line-height:1.8}
+  .db-img{width:100%;height:auto;border-radius:8px;display:block}
   .db-text{font-size:14px;color:var(--sub)}
   .cards-gap-top{margin-top:16px}
   /* 长文本卡片正文：保留换行 */
@@ -125,7 +125,7 @@
   .lzwz-imgs img{height:96px;width:auto;border-radius:8px;border:1px solid var(--btn-border)}
   /* 季节剩余大数字 */
   .djs-days{font-size:20px;font-weight:800;color:#f59e0b}
-  /* 官方公告 卡片（正文超长时可滚动） */
+  /* 官方公告 卡片（默认折叠 5 行，展开后显示全文） */
   .gg-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
@@ -135,9 +135,17 @@
   .gg-title{font-size:15px;font-weight:700;color:var(--text)}
   .gg-text{
     font-size:14px;color:var(--muted);line-height:1.9;white-space:pre-line;
-    max-height:320px;overflow-y:auto;
+    display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5;
+    overflow:hidden;
   }
-  /* 今日代币（独立卡片，位于任务/魔法下方） */
+  .gg-text.open{-webkit-line-clamp:unset}
+  .gg-more{
+    align-self:flex-start;margin-top:4px;padding:4px 14px;
+    border:1px solid var(--btn-border);border-radius:999px;background:var(--panel);
+    color:var(--muted);font-size:12px;cursor:pointer;transition:color .15s,border-color .15s;
+  }
+  .gg-more:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+  /* 复刻先祖（独立卡片） */
   .db-block-alone{margin-top:16px}
   /* 浅色底栏：位于页脚上方，与内容和页脚做视觉区分 */
   .bottom-band{
@@ -198,29 +206,22 @@
     <span class="yiyan-text" id="yiyan-text">光遇一言加载中…</span>
     <span class="yiyan-src" id="yiyan-src"></span>
   </div>
-  <!-- 第一行双列：今日任务 | 今日免费魔法 -->
-  <div class="cards">
-    <div class="task-block">
-      <div class="card-title">今日任务</div>
-      <!-- 刷新时间：每日 0 点（北京时间）任务重置，倒计时精确到秒 -->
-      <div class="refresh-line">刷新时间 <b id="task-refresh">--:--:--</b></div>
-      <div class="task-text" id="task-text">小陈跑路中…</div>
-    </div>
-    <div class="mf-block">
-      <div class="card-title">今日免费魔法</div>
-      <img class="mf-img" src="https://api.qmkjcm.cn/api/gy/mf/images/sc_image.jpg" alt="今日免费魔法">
-      <div class="mf-text" id="mf-text">魔法列表加载中…</div>
-    </div>
+  <!-- 今日任务（独立卡片，今日免费魔法栏已删除） -->
+  <div class="task-block">
+    <div class="card-title">今日任务</div>
+    <!-- 刷新时间：每日 0 点（北京时间）任务重置，倒计时精确到秒 -->
+    <div class="refresh-line">刷新时间 <b id="task-refresh">--:--:--</b></div>
+    <div class="task-text" id="task-text">小陈跑路中…</div>
   </div>
-  <!-- 第二行双列：活动日历 | 今日活动（落石点） -->
+  <!-- 第二行双列：活动日历 | 今日黑暗侵蚀 -->
   <div class="cards cards-gap-top">
     <div class="mf-block">
       <div class="card-title">活动日历</div>
       <div class="long-text" id="rl-text">日历加载中…</div>
     </div>
     <div class="mf-block">
-      <div class="card-title">今日活动</div>
-      <div class="long-text" id="lsd-text">活动加载中…</div>
+      <div class="card-title">今日黑暗侵蚀</div>
+      <div class="long-text" id="lsd-text">黑暗侵蚀加载中…</div>
     </div>
   </div>
   <!-- 第三行双列：今日大蜡地图 | 季节剩余时间 -->
@@ -233,20 +234,20 @@
     <div class="mf-block">
       <div class="card-title">季节剩余时间</div>
       <div class="djs-days" id="djs-days">加载中…</div>
-      <div class="long-text" id="djs-text"></div>
     </div>
   </div>
-  <!-- 今日代币（文字攻略栏已删除） -->
+  <!-- 复刻先祖：每日更新先祖位置图片 -->
   <div class="db-block db-block-alone">
-    <div class="card-title">今日代币</div>
+    <div class="card-title">复刻先祖</div>
     <div class="db-text" id="db-text">加载中…</div>
-    <img class="db-img" id="db-img" alt="今日代币">
+    <img class="db-img" id="db-img" alt="复刻先祖">
   </div>
-  <!-- 官方公告（全宽） -->
+  <!-- 官方公告（全宽，默认折叠 5 行） -->
   <div class="gg-block">
     <div class="card-title">官方公告</div>
     <div class="gg-title" id="gg-title">加载中…</div>
     <div class="gg-text" id="gg-text"></div>
+    <button class="gg-more" id="gg-more" type="button" hidden>展开</button>
   </div>
 </main>
 <!-- 浅色底栏：三个跳转按钮居中挨在一起 + 居中非官方声明 -->
@@ -435,42 +436,41 @@
       if (el) el.textContent = "光遇一言加载失败";
     });
 
-  /* ===== 官方公告：标题 + 正文（保留换行） ===== */
+  /* ===== 官方公告：标题 + 正文（默认折叠为 5 行，点击展开/收起） ===== */
   fetch("/qmkproxy/api/gy/appgg/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var t = document.getElementById("gg-title");
       var b = document.getElementById("gg-text");
+      var btn = document.getElementById("gg-more");
       if (!t || !data.Title) return;
       t.textContent = data.Title;
       if (b) b.textContent = data.OtherChannelMessage || "";
+      /* 折叠状态实际行数超出 5 行时，才显示"展开"按钮 */
+      if (btn && b) {
+        setTimeout(function () {
+          if (b.scrollHeight > b.clientHeight + 1) {
+            btn.hidden = false;
+            btn.addEventListener("click", function () {
+              var open = b.classList.toggle("open");
+              btn.textContent = open ? "收起" : "展开";
+            });
+          }
+        }, 50);
+      }
     })
     .catch(function () {
       var t = document.getElementById("gg-title");
       if (t) t.textContent = "公告加载失败";
     });
 
-  /* ===== 今日免费魔法：t1qq 接口（magic[].text 列表） ===== */
-  fetch("/t1proxy/api/sky/mf/mf?key=aN4ga1sIvr4we5IfkAjhY68JOc")
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-      var el = document.getElementById("mf-text");
-      if (el && data.magic && data.magic.length) {
-        el.textContent = "今日免费魔法：" + data.magic.map(function (m) { return m.text; }).join("、");
-      }
-    })
-    .catch(function () {
-      var el = document.getElementById("mf-text");
-      if (el) el.textContent = "魔法列表加载失败";
-    });
-
-  /* ===== 今日代币：显示日期 + 当日代币位置图片 ===== */
+  /* ===== 复刻先祖：显示日期 + 当日先祖位置图片 ===== */
   fetch("/qmkproxy/gyapi/rwt/db/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var t = document.getElementById("db-text");
       var img = document.getElementById("db-img");
-      if (t && data.date) t.textContent = data.date + " · 每日代币";
+      if (t && data.date) t.textContent = data.date + " · 复刻先祖";
       if (img && data.image) {
         img.src = data.image;
       }
@@ -480,24 +480,37 @@
       if (t) t.textContent = "代币加载失败";
     });
 
-  /* ===== 活动日历：每日日程提醒（魔法商店 / 家具刷新 / 季节进度等） ===== */
+  /* ===== 活动日历：每日日程提醒（魔法商店 / 家具刷新 / 季节进度等） =====
+     剔除接口末尾的微博话题标签（如 #超话创作官##光遇##sky光遇#） */
   fetch("/qmkproxy/gyapi/rwt/rl/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var el = document.getElementById("rl-text");
-      if (el && data.text) el.textContent = data.text;
+      if (el && data.text) {
+        /* 从 #超话创作官 起删到末尾，再压缩多余空行 */
+        el.textContent = data.text
+          .replace(/#超话创作官[\s\S]*$/, "")
+          .replace(/\n{2,}/g, "\n")
+          .trim();
+      }
     })
     .catch(function () {
       var el = document.getElementById("rl-text");
       if (el) el.textContent = "日历加载失败";
     });
 
-  /* ===== 今日活动（落石点）：位置 + 时段 + 落石机制说明 ===== */
+  /* ===== 今日黑暗侵蚀（落石点）：只保留位置 / 性质 / 时间三行，丢弃机制说明等 ===== */
   fetch("/qmkproxy/gyapi/rwt/lsd/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var el = document.getElementById("lsd-text");
-      if (el && data.text) el.textContent = data.text;
+      if (!el || !data.text) return;
+      var keep = [];
+      data.text.split("\n").forEach(function (ln) {
+        var s = ln.trim();
+        if (/^(位置|性质|时间)\s*[:：]/.test(s)) keep.push(s);
+      });
+      el.textContent = keep.length ? keep.join("\n") : data.text.trim();
     })
     .catch(function () {
       var el = document.getElementById("lsd-text");
@@ -534,18 +547,12 @@
       if (el) el.textContent = "大蜡位置加载失败";
     });
 
-  /* ===== 季节剩余时间：剩余天数 + 毕业所需季蜡明细 ===== */
+  /* ===== 季节剩余时间：只输出剩余时间（如"梵高季剩余时间：27天"） ===== */
   fetch("/t1proxy/api/sky/sc/gf/djs?key=aN4ga1sIvr4we5IfkAjhY68JOc")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var d1 = document.getElementById("djs-days");
-      var d2 = document.getElementById("djs-text");
       if (d1 && data.data && data.data.days) d1.textContent = data.data.days;
-      if (d2 && data.data && data.data.data) {
-        var dd = data.data.data;
-        /* 接口字段自带中文前缀（如"有季卡完全毕业：66天"），直接原样展示 */
-        d2.textContent = [dd.seasonal, dd.notSeasonal, dd.reward, dd.orderReward, dd.grad].join("\n");
-      }
     })
     .catch(function () {
       var d1 = document.getElementById("djs-days");

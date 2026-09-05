@@ -1,17 +1,17 @@
 /* ===== HEAN 站点公共组件 =====
- * 统一负责：顶栏（品牌 + 主页/导航图标按钮 + 主题开关）、页脚（免责声明|关于本站 + 版权）、主题切换。
+ * 统一负责：顶栏（品牌 + 主页/导航图标按钮 + 主题开关）、页脚（免责声明|关于本站 + 版权）、主题切换、回到顶部按钮。
  * 全站页面只需放置两个占位符并引入本文件：
  *   <div id="site-header"></div>   —— 顶栏渲染位置
  *   <div id="site-footer"></div>   —— 页脚渲染位置
  *   <script src="components.js"></script>
- * 以后修改顶栏 / 页脚 / 主题相关样式与逻辑，只改这一个文件，全站生效。
+ * 以后修改顶栏 / 页脚 / 主题 / 回到顶部相关样式与逻辑，只改这一个文件，全站生效。
  * 页面如需品牌右侧副标题（如 sky.html 的"禾安·光遇助手"），
  * 在引入本文件之前设置：<script>window.SITE_TAG="禾安·光遇助手";</script>
  */
 (function () {
   "use strict";
 
-  /* ===== 公共样式：顶栏 / 图标按钮 / 主题开关 / 页脚 =====
+  /* ===== 公共样式：顶栏 / 图标按钮 / 主题开关 / 页脚 / 回到顶部 =====
    * 以 <style> 注入到页面 <head> 末尾（位于页面原有样式之后，
    * 同名选择器由后定义的覆盖，确保统一外观由本文件控制） */
   var COMMON_CSS = [
@@ -39,7 +39,12 @@
     "footer p+p{margin-top:6px}",
     "footer a{color:var(--muted);text-decoration:none;margin:0 4px;transition:color .15s}",
     "footer a:hover{color:var(--btn-hover)}",
-    "footer .sep{color:var(--line);margin:0 2px}"
+    "footer .sep{color:var(--line);margin:0 2px}",
+    /* 回到顶部按钮：右下角圆形，滚动进度超过 70% 时淡入显示 */
+    ".back-top{position:fixed;right:24px;bottom:32px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--btn-border);border-radius:50%;background:var(--panel);color:var(--muted);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .25s,visibility .25s,transform .25s,color .15s,border-color .15s;z-index:999}",
+    ".back-top.show{opacity:1;visibility:visible;transform:translateY(0)}",
+    ".back-top:hover{color:var(--btn-hover);border-color:var(--btn-hover)}",
+    ".back-top svg{width:18px;height:18px}"
   ].join("\n");
 
   /* ===== 顶栏 HTML：品牌 + 主页/导航页图标按钮 + 主题开关 ===== */
@@ -92,7 +97,7 @@
     document.head.appendChild(style);
   }
 
-  /* 渲染顶栏与页脚（替换占位 div），随后初始化主题 */
+  /* 渲染顶栏与页脚（替换占位 div），随后初始化主题与回到顶部按钮 */
   function mount() {
     injectCss();
     var h = document.getElementById("site-header");
@@ -100,6 +105,7 @@
     if (h) h.outerHTML = headerHtml();
     if (f) f.outerHTML = footerHtml();
     initTheme();
+    initBackTop();
   }
 
   /* ===== 主题切换：localStorage 存储 key=hean-theme，实现夜间模式跨页记忆 ===== */
@@ -121,6 +127,33 @@
       try {
         localStorage.setItem(KEY, dark ? "dark" : "light");
       } catch (e) {}
+    });
+  }
+
+  /* ===== 回到顶部按钮：滚动进度超过 70% 显示，点击平滑回顶 ===== */
+  function initBackTop() {
+    /* 按钮 HTML：圆形 + 向上箭头 SVG（与主题变量适配） */
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "back-top";
+    btn.setAttribute("aria-label", "回到顶部");
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    document.body.appendChild(btn);
+
+    /* 滚动进度 = 已滚高度 / 可滚总高度，超过 70% 时显示 */
+    function onScroll() {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      var p = max > 0 ? window.scrollY / max : 0;
+      btn.classList.toggle("show", p > 0.7);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    btn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 
