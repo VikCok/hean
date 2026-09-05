@@ -79,6 +79,57 @@
   body.dark .mode-switch .icon-moon{display:block}
   .mode-switch:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}
   main{flex:1}
+  .page{
+    width:100%;max-width:1080px;margin:0 auto;
+    padding:40px 24px 56px;
+  }
+  .page-title{font-size:28px;font-weight:800;letter-spacing:2px;margin-bottom:8px}
+  .page-sub{font-size:14px;color:var(--sub);margin-bottom:24px;letter-spacing:1px}
+  .yiyan{
+    display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+    max-width:960px;margin-bottom:16px;
+    font-size:15px;color:var(--muted);line-height:1.8;
+  }
+  .yiyan-src{font-size:13px;color:var(--sub)}
+  .gc-block{
+    display:flex;flex-direction:column;gap:10px;
+    background:var(--panel);border:1px solid var(--btn-border);
+    border-radius:12px;padding:20px 24px;
+  }
+  .gc-title{font-size:16px;font-weight:700;color:var(--text)}
+  .gc-times{
+    display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;
+    font-size:15px;color:var(--muted);
+  }
+  .gc-status{font-size:15px;color:var(--sub);font-weight:600}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:960px}
+  .card-title{font-size:16px;font-weight:700;color:var(--text)}
+  .task-block{
+    display:flex;flex-direction:column;gap:10px;
+    background:var(--panel);border:1px solid var(--btn-border);
+    border-radius:12px;padding:20px 24px;
+  }
+  .task-text{font-size:15px;color:var(--muted);line-height:1.9;white-space:pre-line}
+  .mf-block,.db-block{
+    display:flex;flex-direction:column;gap:10px;
+    background:var(--panel);border:1px solid var(--btn-border);
+    border-radius:12px;padding:20px 24px;
+  }
+  .mf-img,.db-img{width:100%;height:auto;border-radius:8px;display:block}
+  .mf-text{font-size:14px;color:var(--muted);line-height:1.8}
+  .db-text{font-size:14px;color:var(--sub)}
+  .cards-gap-top{margin-top:16px}
+  .gg-block{
+    display:flex;flex-direction:column;gap:10px;
+    background:var(--panel);border:1px solid var(--btn-border);
+    border-radius:12px;padding:20px 24px;
+    max-width:960px;margin-top:16px;
+  }
+  .gg-title{font-size:15px;font-weight:700;color:var(--text)}
+  .gg-text{
+    font-size:14px;color:var(--muted);line-height:1.9;white-space:pre-line;
+    max-height:320px;overflow-y:auto;
+  }
   footer{
     padding:18px 20px;text-align:center;
     font-size:13px;color:var(--sub);border-top:1px solid var(--line);
@@ -122,7 +173,50 @@
     </span>
   </button>
 </header>
-<main></main>
+<main class="page">
+  <h1 class="page-title">光遇</h1>
+  <p class="page-sub">HEAN · 光遇助手</p>
+  <div class="yiyan">
+    <span class="yiyan-text" id="yiyan-text">光遇一言加载中…</span>
+    <span class="yiyan-src" id="yiyan-src"></span>
+  </div>
+  <div class="cards">
+    <div class="gc-block">
+      <div class="gc-title">老奶奶干饭时间</div>
+      <div class="gc-times">
+        <span>08:00-08:30</span><span>10:00-10:30</span>
+        <span>12:00-12:30</span><span>16:00-16:30</span>
+        <span>18:00-18:30</span><span>20:00-20:30</span>
+      </div>
+      <div class="gc-status" id="gc-status">计算中…</div>
+    </div>
+    <div class="task-block">
+      <div class="card-title">今日任务</div>
+      <div class="task-text" id="task-text">小陈跑路中…</div>
+    </div>
+  </div>
+  <div class="cards cards-gap-top">
+    <div class="mf-block">
+      <div class="card-title">今日免费魔法</div>
+      <img class="mf-img" src="/qmkproxy/api/gy/mf/images/sc_image.jpg" alt="今日免费魔法">
+      <div class="mf-text" id="mf-text">魔法列表加载中…</div>
+    </div>
+    <div class="db-block">
+      <div class="card-title">今日代币</div>
+      <div class="db-text" id="db-text">加载中…</div>
+      <img class="db-img" id="db-img" alt="今日代币">
+    </div>
+  </div>
+  <div class="gg-block">
+    <div class="card-title">文字攻略</div>
+    <div class="gg-text" id="guide-text">加载中…</div>
+  </div>
+  <div class="gg-block">
+    <div class="card-title">官方公告</div>
+    <div class="gg-title" id="gg-title">加载中…</div>
+    <div class="gg-text" id="gg-text"></div>
+  </div>
+</main>
 <footer>
   <p>Copyright © 2026 hean.me All Rights Reserved <a href="disclaimer.html">免责声明</a><span class="sep">|</span><a href="about.html">关于本站</a></p>
 </footer>
@@ -147,6 +241,135 @@
       localStorage.setItem(KEY, dark ? "dark" : "light");
     } catch (e) {}
   });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  var FEED_TIMES = [[8, 0], [10, 0], [12, 0], [16, 0], [18, 0], [20, 0]];
+  var FEED_DUR = 30;
+  function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+  function tickFeed() {
+    var el = document.getElementById("gc-status");
+    if (!el) return;
+    var now = new Date(Date.now() + 8 * 3600 * 1000); /* 北京时间 */
+    var curMin = now.getUTCHours() * 60 + now.getUTCMinutes();
+    var s = now.getUTCSeconds();
+    var i;
+    for (i = 0; i < FEED_TIMES.length; i++) {
+      var start = FEED_TIMES[i][0] * 60 + FEED_TIMES[i][1];
+      if (curMin >= start && curMin < start + FEED_DUR) {
+        el.textContent = "老奶奶正在派发馒头";
+        return;
+      }
+    }
+    var nextIdx = -1, nextStart = 0;
+    for (i = 0; i < FEED_TIMES.length; i++) {
+      var st = FEED_TIMES[i][0] * 60 + FEED_TIMES[i][1];
+      if (curMin < st) { nextIdx = i; nextStart = st; break; }
+    }
+    var crossDay = false;
+    if (nextIdx === -1) { nextIdx = 0; nextStart = FEED_TIMES[0][0] * 60; crossDay = true; }
+    var diffMin = nextStart - curMin;
+    if (diffMin <= 0) { diffMin += 1440; crossDay = true; }
+    var totalSec = diffMin * 60 - s;
+    var hh = Math.floor(totalSec / 3600);
+    var mm = Math.floor((totalSec % 3600) / 60);
+    var ss = totalSec % 60;
+    var label = (crossDay ? "明天 " : "今天 ") + pad2(FEED_TIMES[nextIdx][0]) + ":" + pad2(FEED_TIMES[nextIdx][1]);
+    el.textContent = "距离下次干饭还有 " + hh + " 小时 " + mm + " 分 " + ss + " 秒（" + label + "）";
+  }
+  tickFeed();
+  setInterval(tickFeed, 1000);
+
+  fetch("/qmkproxy/api/gy_mr_rw/")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var el = document.getElementById("task-text");
+      if (!el || !data.data || !data.data.task_list || !data.data.task_list.length) return;
+      var list = data.data.task_list;
+      var today = list[0].date;
+      var tasks = list.filter(function (t) { return t.date === today; })
+                      .map(function (t) { return t.quest_cn; });
+      el.textContent = tasks.length ? tasks.map(function (t, i) { return (i + 1) + ". " + t; }).join("\n") : "今日暂无任务";
+    })
+    .catch(function () {
+      var el = document.getElementById("task-text");
+      if (el) el.textContent = "今日任务加载失败";
+    });
+
+  fetch("/qmkproxy/api/gy/yiyan/yiyan.php")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var el = document.getElementById("yiyan-text");
+      var src = document.getElementById("yiyan-src");
+      if (el && data.data && data.data.content) {
+        el.textContent = data.data.content;
+        if (src) src.textContent = data.data.from ? "—— " + data.data.from : "";
+      }
+    })
+    .catch(function () {
+      var el = document.getElementById("yiyan-text");
+      if (el) el.textContent = "光遇一言加载失败";
+    });
+
+  fetch("/qmkproxy/api/gy/appgg/")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var t = document.getElementById("gg-title");
+      var b = document.getElementById("gg-text");
+      if (!t || !data.Title) return;
+      t.textContent = data.Title;
+      if (b) b.textContent = data.OtherChannelMessage || "";
+    })
+    .catch(function () {
+      var t = document.getElementById("gg-title");
+      if (t) t.textContent = "公告加载失败";
+    });
+
+  fetch("/qmkproxy/api/gy/mfwz/")
+    .then(function (res) { return res.text(); })
+    .then(function (txt) {
+      var el = document.getElementById("mf-text");
+      if (!el) return;
+      try {
+        var data = JSON.parse(txt.replace(/^<pre>/, "").replace(/<\/pre>$/, ""));
+        if (data.magic && data.magic.length) {
+          el.textContent = "今日免费魔法：" + data.magic.map(function (m) { return m.text; }).join("、");
+        }
+      } catch (e) {}
+    })
+    .catch(function () {
+      var el = document.getElementById("mf-text");
+      if (el) el.textContent = "魔法列表加载失败";
+    });
+
+  fetch("/qmkproxy/gyapi/rwt/db/")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var t = document.getElementById("db-text");
+      var img = document.getElementById("db-img");
+      if (t && data.date) t.textContent = data.date + " · 每日代币";
+      if (img && data.image) {
+        var u = new URL(data.image);
+        img.src = "/qmkproxy" + u.pathname + u.search;
+      }
+    })
+    .catch(function () {
+      var t = document.getElementById("db-text");
+      if (t) t.textContent = "代币加载失败";
+    });
+
+  fetch("/qmkproxy/gyapi/text/")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var el = document.getElementById("guide-text");
+      if (el && data.summary) el.textContent = data.summary;
+    })
+    .catch(function () {
+      var el = document.getElementById("guide-text");
+      if (el) el.textContent = "攻略加载失败";
+    });
 })();
 </script>
 
