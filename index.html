@@ -153,6 +153,12 @@
   }
   .quote-line{display:flex;align-items:baseline;justify-content:center;gap:12px;flex-wrap:wrap}
   .quote #quote-src{font-size:13px;color:var(--sub)}
+  /* ===== 移动端适配：窄屏（≤768px）快捷入口改为单列，一排只允许一个栏位 ===== */
+  @media (max-width:768px){
+    .quick-links{grid-template-columns:1fr}
+    /* 原双列下跨两行的主卡/长卡，单列时取消跨行避免错位 */
+    .quick-card-main,.quick-card-tall{grid-row:auto}
+  }
   </style>
 </head>
 <body>
