@@ -6,6 +6,7 @@
 <title>HEAN</title>
 <link rel="icon" href="assets/favicon.ico">
 <style>
+  /* ===== 主题变量：日间模式（默认） ===== */
   :root{
     --bg:#ffffff;
     --text:#333333;
@@ -19,6 +20,7 @@
     --active-text:#ffffff;
     --input-border:#333333;
   }
+  /* ===== 主题变量：暗黑模式（body 加 dark 类时覆盖） ===== */
   body.dark{
     --bg:#121212;
     --text:#e8e8e8;
@@ -32,6 +34,7 @@
     --active-text:#121212;
     --input-border:#666666;
   }
+  /* 基础重置 + 页面骨架：flex 纵向布局，主题切换过渡 */
   *{margin:0;padding:0;box-sizing:border-box}
   body{
     font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
@@ -39,6 +42,7 @@
     background:var(--bg);color:var(--text);
     transition:background .2s,color .2s;
   }
+  /* 顶栏：左侧品牌与导航按钮，右侧主题开关 */
   .topbar{
     display:flex;align-items:center;justify-content:space-between;
     padding:12px 20px;border-bottom:1px solid var(--line);
@@ -49,6 +53,7 @@
     font-size:18px;font-weight:700;letter-spacing:1px;
     text-decoration:none;color:var(--text);
   }
+  /* 主页 / 导航页 胶囊按钮（带图标） */
   .home-btn,.nav-btn{
     display:inline-flex;align-items:center;gap:6px;
     padding:8px 16px;border:1px solid var(--btn-border);border-radius:999px;
@@ -57,6 +62,7 @@
   }
   .home-btn:hover,.nav-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
   .home-btn svg,.nav-btn svg{width:16px;height:16px}
+  /* 日间/夜间切换：胶囊滑块开关（内嵌太阳/月亮 SVG） */
   .mode-switch{
     position:relative;flex:none;
     width:58px;height:30px;
@@ -78,6 +84,7 @@
   body.dark .mode-switch .icon-sun{display:none}
   body.dark .mode-switch .icon-moon{display:block}
   .mode-switch:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}
+  /* 主体区域：垂直居中排列 */
   main{flex:1;display:flex;flex-direction:column;align-items:center;padding:44px 20px 36px}
   .main-title{
     font-size:clamp(40px,8vw,72px);font-weight:800;letter-spacing:6px;
@@ -87,15 +94,18 @@
     margin-top:10px;margin-bottom:30px;text-align:center;
     font-size:15px;color:var(--sub);letter-spacing:2px;
   }
+  /* 搜索框容器（宽幅 960px） */
   .search-box{width:100%;max-width:960px}
   .divider{
     width:100%;max-width:960px;height:1px;background:var(--line);
     margin:26px 0;
   }
+  /* 快捷入口：双列卡片网格（导航页大卡片 + 光遇/CS2 + 小按钮） */
   .quick-links{
     display:grid;grid-template-columns:1fr 1fr;gap:12px;
     width:100%;max-width:960px;margin-bottom:6px;
   }
+  /* 快捷入口卡片 */
   .quick-card{
     display:flex;flex-direction:column;justify-content:center;gap:8px;
     padding:20px 24px;border:1px solid var(--btn-border);border-radius:12px;
@@ -136,6 +146,7 @@
     transition:color .15s,border-color .15s;
   }
   .qc-mini a:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+  /* 搜索引擎标签栏：图标 + 名称 */
   .engine-tabs{display:flex;gap:8px;margin-bottom:10px}
   .engine-tabs button{
     display:inline-flex;align-items:center;gap:6px;
@@ -158,12 +169,14 @@
     min-height:46px;padding:0 24px;border:none;border-radius:0 8px 8px 0;
     background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer;
   }
+  /* 每日一言：文本与署名并排 */
   .quote{
     margin-top:20px;max-width:960px;text-align:center;
     font-size:15px;color:var(--muted);line-height:1.8;
   }
   .quote-line{display:flex;align-items:baseline;justify-content:center;gap:12px;flex-wrap:wrap}
   .quote #quote-src{font-size:13px;color:var(--sub)}
+  /* 页脚：版权 + 免责声明 / 关于本站 */
   footer{
     padding:18px 20px;text-align:center;
     font-size:13px;color:var(--sub);border-top:1px solid var(--line);
@@ -269,6 +282,8 @@
 (function () {
   "use strict";
 
+  /* ===== 搜索引擎配置 =====
+     五个引擎的搜索地址前缀，切换标签后提交搜索即跳转对应引擎 */
   var engines = {
     bing: "https://www.bing.com/search?q=",
     baidu: "https://www.baidu.com/s?wd=",
@@ -282,6 +297,7 @@
   var input = document.getElementById("search-input");
   var form = document.getElementById("search-form");
 
+  /* 引擎标签切换：更新当前引擎并高亮选中态 */
   tabs.addEventListener("click", function (e) {
     var btn = e.target.closest("button");
     if (!btn) return;
@@ -292,6 +308,7 @@
     input.focus();
   });
 
+  /* 搜索提交：空关键词忽略，否则新窗口打开当前引擎的搜索结果 */
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var q = input.value.trim();
@@ -299,6 +316,7 @@
     window.open(engines[current] + encodeURIComponent(q), "_blank");
   });
 
+  /* ===== 每日一言（hitokoto API）：文本与署名并排展示 ===== */
   fetch("https://v1.hitokoto.cn/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -309,6 +327,7 @@
       document.getElementById("quote-text").textContent = "每日一言加载失败，请稍后刷新重试。";
     });
 
+  /* ===== 光遇今日任务（展示在首页光遇卡片） ===== */
   fetch("https://api.qmkjcm.cn/api/gy_mr_rw/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -325,6 +344,8 @@
       if (el) el.textContent = "今日任务加载失败";
     });
 
+  /* ===== CS2 箱子刷新倒计时 =====
+     刷新时间：北京时间每周三 09:00（换算为 UTC 01:00） */
   function nextCs2Reset() {
     var now = new Date();
     var t = new Date(now);
@@ -334,6 +355,7 @@
     t.setUTCDate(t.getUTCDate() + dayDiff);
     return t;
   }
+  /* 每秒刷新 CS2 刷新倒计时（天/时/分/秒） */
   function tickCs2() {
     var el = document.getElementById("cs2-api");
     if (!el) return;
@@ -348,9 +370,13 @@
   tickCs2();
   setInterval(tickCs2, 1000);
 
+  /* ===== 老奶奶干饭时间 =====
+     6 个派发时段（北京时间 08:00/10:00/12:00/16:00/18:00/20:00，各 30 分钟） */
   var FEED_TIMES = [[8, 0], [10, 0], [12, 0], [16, 0], [18, 0], [20, 0]];
   var FEED_DUR = 30;
+  /* 数字补零：8 -> "08" */
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+  /* 每秒刷新：时段内显示"派发中"，否则倒计时到下一个时段 */
   function tickFeed() {
     var el = document.getElementById("gc-status");
     if (!el) return;
@@ -389,6 +415,7 @@
 <script>
 (function () {
   "use strict";
+  /* 主题切换：localStorage 存储 key=hean-theme，实现夜间模式跨页记忆 */
   var btn = document.getElementById("mode-btn");
   if (!btn) return;
   var KEY = "hean-theme";

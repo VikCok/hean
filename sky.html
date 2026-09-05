@@ -6,6 +6,7 @@
 <title>HEAN 光遇</title>
 <link rel="icon" href="assets/favicon.ico">
 <style>
+  /* ===== 主题变量：日间模式（默认） ===== */
   :root{
     --bg:#ffffff;
     --text:#333333;
@@ -19,6 +20,7 @@
     --active-text:#ffffff;
     --input-border:#333333;
   }
+  /* ===== 主题变量：暗黑模式（body 加 dark 类时覆盖） ===== */
   body.dark{
     --bg:#121212;
     --text:#e8e8e8;
@@ -32,13 +34,16 @@
     --active-text:#121212;
     --input-border:#666666;
   }
+  /* 基础重置：清除默认边距，统一盒模型 */
   *{margin:0;padding:0;box-sizing:border-box}
+  /* 页面基础：flex 纵向布局撑满视口，主题切换带过渡 */
   body{
     font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
     min-height:100vh;display:flex;flex-direction:column;
     background:var(--bg);color:var(--text);
     transition:background .2s,color .2s;
   }
+  /* 顶栏：左侧品牌与导航按钮，右侧主题开关 */
   .topbar{
     display:flex;align-items:center;justify-content:space-between;
     padding:12px 20px;border-bottom:1px solid var(--line);
@@ -49,6 +54,7 @@
     font-size:18px;font-weight:700;letter-spacing:1px;
     text-decoration:none;color:var(--text);
   }
+  /* 主页 / 导航页 胶囊按钮（带图标） */
   .home-btn,.nav-btn{
     display:inline-flex;align-items:center;gap:6px;
     padding:8px 16px;border:1px solid var(--btn-border);border-radius:999px;
@@ -57,6 +63,7 @@
   }
   .home-btn:hover,.nav-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
   .home-btn svg,.nav-btn svg{width:16px;height:16px}
+  /* 日间/夜间切换：胶囊滑块开关（内嵌太阳/月亮 SVG） */
   .mode-switch{
     position:relative;flex:none;
     width:58px;height:30px;
@@ -78,19 +85,23 @@
   body.dark .mode-switch .icon-sun{display:none}
   body.dark .mode-switch .icon-moon{display:block}
   .mode-switch:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}
+  /* 主体区域 */
   main{flex:1}
+  /* 页面内容容器：画幅放宽，减少留白 */
   .page{
     width:100%;max-width:1080px;margin:0 auto;
     padding:40px 24px 56px;
   }
   .page-title{font-size:28px;font-weight:800;letter-spacing:2px;margin-bottom:8px}
   .page-sub{font-size:14px;color:var(--sub);margin-bottom:24px;letter-spacing:1px}
+  /* 每日一言：文本与署名并排显示 */
   .yiyan{
     display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
     max-width:960px;margin-bottom:16px;
     font-size:15px;color:var(--muted);line-height:1.8;
   }
   .yiyan-src{font-size:13px;color:var(--sub)}
+  /* 老奶奶干饭时间卡片 */
   .gc-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
@@ -102,14 +113,18 @@
     font-size:15px;color:var(--muted);
   }
   .gc-status{font-size:15px;color:var(--sub);font-weight:600}
+  /* 双列卡片网格（干饭 | 任务，魔法 | 代币） */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:960px}
+  /* 卡片通用标题 */
   .card-title{font-size:16px;font-weight:700;color:var(--text)}
+  /* 今日任务卡片 */
   .task-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
     border-radius:12px;padding:20px 24px;
   }
   .task-text{font-size:15px;color:var(--muted);line-height:1.9;white-space:pre-line}
+  /* 今日免费魔法 / 今日代币 卡片 */
   .mf-block,.db-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
@@ -119,6 +134,7 @@
   .mf-text{font-size:14px;color:var(--muted);line-height:1.8}
   .db-text{font-size:14px;color:var(--sub)}
   .cards-gap-top{margin-top:16px}
+  /* 文字攻略 / 官方公告 卡片（正文超长时可滚动） */
   .gg-block{
     display:flex;flex-direction:column;gap:10px;
     background:var(--panel);border:1px solid var(--btn-border);
@@ -130,6 +146,7 @@
     font-size:14px;color:var(--muted);line-height:1.9;white-space:pre-line;
     max-height:320px;overflow-y:auto;
   }
+  /* 页脚：版权 + 免责声明 / 关于本站 */
   footer{
     padding:18px 20px;text-align:center;
     font-size:13px;color:var(--sub);border-top:1px solid var(--line);
@@ -174,12 +191,15 @@
   </button>
 </header>
 <main class="page">
+  <!-- 页面标题区 -->
   <h1 class="page-title">光遇</h1>
   <p class="page-sub">HEAN · 光遇助手</p>
+  <!-- 每日一言 -->
   <div class="yiyan">
     <span class="yiyan-text" id="yiyan-text">光遇一言加载中…</span>
     <span class="yiyan-src" id="yiyan-src"></span>
   </div>
+  <!-- 第一行双列：老奶奶干饭时间 | 今日任务 -->
   <div class="cards">
     <div class="gc-block">
       <div class="gc-title">老奶奶干饭时间</div>
@@ -195,10 +215,11 @@
       <div class="task-text" id="task-text">小陈跑路中…</div>
     </div>
   </div>
+  <!-- 第二行双列：今日免费魔法 | 今日代币 -->
   <div class="cards cards-gap-top">
     <div class="mf-block">
       <div class="card-title">今日免费魔法</div>
-      <img class="mf-img" src="/qmkproxy/api/gy/mf/images/sc_image.jpg" alt="今日免费魔法">
+      <img class="mf-img" src="https://api.qmkjcm.cn/api/gy/mf/images/sc_image.jpg" alt="今日免费魔法">
       <div class="mf-text" id="mf-text">魔法列表加载中…</div>
     </div>
     <div class="db-block">
@@ -207,6 +228,7 @@
       <img class="db-img" id="db-img" alt="今日代币">
     </div>
   </div>
+  <!-- 文字攻略（当日完整攻略摘要） -->
   <div class="gg-block">
     <div class="card-title">文字攻略</div>
     <div class="gg-text" id="guide-text">加载中…</div>
@@ -223,6 +245,7 @@
 <script>
 (function () {
   "use strict";
+  /* 主题切换：localStorage 存储 key=hean-theme，实现夜间模式跨页记忆 */
   var btn = document.getElementById("mode-btn");
   if (!btn) return;
   var KEY = "hean-theme";
@@ -246,9 +269,13 @@
 <script>
 (function () {
   "use strict";
+  /* ===== 老奶奶干饭时间 =====
+     6 个派发时段（北京时间 08:00/10:00/12:00/16:00/18:00/20:00，各 30 分钟） */
   var FEED_TIMES = [[8, 0], [10, 0], [12, 0], [16, 0], [18, 0], [20, 0]];
   var FEED_DUR = 30;
+  /* 数字补零：8 -> "08" */
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+  /* 每秒刷新：时段内显示"派发中"，否则倒计时到下一个时段 */
   function tickFeed() {
     var el = document.getElementById("gc-status");
     if (!el) return;
@@ -282,6 +309,7 @@
   tickFeed();
   setInterval(tickFeed, 1000);
 
+  /* ===== 今日任务：取最新日期（当天）的 4 条任务，编号竖排 ===== */
   fetch("/qmkproxy/api/gy_mr_rw/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -298,6 +326,7 @@
       if (el) el.textContent = "今日任务加载失败";
     });
 
+  /* ===== 光遇每日一言：随机语录 + 署名 ===== */
   fetch("/qmkproxy/api/gy/yiyan/yiyan.php")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -313,6 +342,7 @@
       if (el) el.textContent = "光遇一言加载失败";
     });
 
+  /* ===== 官方公告：标题 + 正文（保留换行） ===== */
   fetch("/qmkproxy/api/gy/appgg/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -327,6 +357,7 @@
       if (t) t.textContent = "公告加载失败";
     });
 
+  /* ===== 今日免费魔法文本：接口返回 <pre> 包裹的 JSON，先清洗再解析 ===== */
   fetch("/qmkproxy/api/gy/mfwz/")
     .then(function (res) { return res.text(); })
     .then(function (txt) {
@@ -344,6 +375,7 @@
       if (el) el.textContent = "魔法列表加载失败";
     });
 
+  /* ===== 今日代币：显示日期 + 当日代币位置图片 ===== */
   fetch("/qmkproxy/gyapi/rwt/db/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -351,8 +383,7 @@
       var img = document.getElementById("db-img");
       if (t && data.date) t.textContent = data.date + " · 每日代币";
       if (img && data.image) {
-        var u = new URL(data.image);
-        img.src = "/qmkproxy" + u.pathname + u.search;
+        img.src = data.image;
       }
     })
     .catch(function () {
@@ -360,6 +391,7 @@
       if (t) t.textContent = "代币加载失败";
     });
 
+  /* ===== 文字攻略：当日完整攻略摘要（任务/季蜡/大蜡/落石点/复刻等） ===== */
   fetch("/qmkproxy/gyapi/text/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
