@@ -31,6 +31,23 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // ---- 诊断端点：/diag?u=<url> 测试 Worker 出站 fetch 是否可用（排查 530） ----
+    if (url.pathname === "/diag") {
+      const u = url.searchParams.get("u") || "https://v1.hitokoto.cn/";
+      try {
+        const r = await fetch(u, { headers: { "User-Agent": BROWSER_UA } });
+        const b = await r.text();
+        return new Response(JSON.stringify({ ok: true, status: r.status, len: b.length, head: b.slice(0, 150) }), {
+          headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+        });
+      } catch (e) {
+        return new Response(JSON.stringify({ ok: false, msg: String((e && e.message) || e) }), {
+          status: 502,
+          headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+        });
+      }
+    }
+
     // ---- 代理路由：命中前缀则转发到对应目标域名 ----
     for (const p of PROXIES) {
       if (url.pathname.startsWith(p.prefix)) {
@@ -43,16 +60,18 @@ export default {
           });
           // 取回响应文本，原样透传，并补上 CORS 头（浏览器端即可直接 fetch）
           const body = await resp.text();
+          // 上游返回错误状态时附上诊断信息（区分 fetch 成功但上游 4xx/5xx）
+          const diag = resp.status >= 400 ? { "X-Diag-ProxyStatus": String(resp.status) } : {};
           return new Response(body, {
             status: resp.status,
-            headers: {
+            headers: Object.assign({
               // 透传原 Content-Type（JSON / 图片类型保持一致）
               "Content-Type": resp.headers.get("Content-Type") || "application/json",
               // 允许任意来源跨域访问
               "Access-Control-Allow-Origin": "*",
               // 接口数据缓存 10 分钟，减少上游请求、节省免费额度
               "Cache-Control": "public, max-age=600"
-            }
+            }, diag)
           });
         } catch (e) {
           // 上游网络失败：返回具体错误信息便于诊断（上线后如有问题可直接从响应查看）
