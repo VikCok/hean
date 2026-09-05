@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>禾安聚合</title>
+<title>HEAN</title>
 <link rel="icon" href="assets/favicon.ico">
 <style>
   :root{
@@ -49,22 +49,35 @@
     font-size:18px;font-weight:700;letter-spacing:1px;
     text-decoration:none;color:var(--text);
   }
-  #logo{width:32px;height:32px;object-fit:contain}
-  .home-btn{
+  .home-btn,.nav-btn{
     display:inline-flex;align-items:center;gap:6px;
     padding:8px 16px;border:1px solid var(--btn-border);border-radius:999px;
     color:var(--muted);font-size:14px;text-decoration:none;
     transition:color .15s,border-color .15s;
   }
-  .home-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
-  .home-btn svg{width:16px;height:16px}
-  .mode-btn{
-    display:inline-flex;align-items:center;
-    padding:8px 18px;border:1px solid var(--btn-border);border-radius:999px;
-    background:var(--panel);color:var(--muted);font-size:14px;cursor:pointer;
-    transition:color .15s,border-color .15s;
+  .home-btn:hover,.nav-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+  .home-btn svg,.nav-btn svg{width:16px;height:16px}
+  .mode-switch{
+    position:relative;flex:none;
+    width:58px;height:30px;
+    border:1px solid var(--btn-border);border-radius:999px;
+    background:var(--panel);cursor:pointer;
+    transition:background .25s,border-color .25s;
   }
-  .mode-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+  .mode-switch .thumb{
+    position:absolute;top:2px;left:2px;
+    width:24px;height:24px;border-radius:50%;
+    background:#fdfdfd;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 1px 3px rgba(0,0,0,.25);
+    transition:transform .25s,background .25s;
+  }
+  body.dark .mode-switch .thumb{transform:translateX(30px)}
+  .mode-switch .icon{width:14px;height:14px}
+  .mode-switch .icon-moon{display:none}
+  body.dark .mode-switch .icon-sun{display:none}
+  body.dark .mode-switch .icon-moon{display:block}
+  .mode-switch:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}
   main{flex:1;display:flex;flex-direction:column;align-items:center;padding:60px 20px}
   .main-title{
     font-size:clamp(40px,8vw,72px);font-weight:800;letter-spacing:6px;
@@ -115,16 +128,19 @@
     padding:18px 20px;text-align:center;
     font-size:13px;color:var(--sub);border-top:1px solid var(--line);
   }
+  footer a{
+    color:var(--muted);text-decoration:none;margin:0 4px;
+    transition:color .15s;
+  }
+  footer a:hover{color:var(--btn-hover)}
+  footer .sep{color:var(--line);margin:0 2px}
 </style>
 </head>
 <body>
 
 <header class="topbar">
   <div class="left">
-    <a class="brand" href="index.html">
-      <img id="logo" src="assets/logo.png" alt="HEAN 图标" onerror="this.style.display='none'">
-      <span>HEAN</span>
-    </a>
+    <a class="brand" href="index.html">HEAN</a>
     <a class="home-btn" href="index.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M3 11l9-8 9 8"/>
@@ -132,13 +148,30 @@
       </svg>
       主页
     </a>
+    <a class="nav-btn" href="nav.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+      </svg>
+      导航页
+    </a>
   </div>
-  <button class="mode-btn" id="mode-btn" type="button">暗黑</button>
+  <button class="mode-switch" id="mode-btn" type="button" role="switch" aria-checked="false" aria-label="切换日间/夜间模式">
+    <span class="thumb">
+      <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.2"/>
+        <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/>
+      </svg>
+      <svg class="icon icon-moon" viewBox="0 0 24 24" fill="#8b7cff" aria-hidden="true">
+        <path d="M21 12.8A9 9 0 1 1 11.2 3a7.2 7.2 0 0 0 9.8 9.8z"/>
+      </svg>
+    </span>
+  </button>
 </header>
 
 <main>
-  <h1 class="main-title">HEAN 禾安聚合</h1>
-  <p class="sub-title">Hean Core</p>
+  <h1 class="main-title">HEAN 禾安</h1>
+  <p class="sub-title">Vik Hean Core</p>
 
   <section class="search-box">
     <div class="engine-tabs" id="engine-tabs">
@@ -149,7 +182,7 @@
       <button type="button" data-engine="yandex">Yandex</button>
     </div>
     <form id="search-form" action="javascript:void(0)">
-      <input type="text" id="search-input" placeholder="🔍探索世界" autocomplete="off">
+      <input type="text" id="search-input" placeholder="搜索一下" autocomplete="off">
       <button type="submit">搜索</button>
     </form>
   </section>
@@ -170,7 +203,7 @@
 </main>
 
 <footer>
-  <p>Copyright © 2026 vikc.dpdns.org All Rights Reserved</p>
+  <p>Copyright © 2026 hean.me All Rights Reserved <a href="disclaimer.html">免责声明</a><span class="sep">|</span><a href="about.html">关于本站</a></p>
 </footer>
 
 <script>
@@ -224,9 +257,21 @@
   "use strict";
   var btn = document.getElementById("mode-btn");
   if (!btn) return;
+  var KEY = "hean-theme";
+
+  try {
+    if (localStorage.getItem(KEY) === "dark") {
+      document.body.classList.add("dark");
+      btn.setAttribute("aria-checked", "true");
+    }
+  } catch (e) {}
+
   btn.addEventListener("click", function () {
     var dark = document.body.classList.toggle("dark");
-    btn.textContent = dark ? "白色" : "暗黑";
+    btn.setAttribute("aria-checked", dark ? "true" : "false");
+    try {
+      localStorage.setItem(KEY, dark ? "dark" : "light");
+    } catch (e) {}
   });
 })();
 </script>

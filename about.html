@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HEAN 光遇</title>
+<title>Summer&Hean · 关于本站</title>
 <link rel="icon" href="assets/favicon.ico">
 <style>
   :root{
@@ -79,6 +79,13 @@
   body.dark .mode-switch .icon-moon{display:block}
   .mode-switch:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}
   main{flex:1}
+  .page{max-width:760px;margin:0 auto;padding:48px 24px}
+  .page h1{font-size:28px;font-weight:700}
+  .page .kicker{font-size:13px;color:var(--sub);letter-spacing:2px;margin:8px 0 28px}
+  .page h2{font-size:18px;font-weight:600;margin:28px 0 10px}
+  .page p{color:var(--muted);font-size:15px;line-height:1.9;margin-bottom:10px}
+  .page ul{margin:0 0 12px 20px;color:var(--muted);font-size:15px;line-height:1.9}
+  .page li{margin-bottom:6px}
   footer{
     padding:18px 20px;text-align:center;
     font-size:13px;color:var(--sub);border-top:1px solid var(--line);
@@ -122,7 +129,27 @@
     </span>
   </button>
 </header>
-<main></main>
+<main class="page">
+  <h1>关于本站</h1>
+  <p class="kicker">ABOUT · HEAN</p>
+
+  <h2>站点简介</h2>
+  <p>HEAN 禾安（hean.me）是一个个人站点，也是一块属于自己的网络空间。它从一个简单的聚合搜索页出发，逐步生长出游戏、兴趣、动态等分区，记录学习、体验与生活的碎片。</p>
+
+  <h2>这里有什么</h2>
+  <ul>
+    <li>聚合搜索：首页集成了 Bing、百度、搜狗、Google、Yandex 五个搜索引擎，一键切换、即搜即走。</li>
+    <li>每日一言：每次打开首页，都会从一言接口获取一句随机文字，给页面一点温度。</li>
+    <li>内容分区：cs2、光遇（天空）、导航、新闻、测试等页面，按兴趣持续填充。</li>
+    <li>主题切换：顶栏提供暗黑 / 白色双主题，跟随心情切换浏览体验。</li>
+  </ul>
+
+  <h2>技术说明</h2>
+  <p>本站为纯静态站点，使用原生 HTML / CSS / JavaScript 编写，不依赖任何框架与构建工具，资源（图标、背景图）统一存放于 assets/ 目录。所有页面可离线打开，部署简单，维护轻量。</p>
+
+  <h2>联系与建议</h2>
+  <p>如果你对本站有任何建议，或希望与我交流，可以通过域名 hean.me 找到这里。每一份反馈都会被认真对待。</p>
+</main>
 <footer>
   <p>Copyright © 2026 hean.me All Rights Reserved <a href="disclaimer.html">免责声明</a><span class="sep">|</span><a href="about.html">关于本站</a></p>
 </footer>
@@ -149,6 +176,5 @@
   });
 })();
 </script>
-
 </body>
 </html>
