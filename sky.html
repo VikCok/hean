@@ -6,8 +6,16 @@
 <title>HEAN 光遇</title>
 <link rel="icon" href="/assets/favicon.ico">
 <style>
-  :root{--bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;--btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;--active-bg:#333333;--active-text:#ffffff;--input-border:#333333;--clock-face:#f6f6f6;--band-bg:#f3f3f3}
-  body.dark{--bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;--line:#2e2e2e;--btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;--active-bg:#e8e8e8;--active-text:#121212;--input-border:#666666;--clock-face:#262626;--band-bg:#1a1a1a}
+  :root{
+    --bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;
+    --btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;--active-bg:#333333;
+    --active-text:#ffffff;--input-border:#333333;--clock-face:#f6f6f6;--band-bg:#f3f3f3;
+  }
+  html.dark{
+    --bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;--line:#2e2e2e;
+    --btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;--active-bg:#e8e8e8;
+    --active-text:#121212;--input-border:#666666;--clock-face:#262626;--band-bg:#1a1a1a;
+  }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
   main{flex:1}
@@ -62,6 +70,9 @@
   .footer-note{max-width:1080px;margin:10px auto 0;text-align:center;font-size:12px;color:var(--sub);line-height:1.8}
   @media (max-width:768px){.cards{grid-template-columns:1fr}}
 </style>
+<script>
+  try { if (localStorage.getItem('hean-theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
 </head>
 <body>
 <div id="site-header"></div>

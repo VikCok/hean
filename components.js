@@ -1,5 +1,5 @@
 /* ===== HEAN 站点公共组件 =====
- * 统一负责：顶栏（品牌 logo + HEAN + 主页/导航图标按钮 + 主题开关）、页脚（免责声明|关于本站 + 版权）、主题切换。
+ * 统一负责：顶栏（品牌 + 主页/导航图标按钮 + 主题开关）、页脚（免责声明|关于本站 + 版权）、主题切换。
  * 全站页面只需放置两个占位符并引入本文件：
  *   <div id="site-header"></div>   —— 顶栏渲染位置
  *   <div id="site-footer"></div>   —— 页脚渲染位置
@@ -11,22 +11,13 @@
 (function () {
   "use strict";
 
-  /* ===== 动态计算基础目录 =====
-   * 全站统一使用绝对路径（以 / 开头），彻底避免 Cloudflare Workers SPA 回退
-   * 导致的相对路径叠加问题（如 /core/core/core/.../home.html）。 */
   function getBasePath() { return ""; }
 
-  /* ===== 本地 file:// 环境相对路径前缀计算 =====
-   * 通过当前页面引用 components.js 的 src 推断页面所在目录深度：
-   *   根目录页面引用 "/components.js"   → 前缀 ""
-   *   core/ 目录页面引用 "/components.js" → 前缀 "../"（通过script src中的路径推断）
-   * 线上 http/https 环境不调用本函数，直接使用绝对路径。 */
   function getRelativeBase() {
     var scripts = document.querySelectorAll("script[src]");
     for (var i = 0; i < scripts.length; i++) {
       var src = scripts[i].getAttribute("src");
       if (src && src.indexOf("components.js") !== -1) {
-        /* 本地转换后 src 可能是 "components.js" 或 "../components.js" */
         var idx = src.lastIndexOf("components.js");
         return src.substring(0, idx);
       }
@@ -34,14 +25,10 @@
     return "";
   }
 
-  /* ===== 本地 file:// 环境路径转换 =====
-   * 把页面中所有以 "/" 开头的绝对路径资源转换为相对路径，
-   * 使本地双击 HTML 文件也能正常跳转和加载资源（线上环境不执行此转换）。
-   * 覆盖：a[href] / link[href]（favicon等）/ img[src] / script[src] / iframe[src] */
   function convertLocalPaths() {
     if (location.protocol !== "file:") return;
     var base = getRelativeBase();
-    document.querySelectorAll('a[href^="/"], link[href^="/"], img[src^="/"], script[src^="/"], iframe[src^="/"]').forEach(function (el) {
+    document.querySelectorAll('a[href^="/"], link[href^="/"], img[src^="/"], script[src^="/"]').forEach(function (el) {
       var isHref = (el.tagName === "A" || el.tagName === "LINK");
       var attr = isHref ? "href" : "src";
       var val = el.getAttribute(attr);
@@ -51,9 +38,7 @@
     });
   }
 
-  /* ===== 公共样式：顶栏 / 图标按钮 / 主题开关 / 页脚 ===== */
   var COMMON_CSS = [
-    "/* ===== 公共组件样式（components.js 注入） ===== */",
     ".topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line)}",
     ".left{display:flex;align-items:center;gap:14px}",
     ".brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;letter-spacing:1px;text-decoration:none;color:var(--text)}",
@@ -66,8 +51,8 @@
     ".mode-btn:hover{border-color:var(--btn-hover)}",
     ".mode-btn .icon{width:16px;height:16px}",
     ".mode-btn .icon-moon{display:none}",
-    "body.dark .mode-btn .icon-sun{display:none}",
-    "body.dark .mode-btn .icon-moon{display:block}",
+    "html.dark .mode-btn .icon-sun{display:none}",
+    "html.dark .mode-btn .icon-moon{display:block}",
     ".mode-btn:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}",
     "footer{padding:18px 20px;text-align:center;font-size:13px;color:var(--sub);border-top:1px solid var(--line)}",
     "footer p+p{margin-top:6px}",
@@ -80,7 +65,6 @@
     ".back-top svg{width:18px;height:18px}"
   ].join("\n");
 
-  /* ===== 顶栏 HTML：品牌 logo + HEAN + 主页/导航页图标按钮 + 主题开关 ===== */
   function headerHtml() {
     var tag = window.SITE_TAG || "";
     return [
@@ -113,7 +97,6 @@
     ].join("\n");
   }
 
-  /* ===== 页脚 HTML：免责声明 / 关于本站 + 版权 ===== */
   function footerHtml() {
     return [
       "<footer>",
@@ -140,19 +123,18 @@
     convertLocalPaths();
   }
 
-  /* ===== 主题切换：localStorage 存储 key=hean-theme ===== */
   function initTheme() {
     var btn = document.getElementById("mode-btn");
     if (!btn) return;
     var KEY = "hean-theme";
     try {
       if (localStorage.getItem(KEY) === "dark") {
-        document.body.classList.add("dark");
+        document.documentElement.classList.add("dark");
         btn.setAttribute("aria-checked", "true");
       }
     } catch (e) {}
     btn.addEventListener("click", function () {
-      var dark = document.body.classList.toggle("dark");
+      var dark = document.documentElement.classList.toggle("dark");
       btn.setAttribute("aria-checked", dark ? "true" : "false");
       try {
         localStorage.setItem(KEY, dark ? "dark" : "light");
@@ -160,7 +142,6 @@
     });
   }
 
-  /* ===== 回到顶部按钮：滚动进度超过 70% 显示 ===== */
   function initBackTop() {
     var btn = document.createElement("button");
     btn.type = "button";
