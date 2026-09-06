@@ -67,10 +67,10 @@ body.phase-popup .intro-quote{opacity:0;transition:opacity 0.5s ease 0.3s}
   color:var(--hr-color);
   line-height:1;
   transform:scale(0);
-  transition:transform 2.025s linear, font-weight 2.025s linear;
+  transition:transform 2.025s linear;
 }
 body.phase-popup .hean-popup{opacity:1}
-body.phase-popup .hp-he,body.phase-popup .hp-an{transform:scale(1);font-weight:900}
+body.phase-popup .hp-he,body.phase-popup .hp-an{transform:scale(1)}
 body.phase-merge .hean-popup{gap:0.08em;transition:gap 2s linear}
 .hean-label{
   position:absolute;top:50%;left:50%;
@@ -104,7 +104,7 @@ body.phase-magnet .hl-he,body.phase-magnet .hl-an{
 }
 body.phase-label .hean-label{opacity:1}
 body.phase-label .hl-he,body.phase-label .hl-an{transform:translateY(-1.6em) scale(1)}
-body.phase-replace .hp-he,body.phase-replace .hp-an{opacity:0;transition:opacity 0.4s ease}
+body.phase-replace .hp-he,body.phase-replace .hp-an{opacity:0;transition:opacity 1.5s ease}
 body.phase-replace .hl-he,body.phase-replace .hl-an{
   transform:translateY(-1.6em) scale(1);
 }
@@ -180,14 +180,16 @@ body.phase-fadein .hean-stage{opacity:1;transition:opacity 1s ease}
   function resetAndRestart() {
     introTimers.forEach(function (t) { clearTimeout(t); });
     introTimers = [];
-    document.body.classList.remove(
-      'phase-extract','phase-popup','phase-merge',
-      'phase-label','phase-replace','phase-magnet','phase-fadeout','phase-fadein'
-    );
     var stageEl = document.getElementById("hean-stage");
     if (stageEl) {
       stageEl.style.transition = 'none';
       stageEl.style.opacity = '0';
+    }
+    document.body.classList.remove(
+      'phase-extract','phase-popup','phase-merge',
+      'phase-label','phase-replace','phase-magnet','phase-fadeout','phase-fadein'
+    );
+    if (stageEl) {
       void stageEl.offsetWidth;
       stageEl.style.transition = '';
       stageEl.style.opacity = '';
