@@ -3,49 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Summer&Hean · 关于本站</title>
+<title>HEAN · 关于本站</title>
 <link rel="icon" href="/assets/favicon.ico">
 <style>
   :root{
-    --bg:#ffffff;
-    --text:#333333;
-    --sub:#888888;
-    --muted:#555555;
-    --line:#e5e5e5;
-    --btn-border:#cccccc;
-    --btn-hover:#111111;
-    --panel:#ffffff;
-    --active-bg:#333333;
-    --active-text:#ffffff;
-    --input-border:#333333;
+    --bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;
+    --btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;
+    --active-bg:#333333;--active-text:#ffffff;--input-border:#333333;
   }
   html.dark{
-    --bg:#121212;
-    --text:#e8e8e8;
-    --sub:#9a9a9a;
-    --muted:#aaaaaa;
-    --line:#2e2e2e;
-    --btn-border:#3f3f3f;
-    --btn-hover:#ffffff;
-    --panel:#1e1e1e;
-    --active-bg:#e8e8e8;
-    --active-text:#121212;
-    --input-border:#666666;
+    --bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;--line:#2e2e2e;
+    --btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;
+    --active-bg:#e8e8e8;--active-text:#121212;--input-border:#666666;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
-    min-height:100vh;display:flex;flex-direction:column;
-    background:var(--bg);color:var(--text);
-    transition:background .2s,color .2s;
-  }main{flex:1}
+  body{font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
+  main{flex:1}
   .page{max-width:1080px;margin:0 auto;padding:40px 24px 56px}
   .page h1{font-size:28px;font-weight:700}
   .page .kicker{font-size:13px;color:var(--sub);letter-spacing:2px;margin:8px 0 28px}
   .page h2{font-size:18px;font-weight:600;margin:28px 0 10px}
   .page p{color:var(--muted);font-size:15px;line-height:1.9;margin-bottom:10px}
   .page ul{margin:0 0 12px 20px;color:var(--muted);font-size:15px;line-height:1.9}
-  .page li{margin-bottom:6px}</style>
+  .page li{margin-bottom:6px}
+</style>
 <script>
   try { if (localStorage.getItem('hean-theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
 </script>
@@ -55,23 +36,27 @@
 <main class="page">
   <h1>关于本站</h1>
   <p class="kicker">ABOUT · HEAN</p>
-
   <h2>站点简介</h2>
-  <p>HEAN 禾安（hean.me）是一个个人站点，也是一块属于自己的网络空间。它从一个简单的聚合搜索页出发，逐步生长出游戏、兴趣、动态等分区，记录学习、体验与生活的碎片。</p>
-
+  <p>HEAN 禾安（hean.me）是一个个人站点，也是一块属于自己的网络空间。它从一个简单的聚合搜索页出发，逐步生长出游戏工具、兴趣聚合、每日资讯等分区，记录学习、体验与生活的碎片。本站追求极简、快速、无广告的浏览体验，所有功能均为个人兴趣驱动。</p>
   <h2>这里有什么</h2>
   <ul>
-    <li>聚合搜索：首页集成了 Bing、百度、Google 三个搜索引擎，一键切换、即搜即走。</li>
-    <li>每日一言：每次打开首页，都会从一言接口获取一句随机文字，给页面一点温度。</li>
-    <li>内容分区：cs2、光遇（天空）、导航、新闻等页面，按兴趣持续填充。</li>
-    <li>主题切换：顶栏提供暗黑 / 白色双主题，跟随心情切换浏览体验。</li>
+    <li><strong>聚合搜索</strong>：首页集成了 Bing、百度、Google、网易云音乐四个搜索引擎，一键切换、即搜即走。</li>
+    <li><strong>每日一言</strong>：首页展示中英双语励志文案，每次刷新获取新内容。</li>
+    <li><strong>趣味板块</strong>：每日塔罗牌、今日运势、MBTI 人格、每日一签，均为点击触发，娱乐性质。</li>
+    <li><strong>资讯聚合</strong>：GitHub 热榜、AI 科技新闻、每日热点新闻、人民日报金句，一站式浏览。</li>
+    <li><strong>游戏工具</strong>：光遇助手（老奶奶干饭时钟、今日任务、活动日历、季节倒计时等）、CS2 工具箱（箱子刷新倒计时）。</li>
+    <li><strong>生活工具</strong>：今日黄历、王者荣耀英雄随机、喜加一限免游戏追踪。</li>
+    <li><strong>主题切换</strong>：顶栏提供暗黑 / 白色双主题，记忆用户偏好，切换页面不闪白。</li>
   </ul>
-
+  <h2>光遇助手</h2>
+  <p>光遇助手是本站的特色功能页面，为《光·遇》玩家提供日常辅助工具。包括老奶奶干饭时间圆形时钟（实时显示当前时间与下次干饭倒计时）、每日任务、活动日历、今日黑暗侵蚀、今日大蜡地图、季节剩余时间、复刻先祖、官方公告等。本站为非官方个人工具，与 Thatgamecompany（TGC）无关联，游戏内信息请以官方为准。</p>
   <h2>技术说明</h2>
-  <p>本站为纯静态站点，使用原生 HTML / CSS / JavaScript 编写，不依赖任何框架与构建工具，资源（图标、背景图）统一存放于 assets/ 目录。所有页面可离线打开，部署简单，维护轻量。</p>
-
+  <p>本站为纯静态站点，使用原生 HTML / CSS / JavaScript 编写，不依赖任何前端框架与构建工具。公共顶栏、页脚、主题切换等组件统一封装在 components.js 中，修改一处全站生效。</p>
+  <p>部署方面，源代码托管于 GitHub，通过 Cloudflare Workers 提供全球加速访问。部分第三方 API 通过 Cloudflare Worker 代理以解决跨域问题。所有页面可离线打开，部署简单，维护轻量。</p>
+  <h2>隐私说明</h2>
+  <p>本站不收集任何用户个人数据，不使用 Cookie 追踪，不嵌入广告。主题偏好仅存储在浏览器本地（localStorage），不会上传至任何服务器。第三方 API 的调用由用户浏览器直接发起或通过本站代理转发，本站不记录请求内容。</p>
   <h2>联系与建议</h2>
-  <p>如果你对本站有任何建议，或希望与我交流，可以通过域名 hean.me 找到这里。每一份反馈都会被认真对待。</p>
+  <p>如果你对本站有任何建议，或发现某个功能失效、数据错误，欢迎通过域名 hean.me 找到这里。每一份反馈都会被认真对待，本站会持续迭代改进。</p>
 </main>
 <div id="site-footer"></div>
 <script src="/components.js"></script>
