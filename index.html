@@ -45,6 +45,8 @@
     transition:color .2s,border-color .2s,background .2s,transform .15s;
   }
   .hero-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover);transform:scale(1.03)}
+  .hero-btn-primary{background:#2563eb !important;border-color:#2563eb !important;color:#ffffff !important}
+  .hero-btn-primary:hover{background:#1d4ed8 !important;border-color:#1d4ed8 !important;color:#ffffff !important}
 </style>
 <script>
   try { if (localStorage.getItem('hean-theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
@@ -56,7 +58,7 @@
   <iframe class="hero-logo" src="/movelogo.html" frameborder="0" scrolling="no" title="HEAN logo"></iframe>
   <h1 class="hero-title">从这出发</h1>
   <div class="hero-btn-row">
-    <a class="hero-btn" href="/core/home.html">前往主页</a>
+    <a class="hero-btn hero-btn-primary" href="/core/home.html">前往主页</a>
     <a class="hero-btn" href="/core/nav.html">更多功能</a>
   </div>
 </main>
