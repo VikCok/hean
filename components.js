@@ -1,5 +1,5 @@
 /* ===== HEAN 站点公共组件 =====
- * 统一负责：顶栏（品牌 + 主页/导航图标按钮 + 主题开关）、页脚（免责声明|关于本站 + 版权）、主题切换。
+ * 统一负责：顶栏（品牌 logo + HEAN + 主页/导航图标按钮 + 主题开关）、页脚（免责声明|关于本站 + 版权）、主题切换。
  * 全站页面只需放置两个占位符并引入本文件：
  *   <div id="site-header"></div>   —— 顶栏渲染位置
  *   <div id="site-footer"></div>   —— 页脚渲染位置
@@ -37,18 +37,20 @@
   }
 
   /* ===== 本地 file:// 环境路径转换 =====
-   * 把页面中所有以 "/" 开头的绝对路径链接转换为相对路径，
-   * 使本地双击 HTML 文件也能正常跳转（线上环境不执行此转换）。 */
+   * 把页面中所有以 "/" 开头的绝对路径链接和图片转换为相对路径，
+   * 使本地双击 HTML 文件也能正常跳转和显示图片（线上环境不执行此转换）。 */
   function convertLocalPaths() {
     if (location.protocol !== "file:") return;
     var base = getRelativeBase();
-    /* 把所有以 "/" 开头的绝对路径链接转换为相对路径：
-     *   根目录页面(base=""):  /core/home.html → core/home.html
-     *   core目录页面(base="../"): /core/home.html → ../core/home.html */
-    document.querySelectorAll('a[href^="/"]').forEach(function (a) {
-      var href = a.getAttribute("href");
-      if (href && href.charAt(0) === "/") {
-        a.setAttribute("href", base + href.substring(1));
+    /* 把所有以 "/" 开头的绝对路径链接和图片转换为相对路径：
+     *   根目录页面(base=""):  /core/home.html → core/home.html, /assets/logo1.png → assets/logo1.png
+     *   core目录页面(base="../"): /core/home.html → ../core/home.html, /assets/logo1.png → ../assets/logo1.png */
+    document.querySelectorAll('a[href^="/"], img[src^="/"]').forEach(function (el) {
+      var isLink = el.tagName === "A";
+      var attr = isLink ? "href" : "src";
+      var val = el.getAttribute(attr);
+      if (val && val.charAt(0) === "/") {
+        el.setAttribute(attr, base + val.substring(1));
       }
     });
   }
@@ -64,9 +66,8 @@
     ".brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;letter-spacing:1px;text-decoration:none;color:var(--text)}",
     /* 品牌右侧页面副标签：与品牌相同字体与颜色 */
     ".brand .brand-tag{font-size:18px;font-weight:700;letter-spacing:1px;color:var(--text)}",
-    /* 品牌标识 HEAN.me：红色句号 + 白色微软雅黑小写me */
-    ".brand .brand-dot{color:#ff0000;font-weight:900}",
-    ".brand .brand-me{color:#ffffff;font-family:\"Microsoft YaHei\",\"微软雅黑\",sans-serif;font-weight:700;letter-spacing:0}",
+    /* 品牌 logo 图片：HEAN 文字左侧，固定尺寸保持比例 */
+    ".brand .brand-logo{width:28px;height:28px;object-fit:contain;flex:none}",
     /* 主页 / 导航页 胶囊按钮（带图标，无文字，悬停有 title 提示） */
     ".home-btn,.nav-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--btn-border);border-radius:999px;color:var(--muted);font-size:14px;text-decoration:none;transition:color .15s,border-color .15s}",
     ".home-btn:hover,.nav-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}",
@@ -92,13 +93,13 @@
     ".back-top svg{width:18px;height:18px}"
   ].join("\n");
 
-  /* ===== 顶栏 HTML：品牌 + 主页/导航页图标按钮 + 主题开关 ===== */
+  /* ===== 顶栏 HTML：品牌 logo + HEAN + 主页/导航页图标按钮 + 主题开关 ===== */
   function headerHtml() {
     var tag = window.SITE_TAG || "";
     return [
       '<header class="topbar">',
       '  <div class="left">',
-      '    <a class="brand" href="/core/home.html">HEAN<span class="brand-dot">.</span><span class="brand-me">me</span>' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
+      '    <a class="brand" href="/core/home.html"><img class="brand-logo" src="/assets/logo1.png" alt="HEAN">HEAN' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
       '    <a class="home-btn" href="/core/home.html" title="主页">',
       '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">',
       '        <path d="M3 11l9-8 9 8"/>',
