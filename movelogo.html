@@ -14,7 +14,6 @@ body{
   overflow:hidden;
 }
 .hean-stage{
-  --hr-speed:0.9s;
   position:absolute;
   top:50%;left:50%;
   transform:translate(-50%,-50%);
@@ -102,33 +101,6 @@ body.phase-magnet .hean-label{gap:0;transition:gap 2s cubic-bezier(.5,1.6,.5,1)}
 body.phase-magnet .hl-he,body.phase-magnet .hl-an{
   font-size:calc(var(--hr-font) * 0.95);
 }
-.anim-letter{
-  position:absolute;
-  top:50%;left:50%;
-  width:1.15em;height:1.15em;
-  display:flex;align-items:center;justify-content:center;
-  font-family:"Microsoft YaHei","微软雅黑","PingFang SC",system-ui,sans-serif;
-  font-size:var(--hr-font);
-  font-weight:900;
-  color:var(--hr-color);
-  line-height:1;
-  transform:translate(-50%,-50%);
-  transition:transform var(--hr-speed) cubic-bezier(.45,0,.15,1),font-size 0.5s ease;
-  user-select:none;
-  -webkit-user-select:none;
-  opacity:0;
-}
-.anim-letter.pos-0{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% - (var(--hr-size) * 0.20))); }
-.anim-letter.pos-1{ transform:translate(calc(-50% + (var(--hr-size) * 0.20)),calc(-50% - (var(--hr-size) * 0.20))); }
-.anim-letter.pos-2{ transform:translate(calc(-50% + (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); }
-.anim-letter.pos-3{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); }
-body.phase-loop .anim-letter{opacity:1;transition:opacity 0.5s ease}
-body.phase-loop .intro-quote,
-body.phase-loop .hean-popup,
-body.phase-loop .hean-label{opacity:0;transition:opacity 0.4s ease;pointer-events:none}
-body.phase-loop-done .intro-quote,
-body.phase-loop-done .hean-popup,
-body.phase-loop-done .hean-label{display:none}
 </style>
 </head>
 <body>
@@ -148,19 +120,12 @@ body.phase-loop-done .hean-label{display:none}
     <div class="hl-he">HE</div>
     <div class="hl-an">AN</div>
   </div>
-  <span class="anim-letter">H</span>
-  <span class="anim-letter">E</span>
-  <span class="anim-letter">A</span>
-  <span class="anim-letter">N</span>
 </div>
 
 <script>
 (function () {
   "use strict";
-  var STEP_DURATION     = 2000;
-  var ROTATE_INTERVAL   = 1900;
-  var HORIZONTAL_HOLD   = 5000;
-  var HORIZONTAL_OFFSETS = [-110, -37, 37, 110];
+  var STEP_DURATION = 2000;
 
   function syncTheme() {
     try {
@@ -171,38 +136,8 @@ body.phase-loop-done .hean-label{display:none}
     }
   }
 
-  var stage     = document.getElementById("hean-stage");
-  var letters   = stage.querySelectorAll(".anim-letter");
-  var positions = [0, 1, 3, 2];
-  var rotateCount  = 0;
-  var isAnimating  = false;
-  var rotateTimer  = null;
-  var introTimers  = [];
-
-  function applyPositions() {
-    for (var i = 0; i < letters.length; i++) {
-      letters[i].className = "anim-letter pos-" + positions[i];
-    }
-  }
-
-  function setHorizontal() {
-    for (var i = 0; i < letters.length; i++) {
-      var off = HORIZONTAL_OFFSETS[i];
-      if (off >= 0) {
-        letters[i].style.transform = 'translate(calc(-50% + ' + off + 'px),-50%)';
-      } else {
-        letters[i].style.transform = 'translate(calc(-50% - ' + Math.abs(off) + 'px),-50%)';
-      }
-    }
-  }
-
-  function clearHorizontal() {
-    for (var i = 0; i < letters.length; i++) {
-      letters[i].style.transform = '';
-    }
-    positions = [0, 1, 3, 2];
-    applyPositions();
-  }
+  var stage       = document.getElementById("hean-stage");
+  var introTimers = [];
 
   function calcFlyOffset() {
     var keeps = stage.querySelectorAll(".qc-keep");
@@ -227,36 +162,13 @@ body.phase-loop-done .hean-label{display:none}
     popup.style.transition = '';
   }
 
-  function rotateClockwise() {
-    if (isAnimating) return;
-    positions = positions.map(function (p) { return (p + 1) % 4; });
-    applyPositions();
-    rotateCount++;
-    if (rotateCount >= 4) {
-      if (rotateTimer) { clearInterval(rotateTimer); rotateTimer = null; }
-      setTimeout(function () {
-        resetAndRestart();
-      }, 900);
-    }
-  }
-
   function resetAndRestart() {
     introTimers.forEach(function (t) { clearTimeout(t); });
     introTimers = [];
-    if (rotateTimer) { clearInterval(rotateTimer); rotateTimer = null; }
     document.body.classList.remove(
       'phase-extract','phase-popup','phase-merge',
-      'phase-label','phase-replace','phase-magnet',
-      'phase-loop','phase-loop-done'
+      'phase-label','phase-replace','phase-magnet'
     );
-    for (var i = 0; i < letters.length; i++) {
-      letters[i].style.transform = '';
-      letters[i].style.fontSize = '';
-      letters[i].className = 'anim-letter';
-    }
-    positions = [0, 1, 3, 2];
-    rotateCount = 0;
-    isAnimating = false;
     var popup = document.getElementById("hean-popup");
     if (popup) {
       popup.style.transform = '';
@@ -266,25 +178,6 @@ body.phase-loop-done .hean-label{display:none}
       setPopupInitial();
       startIntro();
     }, 50);
-  }
-
-  function startLoop() {
-    document.body.classList.add('phase-loop');
-    setHorizontal();
-    introTimers.push(setTimeout(function () {
-      document.body.classList.add('phase-loop-done');
-    }, 500));
-    introTimers.push(setTimeout(function () {
-      for (var i = 0; i < letters.length; i++) {
-        letters[i].style.fontSize = 'calc(var(--hr-font) * 1.15)';
-      }
-      clearHorizontal();
-      introTimers.push(setTimeout(function () {
-        isAnimating = false;
-        rotateCount = 0;
-        rotateTimer = setInterval(rotateClockwise, ROTATE_INTERVAL);
-      }, 900));
-    }, HORIZONTAL_HOLD));
   }
 
   function startIntro() {
@@ -309,7 +202,7 @@ body.phase-loop-done .hean-label{display:none}
       document.body.classList.add('phase-magnet');
     }, 12000));
     introTimers.push(setTimeout(function () {
-      startLoop();
+      resetAndRestart();
     }, 14000));
   }
 
