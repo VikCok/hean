@@ -12,16 +12,14 @@
   "use strict";
 
   /* ===== 动态计算基础目录 =====
-   * 根据 components.js 自身的 src 推断当前页面相对于站点根目录的路径前缀。
-   * 根目录页面 → ""，core/ 子目录页面 → "../"。
-   * 所有内部链接（顶栏按钮、页脚链接、logo iframe）统一加此前缀，
-   * 确保子目录页面中的跳转不会指向错误的相对路径。 */
+   * 用 document.currentScript 直接获取当前 components.js 标签的 src，
+   * 去掉文件名后得到路径前缀。根目录页面 → ""，core/ 子目录页面 → "../"。
+   * 比遍历所有 script[src] 更可靠，避免匹配到其他含 "components.js" 字样的脚本。 */
   function getBasePath() {
-    var scripts = document.querySelectorAll("script[src]");
-    for (var i = 0; i < scripts.length; i++) {
-      if (scripts[i].src.indexOf("components.js") !== -1) {
-        return scripts[i].getAttribute("src").replace(/components\.js.*$/, "");
-      }
+    var script = document.currentScript;
+    if (script) {
+      var src = script.getAttribute("src") || "";
+      return src.replace(/components\.js.*$/, "");
     }
     return "";
   }
