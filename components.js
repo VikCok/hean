@@ -38,11 +38,12 @@
     });
   }
 
-  /* ===== 公共样式：顶栏 / 图标按钮 / 主题切换 / 菜单 / 侧边菜单 / 页脚 / 回到顶部 ===== */
+  /* ===== 公共样式：顶栏 / 图标按钮（蓝色填充白图标）/ 主题切换 / 菜单 / 侧边菜单 / 页脚 / 回到顶部 ===== */
   var COMMON_CSS = [
     "/* ===== 顶栏 ===== */",
     ".topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line)}",
     ".left{display:flex;align-items:center;gap:14px}",
+    /* 顶栏右侧容器：主题切换按钮 + 菜单按钮 并排 */
     ".right{display:flex;align-items:center;gap:10px}",
     ".brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;letter-spacing:1px;text-decoration:none;color:var(--text)}",
     ".brand .brand-tag{font-size:18px;font-weight:700;letter-spacing:1px;color:var(--text)}",
@@ -56,7 +57,7 @@
     ".nav-btn svg{width:16px;height:16px}",
     "html.dark .nav-btn{background:#1e1e1e;color:#60a5fa;border-color:#3b82f6}",
     "html.dark .nav-btn:hover{background:#262626;color:#93c5fd;border-color:#60a5fa}",
-    /* ===== 主题切换按钮（白色背景蓝边蓝图） ===== */
+    /* ===== 主题切换按钮（顶栏右上角，菜单按钮左边，白色背景蓝边蓝图） ===== */
     ".theme-toggle-btn{display:flex;align-items:center;justify-content:center;flex:none;width:34px;height:34px;border:1px solid #2563eb;border-radius:50%;background:#ffffff;color:#2563eb;cursor:pointer;transition:background .25s,border-color .25s,color .25s}",
     ".theme-toggle-btn:hover{background:#eff6ff;border-color:#1d4ed8;color:#1d4ed8}",
     ".theme-toggle-btn svg{width:18px;height:18px}",
@@ -66,16 +67,16 @@
     ".theme-toggle-btn .theme-icon-moon{display:none}",
     "html.dark .theme-toggle-btn .theme-icon-sun{display:none}",
     "html.dark .theme-toggle-btn .theme-icon-moon{display:block}",
-    /* ===== 菜单按钮（白色背景蓝边蓝图） ===== */
+    /* ===== 菜单按钮（顶栏右上角，白色背景蓝边蓝图） ===== */
     ".menu-btn{display:flex;align-items:center;justify-content:center;flex:none;width:34px;height:34px;border:1px solid #2563eb;border-radius:50%;background:#ffffff;color:#2563eb;cursor:pointer;transition:background .25s,border-color .25s,color .25s}",
     ".menu-btn:hover{background:#eff6ff;border-color:#1d4ed8;color:#1d4ed8}",
     ".menu-btn svg{width:18px;height:18px}",
     "html.dark .menu-btn{background:#1e1e1e;color:#60a5fa;border-color:#3b82f6}",
     "html.dark .menu-btn:hover{background:#262626;color:#93c5fd;border-color:#60a5fa}",
-    /* ===== 菜单遮罩 ===== */
+    /* ===== 菜单遮罩（点击关闭菜单） ===== */
     ".menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;z-index:1000}",
     ".menu-overlay.show{opacity:1;visibility:visible}",
-    /* ===== 侧边抽屉菜单 ===== */
+    /* ===== 侧边抽屉菜单（从右侧滑出） ===== */
     ".side-menu{position:fixed;top:0;right:0;width:300px;max-width:85vw;height:100vh;background:var(--panel);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .3s ease;z-index:1001;display:flex;flex-direction:column;overflow-y:auto}",
     ".side-menu.show{transform:translateX(0)}",
     ".menu-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}",
@@ -84,6 +85,7 @@
     ".menu-close:hover{color:var(--btn-hover);background:var(--bg)}",
     ".menu-section{padding:12px 0}",
     ".menu-section-title{padding:8px 20px;font-size:12px;color:var(--sub);text-transform:uppercase;letter-spacing:1px}",
+    /* 主题切换按钮（菜单内，太阳/月亮图标 + 文字） */
     ".menu-theme-btn{display:flex;align-items:center;gap:12px;width:100%;padding:12px 20px;border:none;background:transparent;color:var(--text);font-size:15px;cursor:pointer;text-align:left;transition:background .15s}",
     ".menu-theme-btn:hover{background:var(--bg)}",
     ".menu-theme-btn .theme-icon{width:20px;height:20px;flex:none}",
@@ -91,6 +93,7 @@
     ".menu-theme-btn .theme-icon-moon{display:none}",
     "html.dark .menu-theme-btn .theme-icon-sun{display:none}",
     "html.dark .menu-theme-btn .theme-icon-moon{display:block}",
+    /* 菜单导航链接 */
     ".menu-link{display:block;padding:12px 20px;color:var(--muted);font-size:15px;text-decoration:none;transition:color .15s,background .15s}",
     ".menu-link:hover{color:var(--btn-hover);background:var(--bg)}",
     /* ===== 页脚 ===== */
@@ -106,7 +109,7 @@
     ".back-top svg{width:18px;height:18px}"
   ].join("\n");
 
-  /* ===== 顶栏 HTML ===== */
+  /* ===== 顶栏 HTML：品牌 + 主页/导航图标按钮 + 主题切换 + 菜单按钮 ===== */
   function headerHtml() {
     var brand = window.SITE_BRAND || "HEAN";
     var tag = window.SITE_TAG || "";
@@ -114,7 +117,7 @@
       '<header class="topbar">',
       '  <div class="left">',
       '    <a class="brand" href="/index.html"><img class="brand-logo" src="/assets/logo1.png" alt="' + brand + '">' + brand + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
-      '    <a class="home-btn" href="/core/home.html" title="主页">首页</a>',
+      '    <a class="home-btn" href="/index.html" title="主页">首页</a>',
       '    <a class="nav-btn" href="/core/nav.html" title="导航页">',
       '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',
       '        <circle cx="12" cy="12" r="10"/>',
@@ -122,6 +125,7 @@
       "      </svg>",
       "    </a>",
       "  </div>",
+      /* 右侧：主题切换按钮（左） + 菜单按钮（右） */
       '  <div class="right">',
       '    <button class="theme-toggle-btn" id="theme-toggle-btn" type="button" aria-label="切换日间/夜间模式">',
       '      <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">',
@@ -141,12 +145,15 @@
       "    </button>",
       "  </div>",
       "</header>",
+      /* 菜单遮罩（半透明黑色背景，点击关闭） */
       '<div class="menu-overlay" id="menu-overlay"></div>',
+      /* 侧边抽屉菜单 */
       '<aside class="side-menu" id="side-menu" aria-label="站点菜单">',
       '  <div class="menu-header">',
       '    <span>菜单</span>',
       '    <button class="menu-close" id="menu-close" type="button" aria-label="关闭菜单">&times;</button>',
       "  </div>",
+      /* 外观分区：主题切换 */
       '  <div class="menu-section">',
       '    <div class="menu-section-title">外观</div>',
       '    <button class="menu-theme-btn" id="menu-theme-btn" type="button">',
@@ -160,10 +167,11 @@
       '      <span id="theme-label">切换深色模式</span>',
       "    </button>",
       "  </div>",
+      /* 快捷导航分区 */
       '  <div class="menu-section">',
       '    <div class="menu-section-title">快捷导航</div>',
       '    <a class="menu-link" href="/index.html">首页</a>',
-      '    <a class="menu-link" href="/core/home.html">主页</a>',
+      '    <a class="menu-link" href="/home.html">主页</a>',
       '    <a class="menu-link" href="/core/nav.html">导航页</a>',
       '    <a class="menu-link" href="/sky.html">光遇</a>',
       '    <a class="menu-link" href="/core/cs2.html">CS2</a>',
@@ -175,7 +183,7 @@
     ].join("\n");
   }
 
-  /* ===== 页脚 HTML ===== */
+  /* ===== 页脚 HTML：免责声明 / 关于本站 + 版权 ===== */
   function footerHtml() {
     return [
       "<footer>",
@@ -185,12 +193,14 @@
     ].join("\n");
   }
 
+  /* 注入公共样式到 <head> 末尾 */
   function injectCss() {
     var style = document.createElement("style");
     style.textContent = COMMON_CSS;
     document.head.appendChild(style);
   }
 
+  /* 渲染顶栏与页脚（替换占位 div），随后初始化主题、菜单、回到顶部按钮与本地路径转换 */
   function mount() {
     injectCss();
     var h = document.getElementById("site-header");
@@ -203,13 +213,16 @@
     convertLocalPaths();
   }
 
-  /* ===== 主题切换 ===== */
+  /* ===== 主题切换：同时绑定顶栏主题按钮和菜单内主题按钮 =====
+   * localStorage key=hean-theme，操作 documentElement（html 元素）。
+   * 默认黑色模式（防闪白脚本已提前设置），点击切换白色并记忆。 */
   function initTheme() {
     var topBtn = document.getElementById("theme-toggle-btn");
     var menuBtn = document.getElementById("menu-theme-btn");
     var label = document.getElementById("theme-label");
     var KEY = "hean-theme";
 
+    /* 同步当前主题状态到菜单内按钮文字 */
     function updateLabel() {
       if (label) {
         label.textContent = document.documentElement.classList.contains("dark") ? "切换浅色模式" : "切换深色模式";
@@ -217,6 +230,7 @@
     }
     updateLabel();
 
+    /* 切换主题的核心逻辑：toggle dark 类 + 写入 localStorage + 更新文字 */
     function toggleTheme() {
       var dark = document.documentElement.classList.toggle("dark");
       try {
@@ -225,11 +239,13 @@
       updateLabel();
     }
 
+    /* 顶栏主题切换按钮 */
     if (topBtn) topBtn.addEventListener("click", toggleTheme);
+    /* 菜单内主题切换按钮 */
     if (menuBtn) menuBtn.addEventListener("click", toggleTheme);
   }
 
-  /* ===== 侧边抽屉菜单 ===== */
+  /* ===== 侧边抽屉菜单：打开/关闭逻辑 ===== */
   function initMenu() {
     var menuBtn = document.getElementById("menu-btn");
     var sideMenu = document.getElementById("side-menu");
@@ -240,7 +256,7 @@
     function openMenu() {
       sideMenu.classList.add("show");
       overlay.classList.add("show");
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden"; /* 禁止背景滚动 */
     }
     function closeMenu() {
       sideMenu.classList.remove("show");
@@ -248,18 +264,23 @@
       document.body.style.overflow = "";
     }
 
+    /* 顶栏菜单按钮打开 */
     menuBtn.addEventListener("click", openMenu);
+    /* 关闭按钮关闭 */
     if (closeBtn) closeBtn.addEventListener("click", closeMenu);
+    /* 点击遮罩关闭 */
     overlay.addEventListener("click", closeMenu);
+    /* 点击菜单内导航链接后自动关闭 */
     sideMenu.querySelectorAll(".menu-link").forEach(function (link) {
       link.addEventListener("click", closeMenu);
     });
+    /* ESC 键关闭 */
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") closeMenu();
     });
   }
 
-  /* ===== 回到顶部按钮 ===== */
+  /* ===== 回到顶部按钮：滚动进度超过 70% 显示，点击平滑回顶 ===== */
   function initBackTop() {
     var btn = document.createElement("button");
     btn.type = "button";
@@ -284,6 +305,7 @@
     });
   }
 
+  /* 脚本位于 </body> 前：DOM 已就绪，直接挂载（同时兼容延迟加载场景） */
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mount);
   } else {
