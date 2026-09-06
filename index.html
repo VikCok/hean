@@ -181,9 +181,9 @@
       <div class="section-content" id="calendar-content"><span class="loading">加载中...</span></div>
     </div>
     <div class="section-card">
-      <div class="section-title"><span class="icon">👑</span>王者荣耀</div>
-      <div class="section-content" id="wzry-content"><span style="color:var(--sub)">点击下方按钮随机查看王者荣耀英雄</span></div>
-      <button class="section-btn" onclick="loadWzry()">点击查看英雄</button>
+      <div class="section-title"><span class="icon">👑</span>王者荣耀赛季</div>
+      <div class="section-content" id="wzry-content"><span style="color:var(--sub)">点击查看当前赛季与英雄平衡调整</span></div>
+      <button class="section-btn" onclick="loadWzry()">查看赛季信息</button>
     </div>
     <div class="section-card">
       <div class="section-title"><span class="icon">🐙</span>GitHub 热榜</div>
@@ -204,15 +204,15 @@
       <button class="section-btn" onclick="loadDivination()">求签</button>
     </div>
     <div class="section-card">
-      <div class="section-title"><span class="icon">📰</span>人民日报 · 金句</div>
+      <div class="section-title"><span class="icon">📰</span>人民日报金句</div>
       <div class="section-content" id="rmrb-content"><span class="loading">加载中...</span></div>
     </div>
     <div class="section-card">
-      <div class="section-title"><span class="icon">🤖</span>AI 科技新闻</div>
+      <div class="section-title"><span class="icon">🤖</span>科技新闻 · 36氪</div>
       <div class="section-content" id="ainews-content"><span class="loading">加载中...</span></div>
     </div>
     <div class="section-card wide">
-      <div class="section-title"><span class="icon">📢</span>每日热点新闻</div>
+      <div class="section-title"><span class="icon">📢</span>知乎热榜</div>
       <div class="section-content" id="dailynews-content"><span class="loading">加载中...</span></div>
     </div>
   </div>
@@ -313,17 +313,44 @@
   function todayKey() { var d = new Date(); return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(); }
   function seededRandom(seed) { var x = Math.sin(seed) * 10000; return x - Math.floor(x); }
 
+  var TAROT_CARDS = [
+    {name:"愚者",en:"The Fool",up:"新的开始、冒险、自由、天真、无限可能",rev:"鲁莽、冒险、冲动、不负责任、缺乏计划"},
+    {name:"魔术师",en:"The Magician",up:"创造力、技能、意志力、沟通、行动",rev:"欺骗、技能不足、操纵、缺乏方向"},
+    {name:"女祭司",en:"The High Priestess",up:"直觉、潜意识、智慧、神秘、内在知识",rev:"表面、缺乏判断力、秘密被揭露"},
+    {name:"皇后",en:"The Empress",up:"丰饶、母爱、自然、创造力、感官享受",rev:"依赖、创造力受阻、过度保护"},
+    {name:"皇帝",en:"The Emperor",up:"权威、结构、控制、稳定、领导力",rev:"专制、僵化、缺乏纪律、控制欲过强"},
+    {name:"教皇",en:"The Hierophant",up:"传统、信仰、教育、精神指引、制度",rev:"反叛、打破传统、自由思想、质疑权威"},
+    {name:"恋人",en:"The Lovers",up:"爱情、和谐、关系、选择、价值观",rev:"失衡、不和谐、错误选择、关系破裂"},
+    {name:"战车",en:"The Chariot",up:"胜利、意志力、决心、控制、前进",rev:"失控、缺乏方向、攻击性、失败"},
+    {name:"力量",en:"Strength",up:"勇气、耐心、内在力量、同情心、自控",rev:"自我怀疑、情绪失控、缺乏自信"},
+    {name:"隐士",en:"The Hermit",up:"内省、独处、智慧、寻求真理、指导",rev:"孤立、孤独、退缩、拒绝帮助"},
+    {name:"命运之轮",en:"Wheel of Fortune",up:"命运、转折、机遇、循环、好运",rev:"厄运、逆境、失控、负面循环"},
+    {name:"正义",en:"Justice",up:"公正、真理、因果、平衡、责任",rev:"不公、偏见、逃避责任、不诚实"},
+    {name:"倒吊人",en:"The Hanged Man",up:"牺牲、新视角、暂停、放下、顿悟",rev:"抗拒改变、徒劳、自私、停滞"},
+    {name:"死神",en:"Death",up:"结束、转变、重生、放下、新开始",rev:"抗拒改变、停滞、恐惧结束、无法放下"},
+    {name:"节制",en:"Temperance",up:"平衡、节制、耐心、和谐、调和",rev:"失衡、过度、缺乏耐心、冲突"},
+    {name:"恶魔",en:"The Devil",up:"束缚、欲望、物质主义、诱惑、阴影面",rev:"解脱、打破束缚、觉醒、自由"},
+    {name:"塔",en:"The Tower",up:"突变、毁灭、启示、混乱、突破",rev:"避免灾难、恐惧改变、内在动荡"},
+    {name:"星星",en:"The Star",up:"希望、灵感、宁静、信念、治愈",rev:"绝望、失去信心、疲惫、缺乏信念"},
+    {name:"月亮",en:"The Moon",up:"幻觉、恐惧、潜意识、直觉、迷茫",rev:"真相大白、克服恐惧、清晰、释放"},
+    {name:"太阳",en:"The Sun",up:"快乐、成功、活力、积极、光明",rev:"暂时低落、过度乐观、延迟成功"},
+    {name:"审判",en:"Judgement",up:"觉醒、重生、召唤、宽恕、新开始",rev:"自我怀疑、拒绝召唤、逃避过去"},
+    {name:"世界",en:"The World",up:"完成、成就、圆满、整合、旅行",rev:"未完成、缺乏闭合、延迟、停滞"}
+  ];
   window.loadTarot = function() {
     setContent("tarot-content", '<span class="loading">正在抽牌...</span>');
-    fetch("https://tarotapi.dev/api/v1/cards/random?n=1")
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data && data.cards && data.cards[0]) {
-          var c = data.cards[0];
-          setContent("tarot-content", '<div class="tarot-card"><div class="tarot-name">' + (c.name || "未知") + '</div><div class="tarot-meaning">' + (c.meaning_up || c.desc || "暂无释义") + '</div></div>');
-        } else { setContent("tarot-content", '<span class="error">抽牌失败，请重试</span>'); }
-      })
-      .catch(function() { setContent("tarot-content", '<span class="error">塔罗牌 API 暂时不可用</span>'); });
+    setTimeout(function() {
+      var idx = Math.floor(Math.random() * TAROT_CARDS.length);
+      var isUpright = Math.random() > 0.5;
+      var c = TAROT_CARDS[idx];
+      var meaning = isUpright ? c.up : c.rev;
+      var position = isUpright ? "正位" : "逆位";
+      var posColor = isUpright ? "#22c55e" : "#ef4444";
+      setContent("tarot-content", '<div class="tarot-card">' +
+        '<div class="tarot-name">' + c.name + ' <span style="font-size:12px;color:var(--sub)">' + c.en + '</span></div>' +
+        '<div style="font-size:13px;font-weight:600;color:' + posColor + ';margin-top:6px">' + position + '</div>' +
+        '<div class="tarot-meaning">' + meaning + '</div></div>');
+    }, 500);
   };
 
   var ZODIACS = [
@@ -380,22 +407,40 @@
       '<div style="margin-top:4px;font-size:13px"><span style="color:#ef4444;font-weight:600">忌：</span><span style="color:var(--muted)">' + ji.join("、") + '</span></div>');
   }
 
+  var WZRY_SEASON = {name:"S45 赛季",title:"时空之影",start:"2026-08-21",end:"2026-12-15",note:"赛季持续约4个月"};
+  var WZRY_BALANCE = [
+    {hero:"影",type:"削弱",detail:"二技能飞刃攻击间隔延长，前期伤害速度变慢；后期攻速叠加后二技能释放速度加快"},
+    {hero:"刘备",type:"优化",detail:"修复开启大招会打断一技能双喷强普的问题，整体体验优化"},
+    {hero:"少司缘",type:"削弱",detail:"技能数值调整，降低前期压制力"},
+    {hero:"孙尚香",type:"增强",detail:"前期伤害提升，对线能力加强"},
+    {hero:"亚瑟",type:"增强",detail:"技能冷却缩短，持续作战能力提升"}
+  ];
   window.loadWzry = function() {
-    setContent("wzry-content", '<span class="loading">加载英雄数据...</span>');
-    fetch("https://pvp.qq.com/web201605/js/herolist.json")
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data && data.length) {
-          var idx = Math.floor(Math.random() * data.length);
-          var hero = data[idx];
-          var skinName = hero.skin_name ? hero.skin_name.split("|")[0] : "默认皮肤";
-          setContent("wzry-content", '<div class="hero-item">' +
-            '<img class="hero-avatar" src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/' + hero.ename + '/' + hero.ename + '.jpg" alt="' + hero.cname + '" onerror="this.style.background=\'var(--line)\';this.src=\'\'">' +
-            '<div><div class="hero-name">' + hero.cname + '</div><div class="hero-title">' + (hero.title || "") + ' · ' + skinName + '</div></div></div>' +
-            '<div style="font-size:12px;color:var(--sub);margin-top:4px">数据来源：王者荣耀官网</div>');
-        } else { setContent("wzry-content", '<span class="error">英雄数据加载失败</span>'); }
-      })
-      .catch(function() { setContent("wzry-content", '<span class="error">王者荣耀 API 暂时不可用</span>'); });
+    setContent("wzry-content", '<span class="loading">加载中...</span>');
+    var now = new Date();
+    var start = new Date(WZRY_SEASON.start);
+    var end = new Date(WZRY_SEASON.end);
+    var total = end - start;
+    var passed = now - start;
+    var percent = Math.min(100, Math.max(0, (passed / total) * 100));
+    var daysLeft = Math.ceil((end - now) / 86400000);
+    var html = '<div style="margin-bottom:12px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">' +
+      '<span style="font-size:15px;font-weight:700;color:var(--text)">' + WZRY_SEASON.name + ' · ' + WZRY_SEASON.title + '</span>' +
+      '<span style="font-size:12px;color:var(--sub)">剩余 ' + daysLeft + ' 天</span></div>' +
+      '<div style="width:100%;height:6px;background:var(--line);border-radius:3px;overflow:hidden">' +
+      '<div style="width:' + percent.toFixed(1) + '%;height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:3px"></div></div>' +
+      '<div style="font-size:11px;color:var(--sub);margin-top:4px">' + WZRY_SEASON.start + ' ~ ' + WZRY_SEASON.end + ' · ' + WZRY_SEASON.note + '</div></div>' +
+      '<div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px">近期英雄平衡调整</div>';
+    WZRY_BALANCE.forEach(function(b) {
+      var color = b.type === "增强" ? "#22c55e" : (b.type === "削弱" ? "#ef4444" : "#f59e0b");
+      html += '<div style="padding:6px 0;border-bottom:1px solid var(--line);font-size:13px">' +
+        '<span style="font-weight:600;color:var(--text)">' + b.hero + '</span> ' +
+        '<span style="color:' + color + ';font-weight:600;margin:0 4px">[' + b.type + ']</span>' +
+        '<span style="color:var(--muted);font-size:12px">' + b.detail + '</span></div>';
+    });
+    html += '<div style="font-size:11px;color:var(--sub);margin-top:6px">数据来源：王者荣耀官网公告 · 仅供参考</div>';
+    setContent("wzry-content", html);
   };
 
   function loadGithub() {
@@ -409,9 +454,11 @@
         if (data && data.items && data.items.length) {
           var html = '<ul class="news-list">';
           data.items.forEach(function(repo, i) {
-            html += '<li><span class="rank ' + (i<3?"":"other") + '">' + (i+1) + '</span>' +
-              '<a href="' + repo.html_url + '" target="_blank" rel="noopener" title="' + (repo.description || repo.full_name) + '">' + repo.full_name + '</a>' +
-              '<span class="meta">⭐' + (repo.stargazers_count > 1000 ? (repo.stargazers_count/1000).toFixed(1) + 'k' : repo.stargazers_count) + '</span></li>';
+            var desc = repo.description ? repo.description.substring(0, 60) + (repo.description.length > 60 ? "..." : "") : "暂无介绍";
+            html += '<li style="flex-wrap:wrap"><span class="rank ' + (i<3?"":"other") + '">' + (i+1) + '</span>' +
+              '<a href="' + repo.html_url + '" target="_blank" rel="noopener" style="flex:1;min-width:0" title="' + (repo.description || repo.full_name) + '">' + repo.full_name + '</a>' +
+              '<span class="meta">⭐' + (repo.stargazers_count > 1000 ? (repo.stargazers_count/1000).toFixed(1) + 'k' : repo.stargazers_count) + '</span>' +
+              '<span style="width:100%;padding-left:28px;font-size:12px;color:var(--sub);margin-top:-4px">' + desc + '</span></li>';
           });
           html += '</ul>';
           setContent("github-content", html);
@@ -480,77 +527,64 @@
     setContent("divination-content", '<div class="divination-result"><div class="divination-level">' + d.level + '</div><div class="divination-poem">' + d.poem + '</div><div class="divination-meaning">' + d.meaning + '</div></div>');
   };
 
+  var RMRB_QUOTES = [
+    "岁月因青春慨然以赴而更加静好，世间因少年挺身向前而更加瑰丽。",
+    "奋斗是青春最亮丽的底色，行动是青年最有效的磨砺。",
+    "路虽远，行则将至；事虽难，做则必成。",
+    "青年一代有理想、有本领、有担当，国家就有前途，民族就有希望。",
+    "人生能有几回搏，拼搏是值得的。不经一番寒彻骨，怎得梅花扑鼻香？",
+    "星光不问赶路人，时光不负有心人。",
+    "只有荒凉的沙漠，没有荒凉的人生。",
+    "平凡铸就伟大，英雄来自人民。",
+    "征途漫漫，惟有奋斗。我们通过奋斗，披荆斩棘，走过了万水千山。",
+    "梦想照亮前方，奋进正当其时。"
+  ];
   function loadRmrb() {
     setContent("rmrb-content", '<span class="loading">加载中...</span>');
-    fetch("https://api.qhsou.com/api/rmrb.php")
-      .then(function(r) { return r.text(); })
-      .then(function(text) {
-        if (text && text.length > 10) {
-          setContent("rmrb-content", '<div class="rmrb-quote">' + text.substring(0, 200) + '</div><div class="rmrb-source">—— 人民日报</div>');
-        } else { setContent("rmrb-content", '<span class="error">金句加载失败</span>'); }
-      })
-      .catch(function() {
-        var quotes = ["岁月因青春慨然以赴而更加静好，世间因少年挺身向前而更加瑰丽。","奋斗是青春最亮丽的底色，行动是青年最有效的磨砺。","路虽远，行则将至；事虽难，做则必成。","青年一代有理想、有本领、有担当，国家就有前途，民族就有希望。"];
-        var q = quotes[Math.floor(Math.random() * quotes.length)];
-        setContent("rmrb-content", '<div class="rmrb-quote">' + q + '</div><div class="rmrb-source">—— 人民日报（备用）</div>');
-      });
+    var q = RMRB_QUOTES[Math.floor(Math.random() * RMRB_QUOTES.length)];
+    setContent("rmrb-content", '<div class="rmrb-quote">' + q + '</div><div class="rmrb-source">—— 人民日报金句</div>');
   }
 
   function loadAiNews() {
     setContent("ainews-content", '<span class="loading">加载中...</span>');
-    fetch("https://hacker-news.firebaseio.com/v0/topstories.json")
+    fetch("https://api-hot.imsyy.top/36kr")
       .then(function(r) { return r.json(); })
-      .then(function(ids) {
-        var aiKeywords = ["ai","gpt","llm","model","openai","anthropic","claude","gemini","deepmind","machine learning","neural","transformer","diffusion","stable diffusion","midjourney","copilot","agent","rag","embedding"];
-        var promises = ids.slice(0, 30).map(function(id) {
-          return fetch("https://hacker-news.firebaseio.com/v0/item/" + id + ".json").then(function(r) { return r.json(); });
-        });
-        return Promise.all(promises).then(function(items) {
-          var aiItems = items.filter(function(item) {
-            if (!item || !item.title) return false;
-            var title = item.title.toLowerCase();
-            return aiKeywords.some(function(kw) { return title.indexOf(kw) !== -1; });
-          });
-          if (aiItems.length === 0) aiItems = items.slice(0, 5);
+      .then(function(data) {
+        if (data && data.data && data.data.length) {
           var html = '<ul class="news-list">';
-          aiItems.slice(0, 5).forEach(function(item, i) {
-            var url = item.url || ("https://news.ycombinator.com/item?id=" + item.id);
+          data.data.slice(0, 5).forEach(function(item, i) {
+            var url = item.url || item.mobileUrl || "#";
+            var hot = item.hot || "";
             html += '<li><span class="rank ' + (i<3?"":"other") + '">' + (i+1) + '</span>' +
-              '<a href="' + url + '" target="_blank" rel="noopener" title="' + item.title + '">' + item.title + '</a>' +
-              '<span class="meta">💬' + (item.descendants || 0) + '</span></li>';
+              '<a href="' + url + '" target="_blank" rel="noopener" title="' + (item.title || "") + '">' + (item.title || "无标题") + '</a>' +
+              (hot ? '<span class="meta">' + hot + '</span>' : '') + '</li>';
           });
           html += '</ul>';
           setContent("ainews-content", html);
-        });
+        } else { setContent("ainews-content", '<span class="error">科技新闻加载失败</span>'); }
       })
-      .catch(function() { setContent("ainews-content", '<span class="error">AI 新闻加载失败</span>'); });
+      .catch(function() { setContent("ainews-content", '<span class="error">科技新闻 API 暂时不可用</span>'); });
   }
 
   function loadDailyNews() {
     setContent("dailynews-content", '<span class="loading">加载中...</span>');
-    fetch("https://hacker-news.firebaseio.com/v0/topstories.json")
+    fetch("https://api-hot.imsyy.top/zhihu")
       .then(function(r) { return r.json(); })
-      .then(function(ids) {
-        var promises = ids.slice(0, 10).map(function(id) {
-          return fetch("https://hacker-news.firebaseio.com/v0/item/" + id + ".json").then(function(r) { return r.json(); });
-        });
-        return Promise.all(promises);
+      .then(function(data) {
+        if (data && data.data && data.data.length) {
+          var html = '<ul class="news-list">';
+          data.data.slice(0, 10).forEach(function(item, i) {
+            var url = item.url || item.mobileUrl || "#";
+            var hot = item.hot || "";
+            html += '<li><span class="rank ' + (i<3?"":"other") + '">' + (i+1) + '</span>' +
+              '<a href="' + url + '" target="_blank" rel="noopener" title="' + (item.title || "") + '">' + (item.title || "无标题") + '</a>' +
+              (hot ? '<span class="meta">' + hot + '</span>' : '') + '</li>';
+          });
+          html += '</ul>';
+          setContent("dailynews-content", html);
+        } else { setContent("dailynews-content", '<span class="error">热点新闻加载失败</span>'); }
       })
-      .then(function(items) {
-        var html = '<ul class="news-list">';
-        items.forEach(function(item, i) {
-          if (!item || !item.title) return;
-          var url = item.url || ("https://news.ycombinator.com/item?id=" + item.id);
-          var domain = "";
-          try { if (item.url) domain = new URL(item.url).hostname.replace("www.",""); } catch(e) {}
-          html += '<li><span class="rank ' + (i<3?"":"other") + '">' + (i+1) + '</span>' +
-            '<a href="' + url + '" target="_blank" rel="noopener" title="' + item.title + '">' + item.title + '</a>' +
-            '<span class="meta">' + (domain ? domain + ' · ' : '') + '⭐' + (item.score || 0) + '</span></li>';
-        });
-        html += '</ul>';
-        setContent("dailynews-content", html);
-      })
-      .catch(function() { setContent("dailynews-content", '<span class="error">热点新闻加载失败</span>'); });
+      .catch(function() { setContent("dailynews-content", '<span class="error">热点新闻 API 暂时不可用</span>'); });
   }
 
   loadCalendar();
