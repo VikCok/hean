@@ -108,13 +108,14 @@ body.phase-replace .hp-he,body.phase-replace .hp-an{opacity:0;transition:opacity
 body.phase-replace .hl-he,body.phase-replace .hl-an{
   transform:translateY(-1.6em) scale(1);
 }
-body.phase-replace .hean-label{gap:0;transition:gap 0.96s cubic-bezier(.5,1.6,.5,1)}
+body.phase-replace .hean-label{gap:0;transition:gap 1.5s linear}
 body.phase-magnet .hl-he,body.phase-magnet .hl-an{
   font-size:calc(var(--hr-font) * 1.0);
   transform:translateY(0) scale(1);
   transition:transform 0.54s linear, font-size 0.54s linear;
 }
-body.phase-fadeout .hean-stage{opacity:0;transition:opacity 0.3s ease}
+body.phase-fadeout .hean-stage{opacity:0;transition:opacity 2s ease}
+body.phase-fadein .hean-stage{opacity:1;transition:opacity 1s ease}
 </style>
 </head>
 <body>
@@ -181,12 +182,12 @@ body.phase-fadeout .hean-stage{opacity:0;transition:opacity 0.3s ease}
     introTimers = [];
     document.body.classList.remove(
       'phase-extract','phase-popup','phase-merge',
-      'phase-label','phase-replace','phase-magnet','phase-fadeout'
+      'phase-label','phase-replace','phase-magnet','phase-fadeout','phase-fadein'
     );
     var stageEl = document.getElementById("hean-stage");
     if (stageEl) {
       stageEl.style.transition = 'none';
-      stageEl.style.opacity = '1';
+      stageEl.style.opacity = '0';
       void stageEl.offsetWidth;
       stageEl.style.transition = '';
       stageEl.style.opacity = '';
@@ -198,7 +199,11 @@ body.phase-fadeout .hean-stage{opacity:0;transition:opacity 0.3s ease}
     }
     setTimeout(function () {
       setPopupInitial();
+      document.body.classList.add('phase-fadein');
       startIntro();
+      introTimers.push(setTimeout(function () {
+        document.body.classList.remove('phase-fadein');
+      }, 1000));
     }, 50);
   }
 
@@ -222,13 +227,13 @@ body.phase-fadeout .hean-stage{opacity:0;transition:opacity 0.3s ease}
     }, 10000));
     introTimers.push(setTimeout(function () {
       document.body.classList.add('phase-magnet');
-    }, 12000));
+    }, 11500));
     introTimers.push(setTimeout(function () {
       document.body.classList.add('phase-fadeout');
-    }, 15540));
+    }, 15040));
     introTimers.push(setTimeout(function () {
       resetAndRestart();
-    }, 15840));
+    }, 18040));
   }
 
   function fitSize() {
