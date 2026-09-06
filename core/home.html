@@ -7,32 +7,76 @@
 <link rel="icon" href="/assets/favicon.ico">
 <style>
   :root{
-    --bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;
-    --btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;--active-bg:#333333;
-    --active-text:#ffffff;--input-border:#333333;--clock-face:#f6f6f6;
+    --bg:#ffffff;
+    --text:#333333;
+    --sub:#888888;
+    --muted:#555555;
+    --line:#e5e5e5;
+    --btn-border:#cccccc;
+    --btn-hover:#111111;
+    --panel:#ffffff;
+    --active-bg:#2563eb;
+    --active-text:#ffffff;
+    --input-border:#2563eb;
+    --clock-face:#f6f6f6;
   }
   html.dark{
-    --bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;--line:#2e2e2e;
-    --btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;--active-bg:#e8e8e8;
-    --active-text:#121212;--input-border:#666666;--clock-face:#262626;
+    --bg:#121212;
+    --text:#e8e8e8;
+    --sub:#9a9a9a;
+    --muted:#aaaaaa;
+    --line:#2e2e2e;
+    --btn-border:#3f3f3f;
+    --btn-hover:#ffffff;
+    --panel:#1e1e1e;
+    --active-bg:#2563eb;
+    --active-text:#ffffff;
+    --input-border:#2563eb;
+    --clock-face:#262626;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
+  body{
+    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;
+    background:var(--bg);color:var(--text);
+    transition:background .2s,color .2s;
+  }
   main{flex:1;display:flex;flex-direction:column;align-items:center;padding:44px 20px 36px}
-  .main-title{font-size:clamp(40px,8vw,72px);font-weight:800;letter-spacing:6px;text-align:center;line-height:1.2}
-  .sub-title{margin-top:10px;margin-bottom:30px;text-align:center;font-size:15px;color:var(--sub);letter-spacing:2px}
   .search-box{width:100%;max-width:960px}
-  .divider{width:100%;max-width:960px;height:1px;background:var(--line);margin:26px 0}
-  .quick-links{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:960px;margin-bottom:6px}
-  .quick-card{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:20px 24px;border:1px solid var(--btn-border);border-radius:12px;color:var(--text);text-decoration:none;transition:border-color .15s,background .15s}
+  .divider{
+    width:100%;max-width:960px;height:1px;background:var(--line);
+    margin:26px 0;
+  }
+  .quick-links{
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;
+    width:100%;max-width:960px;margin-bottom:6px;
+  }
+  .quick-card{
+    display:flex;flex-direction:column;justify-content:center;gap:8px;
+    padding:20px 24px;border:1px solid var(--btn-border);border-radius:12px;
+    color:var(--text);text-decoration:none;
+    transition:border-color .15s,background .15s;
+  }
   .quick-card:hover{border-color:var(--btn-hover);background:var(--panel)}
   .quick-card-main{grid-row:span 2}
   .qc-title{font-size:20px;font-weight:700;display:flex;align-items:center;gap:8px}
   .qc-desc{font-size:14px;color:var(--sub)}
-  .qc-api{font-size:13px;color:var(--sub);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--panel);border:1px dashed var(--btn-border);border-radius:6px;padding:6px 8px;align-self:stretch;overflow-wrap:anywhere;line-height:1.7;white-space:pre-line}
+  .qc-api{
+    font-size:13px;color:var(--sub);
+    font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    background:var(--panel);border:1px dashed var(--btn-border);
+    border-radius:6px;padding:6px 8px;align-self:stretch;
+    overflow-wrap:anywhere;line-height:1.7;
+    white-space:pre-line;
+  }
   .quick-card-tall{grid-row:span 2;justify-content:flex-start;padding:22px 24px}
-  .gc-block{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px dashed var(--btn-border);border-radius:6px;padding:6px 8px}
+  .gc-block{
+    display:flex;flex-direction:column;gap:6px;
+    background:var(--panel);border:1px dashed var(--btn-border);
+    border-radius:6px;padding:6px 8px;
+  }
   .gc-title{font-size:13px;font-weight:700;color:var(--text)}
+  .gc-status{font-size:13px;color:var(--sub);font-weight:600}
   .gc-next{font-size:14px;font-weight:700;color:var(--text)}
   .gc-clock-wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
   .gc-clock{flex:none;width:200px;height:200px}
@@ -47,48 +91,81 @@
   .gc-clock .hub{fill:var(--text)}
   .gc-info{display:flex;flex-direction:column;gap:2px;min-width:120px}
   .gc-info-label{font-size:11px;color:var(--sub)}
-  .gc-num{font-size:18px;font-weight:700;letter-spacing:1px;font-variant-numeric:tabular-nums}
+  .gc-num{
+    font-size:18px;font-weight:700;letter-spacing:1px;
+    font-variant-numeric:tabular-nums;
+  }
   .gc-state{font-size:13px;font-weight:700;color:var(--sub)}
   .gc-state.active{color:#f59e0b}
-  .qc-mini{display:flex;gap:10px;align-items:center;justify-content:center;padding:12px;border:1px solid var(--btn-border);border-radius:12px}
-  .qc-mini a{padding:6px 18px;border:1px solid var(--btn-border);border-radius:999px;color:var(--muted);font-size:14px;text-decoration:none;transition:color .15s,border-color .15s}
+  .qc-mini{
+    display:flex;gap:10px;align-items:center;justify-content:center;
+    padding:12px;border:1px solid var(--btn-border);border-radius:12px;
+  }
+  .qc-mini a{
+    padding:6px 18px;border:1px solid var(--btn-border);border-radius:999px;
+    color:var(--muted);font-size:14px;text-decoration:none;
+    transition:color .15s,border-color .15s;
+  }
   .qc-mini a:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
   .engine-tabs{display:flex;gap:8px;margin-bottom:10px}
-  .engine-tabs button{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--btn-border);border-radius:6px;background:var(--panel);color:var(--muted);cursor:pointer;font-size:14px;transition:color .15s,border-color .15s}
+  .engine-tabs button{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:6px 14px;border:1px solid var(--btn-border);border-radius:6px;
+    background:var(--panel);color:var(--muted);cursor:pointer;font-size:14px;
+    transition:color .15s,border-color .15s;
+  }
   .engine-tabs button.active{background:var(--active-bg);color:var(--active-text);border-color:var(--active-bg)}
-  .e-icon{width:18px;height:18px;border-radius:4px;flex:none;object-fit:contain;background:#fff;padding:1px}
+  .e-icon{
+    width:18px;height:18px;border-radius:4px;flex:none;
+    object-fit:contain;background:#fff;padding:1px;
+  }
+  .e-name{display:none}
   #search-form{display:flex;gap:0}
-  #search-input{flex:1;min-height:46px;padding:0 16px;border:2px solid var(--input-border);border-radius:16px 0 0 16px;font-size:16px;outline:none;background:var(--panel);color:var(--text)}
-  #search-form button{min-height:46px;padding:0 24px;border:none;border-radius:0 16px 16px 0;background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer}
-  .quote{margin-top:20px;max-width:960px;text-align:center;font-size:15px;color:var(--muted);line-height:1.8}
+  #search-input{
+    flex:1;min-height:46px;padding:0 16px;border:2px solid var(--input-border);
+    border-radius:16px 0 0 16px;font-size:16px;outline:none;
+    background:var(--panel);color:var(--text);
+  }
+  #search-form button{
+    min-height:46px;padding:0 24px;border:none;border-radius:0 16px 16px 0;
+    background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer;
+  }
+  .quote{
+    margin-top:20px;max-width:960px;text-align:center;
+    font-size:15px;color:var(--muted);line-height:1.8;
+  }
   .quote-line{display:flex;align-items:baseline;justify-content:center;gap:12px;flex-wrap:wrap}
   .quote #quote-src{font-size:13px;color:var(--sub)}
-  @media (max-width:768px){.quick-links{grid-template-columns:1fr}.quick-card-main,.quick-card-tall{grid-row:auto}}
-</style>
+  @media (max-width:768px){
+    .quick-links{grid-template-columns:1fr}
+    .quick-card-main,.quick-card-tall{grid-row:auto}
+  }
+  </style>
 <script>
-  try { if (localStorage.getItem('hean-theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
+  try { if (localStorage.getItem('hean-theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
 </script>
 </head>
 <body>
+
 <div id="site-header"></div>
 <main>
-  <h1 class="main-title">HEAN 禾安</h1>
-  <p class="sub-title">Vik Hean Core</p>
   <section class="search-box">
     <div class="engine-tabs" id="engine-tabs">
-      <button type="button" data-engine="bing" class="active"><img class="e-icon" src="/assets/logo-bing.png" alt="Bing">Bing</button>
-      <button type="button" data-engine="baidu"><img class="e-icon" src="/assets/logo-baidu.png" alt="百度">百度</button>
-      <button type="button" data-engine="google"><img class="e-icon" src="/assets/logo-google.png" alt="Google">Google</button>
-      <button type="button" data-engine="netease"><svg class="e-icon" viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 13.5c-.3 0-.5-.2-.5-.5v-3c0-2.5-2-4.5-4.5-4.5S7 9.5 7 12v3c0 .3-.2.5-.5.5s-.5-.2-.5-.5v-3c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5v3c0 .3-.2.5-.5.5z"/></svg>网易云</button>
+      <button type="button" data-engine="bing" class="active"><img class="e-icon" src="/assets/logo-bing.png" alt="Bing"><span class="e-name">Bing</span></button>
+      <button type="button" data-engine="baidu"><img class="e-icon" src="/assets/logo-baidu.png" alt="百度"><span class="e-name">百度</span></button>
+      <button type="button" data-engine="google"><img class="e-icon" src="/assets/logo-google.png" alt="Google"><span class="e-name">Google</span></button>
+      <button type="button" data-engine="netease"><svg class="e-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#e60026"/><path d="M9 17V8l7-1v8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="7.5" cy="17" r="1.8" fill="#fff"/><circle cx="14.5" cy="15" r="1.8" fill="#fff"/></svg><span class="e-name">网易云音乐</span></button>
     </div>
     <form id="search-form" action="javascript:void(0)">
       <input type="text" id="search-input" placeholder="搜索一下" autocomplete="off">
       <button type="submit">搜索</button>
     </form>
   </section>
+
   <section class="quote">
     <p class="quote-line"><span id="jinrishici-sentence">正在加载今日诗词....</span></p>
   </section>
+
   <div class="divider"></div>
   <nav class="quick-links">
     <a class="quick-card quick-card-main" href="/core/nav.html">
@@ -128,12 +205,14 @@
     </div>
   </nav>
 </main>
+
 <div id="site-footer"></div>
 <script src="/components.js"></script>
 <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
 <script>
 (function () {
   "use strict";
+
   var engines = {
     bing: "https://www.bing.com/search?q=",
     baidu: "https://www.baidu.com/s?wd=",
@@ -141,16 +220,21 @@
     netease: "https://music.163.com/#/search/m/?s=",
   };
   var current = "bing";
+
   var tabs = document.getElementById("engine-tabs");
   var input = document.getElementById("search-input");
   var form = document.getElementById("search-form");
+
   tabs.addEventListener("click", function (e) {
     var btn = e.target.closest("button");
     if (!btn) return;
     current = btn.getAttribute("data-engine");
-    tabs.querySelectorAll("button").forEach(function (b) { b.classList.toggle("active", b === btn); });
+    tabs.querySelectorAll("button").forEach(function (b) {
+      b.classList.toggle("active", b === btn);
+    });
     input.focus();
   });
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var q = input.value.trim();
@@ -165,10 +249,14 @@
       if (!el || !data.data || !data.data.task_list || !data.data.task_list.length) return;
       var list = data.data.task_list;
       var today = list[0].date;
-      var tasks = list.filter(function (t) { return t.date === today; }).map(function (t) { return t.quest_cn; });
+      var tasks = list.filter(function (t) { return t.date === today; })
+                      .map(function (t) { return t.quest_cn; });
       el.textContent = tasks.length ? "今日任务：\n" + tasks.map(function (t, i) { return (i + 1) + ". " + t; }).join("\n") : "今日暂无任务";
     })
-    .catch(function () { var el = document.getElementById("sky-api"); if (el) el.textContent = "今日任务加载失败"; });
+    .catch(function () {
+      var el = document.getElementById("sky-api");
+      if (el) el.textContent = "今日任务加载失败";
+    });
 
   function nextCs2Reset() {
     var now = new Date();
@@ -196,6 +284,7 @@
   var FEED_TIMES = [[8, 0], [10, 0], [12, 0], [16, 0], [18, 0], [20, 0]];
   var FEED_DUR = 30;
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+
   (function buildClock() {
     var svg = document.getElementById("gc-clock");
     if (!svg) return;
@@ -218,6 +307,7 @@
       svg.appendChild(txt);
     });
   })();
+
   function tickFeed() {
     var elNow = document.getElementById("gc-now");
     var elCount = document.getElementById("gc-countdown");
@@ -232,12 +322,15 @@
     var h = now.getUTCHours(), m = now.getUTCMinutes(), s = now.getUTCSeconds();
     var curMin = h * 60 + m;
     var i;
+
     elNow.textContent = pad2(h) + ":" + pad2(m) + ":" + pad2(s);
+
     var activeIdx = -1;
     for (i = 0; i < FEED_TIMES.length; i++) {
       var start = FEED_TIMES[i][0] * 60 + FEED_TIMES[i][1];
       if (curMin >= start && curMin < start + FEED_DUR) { activeIdx = i; break; }
     }
+
     var nextIdx = -1, nextStart = 0;
     for (i = 0; i < FEED_TIMES.length; i++) {
       var st = FEED_TIMES[i][0] * 60 + FEED_TIMES[i][1];
@@ -245,16 +338,23 @@
     }
     var crossDay = false;
     if (nextIdx === -1) { nextIdx = 0; nextStart = FEED_TIMES[0][0] * 60; crossDay = true; }
+
     var totalSec;
     if (activeIdx >= 0) {
       elNext.textContent = "老奶奶正在派发馒头";
       if (elLabel) elLabel.textContent = "本次派发剩余";
-      if (elState) { elState.textContent = "老奶奶正在派发馒头"; elState.classList.add("active"); }
+      if (elState) {
+        elState.textContent = "老奶奶正在派发馒头";
+        elState.classList.add("active");
+      }
       totalSec = (FEED_TIMES[activeIdx][0] * 60 + FEED_TIMES[activeIdx][1] + FEED_DUR) * 60 - (curMin * 60 + s);
     } else {
       elNext.textContent = (crossDay ? "明天 " : "今天 ") + "干饭：" + pad2(FEED_TIMES[nextIdx][0]) + ":" + pad2(FEED_TIMES[nextIdx][1]);
       if (elLabel) elLabel.textContent = "距离下次干饭";
-      if (elState) { elState.textContent = "现在没饭吃"; elState.classList.remove("active"); }
+      if (elState) {
+        elState.textContent = "现在没饭吃";
+        elState.classList.remove("active");
+      }
       var diffMin = nextStart - curMin;
       if (diffMin <= 0) diffMin += 1440;
       totalSec = diffMin * 60 - s;
@@ -264,20 +364,32 @@
     var mm = Math.floor((totalSec % 3600) / 60);
     var ss = totalSec % 60;
     elCount.textContent = pad2(hh) + ":" + pad2(mm) + ":" + pad2(ss);
+
     for (i = 0; i < FEED_TIMES.length; i++) {
       var d = document.getElementById("feed-dot-" + i);
       if (d) d.classList.toggle("active", i === activeIdx);
     }
+
     var hrAng = ((h % 12) * 30 + m * 0.5) * Math.PI / 180;
     var minAng = (m * 6 + s * 0.1) * Math.PI / 180;
     var secAng = s * 6 * Math.PI / 180;
-    if (handHr) { handHr.setAttribute("x2", 130 + 45 * Math.sin(hrAng)); handHr.setAttribute("y2", 130 - 45 * Math.cos(hrAng)); }
-    if (handMin) { handMin.setAttribute("x2", 130 + 62 * Math.sin(minAng)); handMin.setAttribute("y2", 130 - 62 * Math.cos(minAng)); }
-    if (handSec) { handSec.setAttribute("x2", 130 + 70 * Math.sin(secAng)); handSec.setAttribute("y2", 130 - 70 * Math.cos(secAng)); }
+    if (handHr) {
+      handHr.setAttribute("x2", 130 + 45 * Math.sin(hrAng));
+      handHr.setAttribute("y2", 130 - 45 * Math.cos(hrAng));
+    }
+    if (handMin) {
+      handMin.setAttribute("x2", 130 + 62 * Math.sin(minAng));
+      handMin.setAttribute("y2", 130 - 62 * Math.cos(minAng));
+    }
+    if (handSec) {
+      handSec.setAttribute("x2", 130 + 70 * Math.sin(secAng));
+      handSec.setAttribute("y2", 130 - 70 * Math.cos(secAng));
+    }
   }
   tickFeed();
   setInterval(tickFeed, 1000);
 })();
 </script>
+
 </body>
 </html>
