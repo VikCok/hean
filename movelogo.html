@@ -5,181 +5,111 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HEAN 字母旋转动画</title>
 <style>
-/* ============================================
-   HEAN 四字母旋转动画 —— 多阶段复合特效
-   阶段1：正常旋转（顺时针）
-   阶段2：两轮后 EH 在下 → 白方块覆盖 → 大方块 → 持续 → 倒放恢复
-   阶段3：继续旋转两轮，HE 在上 → 隐藏 AN → 缩小 HE → 右侧冒出 AN → 横向 HEAN
-   ============================================ */
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%}
-body{
-  position:relative;
-  background:transparent;  /* iframe嵌入时透明，独立打开时也透明 */
-  font-family:"Microsoft YaHei","微软雅黑","PingFang SC",sans-serif;
-  overflow:hidden;
-}
-
-/* 舞台：绝对定位居中，尺寸由JS根据视口动态计算（--hr-size/--hr-font/--hr-color均由JS设置在documentElement） */
+body{position:relative;background:transparent;font-family:"Microsoft YaHei","微软雅黑","PingFang SC",sans-serif;overflow:hidden}
 .hean-rotate{
   --hr-speed:0.9s;
-  position:absolute;
-  top:50%;left:50%;
+  position:absolute;top:50%;left:50%;
   transform:translate(-50%,-50%);
-  width:var(--hr-size);
-  height:var(--hr-size);
+  width:var(--hr-size);height:var(--hr-size);
 }
-
-/* 单个字母：固定方块 + flex 居中 */
 .hean-rotate span{
-  position:absolute;
-  top:50%;left:50%;
+  position:absolute;top:50%;left:50%;
   width:1.15em;height:1.15em;
   display:flex;align-items:center;justify-content:center;
   font-family:"Microsoft YaHei","微软雅黑","PingFang SC",system-ui,sans-serif;
-  font-size:var(--hr-font);
-  font-weight:900;
-  color:var(--hr-color);
-  line-height:1;
-  transform:translate(-50%,-50%);
+  font-size:var(--hr-font);font-weight:900;color:var(--hr-color);
+  line-height:1;transform:translate(-50%,-50%);
   transition:transform var(--hr-speed) cubic-bezier(.45,0,.15,1);
-  user-select:none;
-  -webkit-user-select:none;
+  user-select:none;-webkit-user-select:none;
 }
-
-/* 四个角落位置（2x2布局：HE在上，AN在下），偏移量=舞台20%，字母直线滑动到下个位置 */
-.hean-rotate span.pos-0{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% - (var(--hr-size) * 0.20))); } /* 左上 */
-.hean-rotate span.pos-1{ transform:translate(calc(-50% + (var(--hr-size) * 0.20)),calc(-50% - (var(--hr-size) * 0.20))); } /* 右上 */
-.hean-rotate span.pos-2{ transform:translate(calc(-50% + (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); } /* 右下 */
-.hean-rotate span.pos-3{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); } /* 左下 */
-
+.hean-rotate span.pos-0{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% - (var(--hr-size) * 0.20))); }
+.hean-rotate span.pos-1{ transform:translate(calc(-50% + (var(--hr-size) * 0.20)),calc(-50% - (var(--hr-size) * 0.20))); }
+.hean-rotate span.pos-2{ transform:translate(calc(-50% + (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); }
+.hean-rotate span.pos-3{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); }
 </style>
 </head>
 <body>
-
 <div class="hean-rotate" id="hean-stage">
-  <span>H</span>
-  <span>E</span>
-  <span>A</span>
-  <span>N</span>
+  <span>H</span><span>E</span><span>A</span><span>N</span>
 </div>
-
 <script>
 (function () {
   "use strict";
-
-  /* ===== 配置 =====
-     动画编号：
-       1号动画 = 字母2x2布局直线滑动轮换（基础循环）
-       3号动画 = 所有字母滑动缩小到横向HEAN 65% → 持续4s → 滑回2x2 → 循环
-       （2号方块动画已移除） */
-  var ROTATE_INTERVAL = 1900;   // 1号动画：轮换间隔
-  var TRIGGER_AFTER   = 4;      // 旋转多少轮后开始检测3号动画（一轮=4次）
-  var HORIZONTAL_HOLD = 4000;   // 3号动画：横向HEAN持续时间（毫秒）
-
-  /* ===== 主题同步：iframe嵌入时跟随父页面的日间/夜间模式 ===== */
+  var ROTATE_INTERVAL = 1900;
+  var TRIGGER_AFTER   = 4;
+  var HORIZONTAL_HOLD = 4000;
   function syncTheme() {
     try {
       var isDark = parent.document.body.classList.contains('dark');
       document.documentElement.style.setProperty('--hr-color', isDark ? '#ffffff' : '#1a1a1a');
     } catch (e) {
-      /* 跨域或安全限制无法访问parent时，默认深色（适配日间模式顶栏） */
       document.documentElement.style.setProperty('--hr-color', '#1a1a1a');
     }
   }
-
-  /* ===== 状态 ===== */
   var stage     = document.getElementById("hean-stage");
   var letters   = stage.querySelectorAll("span");
-  var positions = [0, 1, 3, 2]; // 初始：H左上, E右上, A左下, N右下（2x2布局）
-  var rotateCount  = 0;          // 当前阶段已旋转次数
-  var isAnimating  = false;      // 特效进行中
-  var nextAnim     = 3;          // 下一个待触发的动画编号（仅3号循环）
-
-  /* 应用位置到每个字母 */
+  var positions = [0, 1, 3, 2];
+  var rotateCount  = 0;
+  var isAnimating  = false;
+  var nextAnim     = 3;
   function applyPositions() {
     for (var i = 0; i < letters.length; i++) {
       letters[i].className = "pos-" + positions[i];
     }
   }
-
-  /* ===== 1号动画：字母顺时针旋转（基础循环） ===== */
   function rotateClockwise() {
     if (isAnimating) return;
     positions = positions.map(function (p) { return (p + 1) % 4; });
     applyPositions();
     rotateCount++;
-
-    /* 3号动画触发条件：一轮后且 HE 在上（位置0=左上, 1=右上） */
     if (rotateCount >= TRIGGER_AFTER) {
       var h = positions[0], e = positions[1];
-      if (h === 0 && e === 1) {
-        anim3_horizontal();
-      }
+      if (h === 0 && e === 1) { anim3_horizontal(); }
     }
   }
-
-  /* ================================================================
-     3号动画：所有字母从2x2位置直接滑动到横向HEAN排列（保持1号字符大小，不缩小）
-              → 持续4s → 滑回2x2位置 → 衔接1号动画 → 循环
-     衔接方式：HE从上方滑到横向左侧，AN从下方滑到横向右侧
-     ================================================================ */
   function anim3_horizontal() {
     isAnimating = true;
-
-    /* 用JS直接设置每个span的inline style transform，横向排列HEAN（保持1号字符大小，不缩小）
-       顺序：H(左1)、E(左2)、A(右2)、N(右1) */
     var hOffsets = [-110, -37, 37, 110];
     for (var i = 0; i < letters.length; i++) {
       var off = hOffsets[i];
-      /* 正负号分开写，避免 calc(-50% + -110px) 的 + - 解析问题 */
       if (off >= 0) {
         letters[i].style.transform = 'translate(calc(-50% + ' + off + 'px),-50%)';
       } else {
         letters[i].style.transform = 'translate(calc(-50% - ' + Math.abs(off) + 'px),-50%)';
       }
     }
-    /* 横向HEAN持续4秒后，清除inline style，恢复pos-*类的2x2位置 */
     setTimeout(function () {
       for (var i = 0; i < letters.length; i++) {
         letters[i].style.transform = '';
       }
-      /* 确保恢复到1号动画2x2起始位置：H左上(0), E右上(1), A左下(3), N右下(2) */
       positions = [0, 1, 3, 2];
       applyPositions();
-
-      /* 位置过渡0.9s后，重置状态，衔接1号动画开始新一轮循环 */
       setTimeout(function () {
         isAnimating = false;
         rotateCount = 0;
-        nextAnim = 3;  // 回到3号动画，1号旋转→3号横向 无限循环
+        nextAnim = 3;
       }, 900);
     }, HORIZONTAL_HOLD);
   }
-
-  /* ===== 启动 ===== */
-  /* 动态计算舞台与字母尺寸：占可用空间的90%，字母为舞台的32% */
   function fitSize() {
     var size = Math.min(window.innerWidth, window.innerHeight) * 0.9;
-    if (size < 20) size = 20;  /* 最小保护 */
+    if (size < 20) size = 20;
     document.documentElement.style.setProperty('--hr-size', size + 'px');
     document.documentElement.style.setProperty('--hr-font', (size * 0.32) + 'px');
   }
   fitSize();
   window.addEventListener('resize', fitSize);
-
   applyPositions();
-  syncTheme();  /* 初始同步父页面主题 */
-  /* 监听父页面body的class变化，实时同步日间/夜间主题 */
+  syncTheme();
   try {
     new MutationObserver(syncTheme).observe(parent.document.body, {
-      attributes: true,
-      attributeFilter: ['class']
+      attributes: true, attributeFilter: ['class']
     });
-  } catch (e) { /* 跨域或独立打开时忽略 */ }
+  } catch (e) {}
   setInterval(rotateClockwise, ROTATE_INTERVAL);
 })();
 </script>
-
 </body>
 </html>
