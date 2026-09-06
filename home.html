@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEAN</title>
+<link rel="icon" href="/assets/favicon.ico">
+<style>
+  :root{--bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;--btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff}
+  html.dark{--bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;--line:#2e2e2e;--btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
+  main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:40px 24px}
+  .hero-logo{width:340px;height:340px;border:none;background:transparent;display:block}
+  .hero-title{font-size:49px;font-weight:500;letter-spacing:6px;color:var(--text);text-align:center;max-width:90%;line-height:1.4;word-break:break-word;white-space:pre-line}
+  @media (max-width:768px){.hero-title{font-size:29.4px}}
+  .hero-divider{width:200px;height:1px;background:var(--line);margin:0 auto}
+  .hero-btn-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+  .hero-btn{display:inline-flex;align-items:center;justify-content:center;padding:18px 64px;border:2px solid var(--btn-border);border-radius:999px;background:var(--panel);color:var(--text);font-size:24px;font-weight:700;letter-spacing:2px;text-decoration:none;transition:color .2s,border-color .2s,background .2s,transform .15s}
+  .hero-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover);transform:scale(1.03)}
+  .hero-btn-primary{background:#2563eb !important;border-color:#2563eb !important;color:#ffffff !important}
+  .hero-btn-primary:hover{background:#1d4ed8 !important;border-color:#1d4ed8 !important;color:#ffffff !important}
+</style>
+<script>
+  try { if (localStorage.getItem('hean-theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
+</head>
+<body>
+<div id="site-header"></div>
+<main>
+  <iframe class="hero-logo" src="/movelogodn.html" frameborder="0" scrolling="no" title="HEAN logo"></iframe>
+  <div class="hero-divider"></div>
+  <h1 class="hero-title" id="hero-quote">正在加载...</h1>
+  <div class="hero-btn-row">
+    <a class="hero-btn hero-btn-primary" href="/index.html">前往主页</a>
+    <a class="hero-btn" href="/core/nav.html">更多功能</a>
+  </div>
+</main>
+<div id="site-footer"></div>
+<script>window.SITE_BRAND="HEAN.ME";</script>
+<script src="/components.js"></script>
+<script>
+  (function() {
+    var el = document.getElementById('hero-quote');
+    if (!el) return;
+    fetch('https://v1.jinrishici.com/rensheng/lizhi')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.content) {
+          var text = data.content;
+          if (window.innerWidth <= 768) text = text.replace(/，/g, '，\n');
+          el.textContent = text;
+        }
+      })
+      .catch(function() { el.textContent = '路漫漫其修远兮'; });
+  })();
+</script>
+</body>
+</html>
