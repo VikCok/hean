@@ -6,8 +6,16 @@
 <title>HEAN 禾安</title>
 <link rel="icon" href="/assets/favicon.ico">
 <style>
-  :root{--bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;--btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;--active-bg:#333333;--active-text:#ffffff;--input-border:#333333;--clock-face:#f6f6f6}
-  body.dark{--bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;--line:#2e2e2e;--btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;--active-bg:#e8e8e8;--active-text:#121212;--input-border:#666666;--clock-face:#262626}
+  :root{
+    --bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;
+    --btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;--active-bg:#333333;
+    --active-text:#ffffff;--input-border:#333333;--clock-face:#f6f6f6;
+  }
+  html.dark{
+    --bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;--line:#2e2e2e;
+    --btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;--active-bg:#e8e8e8;
+    --active-text:#121212;--input-border:#666666;--clock-face:#262626;
+  }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
   main{flex:1;display:flex;flex-direction:column;align-items:center;padding:44px 20px 36px}
@@ -50,13 +58,16 @@
   .engine-tabs button.active{background:var(--active-bg);color:var(--active-text);border-color:var(--active-bg)}
   .e-icon{width:18px;height:18px;border-radius:4px;flex:none;object-fit:contain;background:#fff;padding:1px}
   #search-form{display:flex;gap:0}
-  #search-input{flex:1;min-height:46px;padding:0 16px;border:2px solid var(--input-border);border-radius:8px 0 0 8px;font-size:16px;outline:none;background:var(--panel);color:var(--text)}
-  #search-form button{min-height:46px;padding:0 24px;border:none;border-radius:0 8px 8px 0;background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer}
+  #search-input{flex:1;min-height:46px;padding:0 16px;border:2px solid var(--input-border);border-radius:16px 0 0 16px;font-size:16px;outline:none;background:var(--panel);color:var(--text)}
+  #search-form button{min-height:46px;padding:0 24px;border:none;border-radius:0 16px 16px 0;background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer}
   .quote{margin-top:20px;max-width:960px;text-align:center;font-size:15px;color:var(--muted);line-height:1.8}
   .quote-line{display:flex;align-items:baseline;justify-content:center;gap:12px;flex-wrap:wrap}
   .quote #quote-src{font-size:13px;color:var(--sub)}
   @media (max-width:768px){.quick-links{grid-template-columns:1fr}.quick-card-main,.quick-card-tall{grid-row:auto}}
 </style>
+<script>
+  try { if (localStorage.getItem('hean-theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
 </head>
 <body>
 <div id="site-header"></div>
@@ -65,9 +76,10 @@
   <p class="sub-title">Vik Hean Core</p>
   <section class="search-box">
     <div class="engine-tabs" id="engine-tabs">
-      <button type="button" data-engine="bing" class="active"><img class="e-icon" src="/assets/logo-bing.png" alt="Bing">微软Bing</button>
+      <button type="button" data-engine="bing" class="active"><img class="e-icon" src="/assets/logo-bing.png" alt="Bing">Bing</button>
       <button type="button" data-engine="baidu"><img class="e-icon" src="/assets/logo-baidu.png" alt="百度">百度</button>
       <button type="button" data-engine="google"><img class="e-icon" src="/assets/logo-google.png" alt="Google">Google</button>
+      <button type="button" data-engine="netease"><svg class="e-icon" viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 13.5c-.3 0-.5-.2-.5-.5v-3c0-2.5-2-4.5-4.5-4.5S7 9.5 7 12v3c0 .3-.2.5-.5.5s-.5-.2-.5-.5v-3c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5v3c0 .3-.2.5-.5.5z"/></svg>网易云</button>
     </div>
     <form id="search-form" action="javascript:void(0)">
       <input type="text" id="search-input" placeholder="搜索一下" autocomplete="off">
@@ -126,6 +138,7 @@
     bing: "https://www.bing.com/search?q=",
     baidu: "https://www.baidu.com/s?wd=",
     google: "https://www.google.com/search?q=",
+    netease: "https://music.163.com/#/search/m/?s=",
   };
   var current = "bing";
   var tabs = document.getElementById("engine-tabs");
