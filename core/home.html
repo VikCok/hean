@@ -156,7 +156,7 @@
     .quick-links{grid-template-columns:1fr}
     .quick-card-main,.quick-card-tall{grid-row:auto}
   }
-</style>
+  </style>
 <script>
   try { if (localStorage.getItem('hean-theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
 </script>
@@ -189,7 +189,7 @@
   </section>
 
   <section class="quote">
-    <p class="quote-line"><span id="jinrishici-sentence">正在加载今日诗词....</span></p>
+    <p class="quote-line"><span id="daily-saying">正在加载...</span></p>
   </section>
 
   <div class="divider"></div>
@@ -234,7 +234,20 @@
 
 <div id="site-footer"></div>
 <script src="/components.js"></script>
-<script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+<script>
+  (function() {
+    var el = document.getElementById('daily-saying');
+    if (!el) return;
+    fetch('https://uapis.cn/api/v1/saying')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.text) el.textContent = data.text;
+      })
+      .catch(function() {
+        el.textContent = '路漫漫其修远兮，吾将上下而求索';
+      });
+  })();
+</script>
 <script>
 (function () {
   "use strict";
