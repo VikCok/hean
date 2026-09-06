@@ -93,13 +93,14 @@
     ".back-top svg{width:18px;height:18px}"
   ].join("\n");
 
-  /* ===== 顶栏 HTML：品牌 logo + HEAN + 主页/导航页图标按钮 + 主题开关 ===== */
+  /* ===== 顶栏 HTML：品牌 logo + HEAN + 主页/导航页图标按钮 + 主题开关 =====
+   * 注意：品牌 logo 点击跳转 /index.html（入口页），小房子按钮跳转 /core/home.html（主页） */
   function headerHtml() {
     var tag = window.SITE_TAG || "";
     return [
       '<header class="topbar">',
       '  <div class="left">',
-      '    <a class="brand" href="/core/home.html"><img class="brand-logo" src="/assets/logo1.png" alt="HEAN">HEAN' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
+      '    <a class="brand" href="/index.html"><img class="brand-logo" src="/assets/logo1.png" alt="HEAN">HEAN' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
       '    <a class="home-btn" href="/core/home.html" title="主页">',
       '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">',
       '        <path d="M3 11l9-8 9 8"/>',
