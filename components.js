@@ -1,17 +1,17 @@
 /* ===== HEAN 站点公共组件 =====
- * 统一负责：顶栏（品牌 + 主页/导航图标按钮 + 主题开关）、页脚（免责声明|关于本站 + 版权）、主题切换、回到顶部按钮。
+ * 统一负责：顶栏（品牌 + 主页/导航图标按钮 + 主题开关）、页脚（免责声明|关于本站 + 版权）、主题切换。
  * 全站页面只需放置两个占位符并引入本文件：
  *   <div id="site-header"></div>   —— 顶栏渲染位置
  *   <div id="site-footer"></div>   —— 页脚渲染位置
  *   <script src="components.js"></script>
- * 以后修改顶栏 / 页脚 / 主题 / 回到顶部相关样式与逻辑，只改这一个文件，全站生效。
+ * 以后修改顶栏 / 页脚 / 主题相关样式与逻辑，只改这一个文件，全站生效。
  * 页面如需品牌右侧副标题（如 sky.html 的"禾安·光遇助手"），
  * 在引入本文件之前设置：<script>window.SITE_TAG="禾安·光遇助手";</script>
  */
 (function () {
   "use strict";
 
-  /* ===== 公共样式：顶栏 / 图标按钮 / 主题开关 / 页脚 / 回到顶部 =====
+  /* ===== 公共样式：顶栏 / 图标按钮 / 主题开关 / 页脚 =====
    * 以 <style> 注入到页面 <head> 末尾（位于页面原有样式之后，
    * 同名选择器由后定义的覆盖，确保统一外观由本文件控制） */
   var COMMON_CSS = [
@@ -53,8 +53,8 @@
     return [
       '<header class="topbar">',
       '  <div class="left">',
-      '    <a class="brand" href="index.html">HEAN' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
-      '    <a class="home-btn" href="index.html" title="主页">',
+      '    <a class="brand" href="home.html">HEAN' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
+      '    <a class="home-btn" href="home.html" title="主页">',
       '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">',
       '        <path d="M3 11l9-8 9 8"/>',
       '        <path d="M5 10v10h14V10"/>',
