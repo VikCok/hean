@@ -6,6 +6,7 @@
 <title>HEAN 禾安</title>
 <link rel="icon" href="/assets/favicon.ico">
 <style>
+  /* ===== 主题变量：日间模式（默认） ===== */
   :root{
     --bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;
     --btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;
@@ -19,6 +20,8 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
   main{flex:1;display:flex;flex-direction:column;align-items:center;padding:44px 20px 36px}
+
+  /* ===== 顶部信息栏：数字时钟 + 蓝白日历 ===== */
   .top-info{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:960px;margin-bottom:18px;gap:16px}
   .digital-clock{font-size:48px;font-weight:700;letter-spacing:2px;font-variant-numeric:tabular-nums;color:var(--text);line-height:1}
   .calendar-card{flex:none;width:120px;border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
@@ -27,6 +30,8 @@
   .cal-weekday{font-size:11px;opacity:0.85}
   .cal-day{background:#fff;color:#2563eb;font-size:42px;font-weight:800;text-align:center;padding:8px 0;line-height:1}
   html.dark .cal-day{background:#1e1e1e;color:#60a5fa}
+
+  /* ===== 搜索栏 ===== */
   .search-box{width:100%;max-width:960px}
   .engine-tabs{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
   .engine-tabs button{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--btn-border);border-radius:6px;background:var(--panel);color:var(--muted);cursor:pointer;font-size:14px;transition:color .15s,border-color .15s}
@@ -36,10 +41,23 @@
   #search-form{display:flex;gap:0}
   #search-input{flex:1;min-height:46px;padding:0 16px;border:2px solid var(--input-border);border-radius:16px 0 0 16px;font-size:16px;outline:none;background:var(--panel);color:var(--text)}
   #search-form button{min-height:46px;padding:0 24px;border:none;border-radius:0 16px 16px 0;background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer}
+
+  /* ===== 每日一言 ===== */
   .quote{margin-top:20px;max-width:960px;text-align:center;line-height:1.8}
   .quote-cn{font-size:15px;color:var(--muted)}
   .quote-en{font-size:13px;color:var(--sub);margin-top:4px}
+
   .divider{width:100%;max-width:960px;height:1px;background:var(--line);margin:26px 0}
+  /* ===== 栏位分类筛选按钮 ===== */
+  .category-bar{display:flex;gap:8px;width:100%;max-width:960px;margin-bottom:16px;flex-wrap:wrap;justify-content:center}
+  .category-btn{padding:6px 18px;border:1px solid var(--btn-border);border-radius:999px;background:var(--panel);color:var(--muted);font-size:14px;cursor:pointer;transition:all .15s}
+  .category-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+  .category-btn.active{background:var(--active-bg);color:var(--active-text);border-color:var(--active-bg)}
+  .section-card.hidden{display:none}
+  .quick-links.hidden{display:none}
+
+
+  /* ===== 快捷入口 ===== */
   .quick-links{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:960px;margin-bottom:6px}
   .quick-card{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:20px 24px;border:1px solid var(--btn-border);border-radius:12px;color:var(--text);text-decoration:none;transition:border-color .15s,background .15s}
   .quick-card:hover{border-color:var(--btn-hover);background:var(--panel)}
@@ -51,6 +69,8 @@
   .qc-mini{display:flex;gap:10px;align-items:center;justify-content:center;padding:12px;border:1px solid var(--btn-border);border-radius:12px}
   .qc-mini a{padding:6px 18px;border:1px solid var(--btn-border);border-radius:999px;color:var(--muted);font-size:14px;text-decoration:none;transition:color .15s,border-color .15s}
   .qc-mini a:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+
+  /* ===== 新增板块区域：2列网格 ===== */
   .extra-sections{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:960px;margin-top:16px}
   .section-card{background:var(--panel);border:1px solid var(--btn-border);border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:10px}
   .section-card.wide{grid-column:1 / -1}
@@ -102,6 +122,14 @@
   .calendar-detail .value{font-weight:600;color:var(--text)}
   .rmrb-quote{font-size:14px;color:var(--text);line-height:1.8;font-style:italic}
   .rmrb-source{font-size:12px;color:var(--sub);margin-top:6px;text-align:right}
+
+  @media (max-width:768px){
+    .quick-links{grid-template-columns:1fr}
+    .quick-card-main,.quick-card-tall{grid-row:auto}
+    .extra-sections{grid-template-columns:1fr}
+  }
+
+  /* ===== 新增板块样式 ===== */
   .dzmm-item{padding:8px 0;border-bottom:1px solid var(--line)}
   .dzmm-item:last-child{border-bottom:none}
   .dzmm-map{font-size:14px;font-weight:600;color:var(--text)}
@@ -138,11 +166,7 @@
   .exam-opt.correct{color:#22c55e;font-weight:600}
   .exam-answer{font-size:12px;color:var(--sub);padding-top:6px;border-top:1px solid var(--line)}
   .exam-answer b{color:var(--active-bg)}
-  @media (max-width:768px){
-    .quick-links{grid-template-columns:1fr}
-    .quick-card-main,.quick-card-tall{grid-row:auto}
-    .extra-sections{grid-template-columns:1fr}
-  }
+
 </style>
 <script>
   try { if (localStorage.getItem('hean-theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
@@ -151,6 +175,7 @@
 <body>
 <div id="site-header"></div>
 <main>
+  <!-- 顶部信息栏：数字时钟 + 蓝白日历 -->
   <div class="top-info">
     <div class="digital-clock" id="digital-clock">--:--</div>
     <div class="calendar-card">
@@ -161,6 +186,8 @@
       <div class="cal-day" id="cal-day">-</div>
     </div>
   </div>
+
+  <!-- 搜索栏 -->
   <section class="search-box">
     <div class="engine-tabs" id="engine-tabs">
       <button type="button" data-engine="bing" class="active"><img class="e-icon" src="/assets/logo-bing.png" alt="Bing"><span class="e-name">Bing</span></button>
@@ -173,12 +200,27 @@
       <button type="submit">搜索</button>
     </form>
   </section>
+
+  <!-- 每日一言 -->
   <section class="quote">
     <p class="quote-cn" id="daily-cn">正在加载...</p>
     <p class="quote-en" id="daily-en"></p>
   </section>
+
   <div class="divider"></div>
-  <nav class="quick-links">
+  <!-- 栏位分类筛选 -->
+  <div class="category-bar" id="category-bar">
+    <button class="category-btn active" data-cat="all">全部</button>
+    <button class="category-btn" data-cat="game">游戏</button>
+    <button class="category-btn" data-cat="nav">导航页</button>
+    <button class="category-btn" data-cat="quote">一言</button>
+    <button class="category-btn" data-cat="info">信息</button>
+    <button class="category-btn" data-cat="divination">占卜</button>
+  </div>
+
+
+  <!-- 快捷入口 -->
+  <nav class="quick-links" data-category="nav">
     <a class="quick-card quick-card-main" href="/core/nav.html">
       <span class="qc-title">导航页</span>
       <span class="qc-desc">站点导航 · 快速入口</span>
@@ -195,15 +237,20 @@
       <a href="/core/news.html">新闻</a>
     </div>
   </nav>
+
+  <!-- ===== 新增板块区域 ===== -->
   <div class="extra-sections">
-    <div class="section-card">
+    <!-- 每日塔罗牌 -->
+    <div class="section-card" data-category="divination">
       <div class="section-title"><span class="icon">🔮</span>每日塔罗牌</div>
       <div class="section-content" id="tarot-content"><span style="color:var(--sub)">点击下方按钮抽取今日塔罗牌</span></div>
       <button class="section-btn" onclick="loadTarot()">点击抽牌</button>
     </div>
-    <div class="section-card">
+
+    <!-- 今日运势 -->
+    <div class="section-card" data-category="divination">
       <div class="section-title"><span class="icon">⭐</span>今日运势</div>
-      <select class="section-select" id="zodiac-select">
+      <select class="section-select" id="zodiac-select" onchange="loadFortune()">
         <option value="0">白羊座</option><option value="1">金牛座</option><option value="2">双子座</option>
         <option value="3">巨蟹座</option><option value="4">狮子座</option><option value="5">处女座</option>
         <option value="6">天秤座</option><option value="7">天蝎座</option><option value="8">射手座</option>
@@ -212,54 +259,77 @@
       <div class="section-content" id="fortune-content"><span style="color:var(--sub)">选择星座后点击查看今日运势</span></div>
       <button class="section-btn" onclick="loadFortune()">查看运势</button>
     </div>
-    <div class="section-card">
+
+    <!-- 日历详情 -->
+    <div class="section-card" data-category="info">
       <div class="section-title"><span class="icon">📅</span>今日黄历</div>
       <div class="section-content" id="calendar-content"><span class="loading">加载中...</span></div>
     </div>
-    <div class="section-card">
+
+    <!-- 王者荣耀 -->
+    <div class="section-card" data-category="game">
       <div class="section-title"><span class="icon">👑</span>王者荣耀赛季</div>
       <div class="section-content" id="wzry-content"><span style="color:var(--sub)">点击查看当前赛季与英雄平衡调整</span></div>
       <button class="section-btn" onclick="loadWzry()">查看赛季信息</button>
     </div>
-    <div class="section-card">
+
+    <!-- GitHub Star 榜 -->
+    <div class="section-card" data-category="info">
       <div class="section-title"><span class="icon">🐙</span>GitHub 热榜</div>
       <div class="section-content" id="github-content"><span class="loading">加载中...</span></div>
     </div>
-    <div class="section-card">
+
+    <!-- 喜加一 -->
+    <div class="section-card" data-category="game">
       <div class="section-title"><span class="icon">🎮</span>喜加一 · 限免游戏</div>
       <div class="section-content" id="freegame-content"><span class="loading">加载中...</span></div>
     </div>
-    <div class="section-card">
+
+    <!-- MBTI 每日人格 -->
+    <div class="section-card" data-category="divination">
       <div class="section-title"><span class="icon">🧠</span>MBTI 今日人格</div>
       <div class="section-content" id="mbti-content"><span style="color:var(--sub)">点击下方按钮抽取今日 MBTI 人格</span></div>
       <button class="section-btn" onclick="loadMbti()">点击查看人格</button>
     </div>
-    <div class="section-card">
+
+    <!-- 占卜 -->
+    <div class="section-card" data-category="divination">
       <div class="section-title"><span class="icon">🎋</span>每日一签</div>
       <div class="section-content" id="divination-content"><span style="color:var(--sub)">心诚则灵，点击下方按钮求签</span></div>
       <button class="section-btn" onclick="loadDivination()">求签</button>
     </div>
-    <div class="section-card">
+
+    <!-- 人民日报一言 -->
+    <div class="section-card" data-category="quote">
       <div class="section-title"><span class="icon">📰</span>人民日报金句</div>
       <div class="section-content" id="rmrb-content"><span class="loading">加载中...</span></div>
     </div>
-    <div class="section-card">
+
+    <!-- AI 新闻 -->
+    <div class="section-card" data-category="info">
       <div class="section-title"><span class="icon">🤖</span>科技新闻 · 36氪</div>
       <div class="section-content" id="ainews-content"><span class="loading">加载中...</span></div>
     </div>
-    <div class="section-card wide">
+
+    <!-- 每日新闻（全宽） -->
+    <div class="section-card wide" data-category="info">
       <div class="section-title"><span class="icon">📢</span>知乎热榜</div>
       <div class="section-content" id="dailynews-content"><span class="loading">加载中...</span></div>
-    </div>
-    <div class="section-card">
+
+    <!-- 三角洲今日密码 -->
+    <div class="section-card" data-category="game">
       <div class="section-title"><span class="icon">🔑</span>三角洲今日密码</div>
       <div class="section-content" id="dzmm-content"><span class="loading">加载中...</span></div>
     </div>
-    <div class="section-card">
+
+    <!-- 历史上的今天 -->
+    <div class="section-card" data-category="info">
       <div class="section-title"><span class="icon">📜</span>历史上的今天</div>
       <div class="section-content" id="history-content"><span class="loading">加载中...</span></div>
     </div>
-    <div class="section-card">
+
+    <!-- 头像库入口 -->
+    <div class="section-card" data-category="info">
       <div class="section-title"><span class="icon">👤</span>头像库</div>
       <a class="entry-link" href="https://www.woyaogexing.com/touxiang/" target="_blank" rel="noopener">
         <span class="entry-icon">🖼️</span>
@@ -270,23 +340,31 @@
         <span style="color:var(--sub)">→</span>
       </a>
     </div>
-    <div class="section-card">
+
+    <!-- Bing每日图片 -->
+    <div class="section-card" data-category="info">
       <div class="section-title"><span class="icon">🌄</span>Bing 每日图片</div>
       <a href="https://www.bing.com" target="_blank" rel="noopener">
         <img class="bing-img" src="https://bing.img.run/1920x1080.php" alt="Bing每日图片" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:var(--sub)\'>图片加载失败</span>'">
       </a>
     </div>
-    <div class="section-card">
+
+    <!-- 今日吃什么抽奖 -->
+    <div class="section-card" data-category="info">
       <div class="section-title"><span class="icon">🍜</span>今日吃什么</div>
       <div class="section-content" id="food-content"><span style="color:var(--sub)">点击下方按钮随机推荐</span></div>
       <button class="section-btn" onclick="loadFood()">帮我选</button>
     </div>
-    <div class="section-card">
+
+    <!-- 今日穿搭配色 -->
+    <div class="section-card" data-category="info">
       <div class="section-title"><span class="icon">👔</span>今日穿搭配色</div>
       <div class="section-content" id="outfit-content"><span style="color:var(--sub)">点击下方按钮获取配色推荐</span></div>
       <button class="section-btn" onclick="loadOutfit()">获取推荐</button>
     </div>
-    <div class="section-card">
+
+    <!-- 王者荣耀战力查询 -->
+    <div class="section-card" data-category="game">
       <div class="section-title"><span class="icon">⚔️</span>王者荣耀战力查询</div>
       <div class="query-row">
         <input class="query-input" id="wzry-hero-input" placeholder="输入英雄名，如：鲁班七号">
@@ -294,7 +372,9 @@
       </div>
       <div class="section-content" id="wzry-power-content" style="margin-top:10px"></div>
     </div>
-    <div class="section-card">
+
+    <!-- 汇率换算器 -->
+    <div class="section-card" data-category="info">
       <div class="section-title"><span class="icon">💱</span>汇率换算器</div>
       <div class="query-row">
         <input class="query-input" id="rate-amount" type="number" placeholder="金额" value="100" style="max-width:80px">
@@ -313,16 +393,50 @@
       <div class="rate-result" id="rate-result"><span style="color:var(--sub)">点击换算</span></div>
       <button class="section-btn secondary" style="margin-top:8px" onclick="convertRate()">换算</button>
     </div>
-    <div class="section-card">
+
+    <!-- 随机驾考题目 -->
+    <div class="section-card" data-category="info">
       <div class="section-title"><span class="icon">🚗</span>随机驾考题目</div>
       <div class="section-content" id="exam-content"><span style="color:var(--sub)">点击下方按钮随机抽题</span></div>
       <button class="section-btn" onclick="loadExam()">随机抽题</button>
     </div>
   </div>
 </main>
+
 <div id="site-footer"></div>
 <script src="/components.js"></script>
+
 <script>
+/* ===== 栏位分类筛选 ===== */
+(function() {
+  var bar = document.getElementById('category-bar');
+  if (!bar) return;
+  var buttons = bar.querySelectorAll('.category-btn');
+  var sections = document.querySelectorAll('[data-category]');
+
+  function filterCategory(cat) {
+    sections.forEach(function(el) {
+      if (cat === 'all' || el.getAttribute('data-category') === cat) {
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    });
+  }
+
+  buttons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      buttons.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      filterCategory(btn.getAttribute('data-cat'));
+    });
+  });
+})();
+</script>
+
+
+<script>
+/* ===== 每日一言：t1qq 每日英语 API ===== */
 (function() {
   var cn = document.getElementById('daily-cn');
   var en = document.getElementById('daily-en');
@@ -338,9 +452,12 @@
     .catch(function() { cn.textContent = '路漫漫其修远兮，吾将上下而求索'; });
 })();
 </script>
+
 <script>
 (function () {
   "use strict";
+
+  /* ===== 顶部信息栏：时钟 + 日历 ===== */
   var WEEKDAYS = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
   function tickTopInfo() {
     var now = new Date();
@@ -355,6 +472,8 @@
   }
   tickTopInfo();
   setInterval(tickTopInfo, 1000);
+
+  /* ===== 搜索栏 ===== */
   var engines = {bing:"https://www.bing.com/search?q=",baidu:"https://www.baidu.com/s?wd=",google:"https://www.google.com/search?q=",netease:"https://music.163.com/#/search/m/?s="};
   var current = "bing";
   var tabs = document.getElementById("engine-tabs");
@@ -373,6 +492,8 @@
     if (q==="") return;
     window.open(engines[current] + encodeURIComponent(q), "_blank");
   });
+
+  /* ===== 光遇今日任务 ===== */
   fetch("https://api.qmkjcm.cn/api/gy_mr_rw/")
     .then(function(res) { return res.json(); })
     .then(function(data) {
@@ -384,6 +505,8 @@
       el.textContent = tasks.length ? "今日任务：\n" + tasks.map(function(t,i) { return (i+1)+". "+t; }).join("\n") : "今日暂无任务";
     })
     .catch(function() { var el = document.getElementById("sky-api"); if (el) el.textContent = "今日任务加载失败"; });
+
+  /* ===== CS2 箱子刷新倒计时 ===== */
   function nextCs2Reset() {
     var now = new Date();
     var t = new Date(now);
@@ -406,15 +529,23 @@
   }
   tickCs2();
   setInterval(tickCs2, 1000);
+
+  /* ===== 老奶奶干饭时钟 ===== */
 })();
 </script>
+
+<!-- ===== 新增板块 JS ===== -->
 <script>
 (function() {
   "use strict";
+
+  /* ===== 工具函数 ===== */
   function $(id) { return document.getElementById(id); }
   function setContent(id, html) { var el = $(id); if (el) el.innerHTML = html; }
   function todayKey() { var d = new Date(); return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(); }
   function seededRandom(seed) { var x = Math.sin(seed) * 10000; return x - Math.floor(x); }
+
+  /* ===== 1. 每日塔罗牌 ===== */
   var TAROT_CARDS = [
     {name:"愚者",en:"The Fool",up:"新的开始、冒险、自由、天真、无限可能",rev:"鲁莽、冒险、冲动、不负责任、缺乏计划"},
     {name:"魔术师",en:"The Magician",up:"创造力、技能、意志力、沟通、行动",rev:"欺骗、技能不足、操纵、缺乏方向"},
@@ -454,6 +585,8 @@
         '<div class="tarot-meaning">' + meaning + '</div></div>');
     }, 500);
   };
+
+  /* ===== 2. 今日运势（本地12星座数据） ===== */
   var ZODIACS = [
     {name:"白羊座",icon:"♈",traits:"热情勇敢，冲动好胜",luck:["整体运势不错，适合主动出击。","感情方面有新机会，把握时机。","工作中会遇到贵人相助。","财运平稳，不宜大额投资。","健康方面注意休息，避免熬夜。"]},
     {name:"金牛座",icon:"♉",traits:"稳重务实，享受生活",luck:["整体运势平稳，适合稳步前进。","感情方面需要更多耐心和沟通。","工作中踏实肯干会有回报。","财运不错，有意外收入可能。","健康方面注意饮食均衡。"]},
@@ -477,12 +610,15 @@
     var r3 = Math.floor(seededRandom(seed + 2) * 5) + 1;
     var r4 = Math.floor(seededRandom(seed + 3) * 5) + 1;
     var stars = function(n) { var s = ""; for (var i=0;i<5;i++) s += i<n?"★":"☆"; return s; };
-    setContent("fortune-content", '<div class="fortune-item"><span class="label">' + z.icon + ' ' + z.name + '</span><span class="value">' + z.traits + '</span></div>' +
+    var html = '<div class="fortune-item"><span class="label">' + z.icon + ' ' + z.name + '</span><span class="value">' + z.traits + '</span></div>' +
       '<div class="fortune-item"><span class="label">综合运势</span><span class="fortune-stars">' + stars(r2) + '</span></div>' +
       '<div class="fortune-item"><span class="label">爱情运势</span><span class="fortune-stars">' + stars(r3) + '</span></div>' +
       '<div class="fortune-item"><span class="label">财运指数</span><span class="fortune-stars">' + stars(r4) + '</span></div>' +
-      '<div style="margin-top:8px;font-size:13px;color:var(--muted);line-height:1.7">' + z.luck[r1] + '</div>');
+      '<div style="margin-top:8px;font-size:13px;color:var(--muted);line-height:1.7">' + z.luck[r1] + '</div>';
+    setContent("fortune-content", html);
   };
+
+  /* ===== 3. 今日黄历 ===== */
   var LUNAR_MONTHS = ["正","二","三","四","五","六","七","八","九","十","冬","腊"];
   var LUNAR_DAYS = ["初一","初二","初三","初四","初五","初六","初七","初八","初九","初十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十"];
   var YI_LIST = ["祭祀","祈福","求嗣","开光","出行","解除","订婚","纳采","裁衣","冠笄","嫁娶","动土","安床","入宅","移徙","安香","栽种","纳畜","牧养","纳财","开市","交易","立券","会亲友","求医","治病","破屋","坏垣","余事勿取"];
@@ -490,22 +626,28 @@
   function loadCalendar() {
     var now = new Date();
     var seed = todayKey();
-    var yi = [], ji = [];
+    var yi = [];
+    var ji = [];
     for (var i = 0; i < 4; i++) {
       var yiIdx = Math.floor(seededRandom(seed + i) * YI_LIST.length);
       if (yi.indexOf(YI_LIST[yiIdx]) === -1) yi.push(YI_LIST[yiIdx]);
       var jiIdx = Math.floor(seededRandom(seed + i + 10) * JI_LIST.length);
       if (ji.indexOf(JI_LIST[jiIdx]) === -1) ji.push(JI_LIST[jiIdx]);
     }
-    setContent("calendar-content", '<div class="calendar-detail">' +
+    var lunarMonth = LUNAR_MONTHS[now.getMonth()];
+    var lunarDay = LUNAR_DAYS[(now.getDate() - 1) % 30];
+    var html = '<div class="calendar-detail">' +
       '<div class="item"><span class="label">公历</span><span class="value">' + now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日</span></div>' +
-      '<div class="item"><span class="label">农历</span><span class="value">' + LUNAR_MONTHS[now.getMonth()] + '月' + LUNAR_DAYS[(now.getDate()-1)%30] + '</span></div>' +
+      '<div class="item"><span class="label">农历</span><span class="value">' + lunarMonth + '月' + lunarDay + '</span></div>' +
       '<div class="item"><span class="label">星期</span><span class="value">' + ["日","一","二","三","四","五","六"][now.getDay()] + '</span></div>' +
       '<div class="item"><span class="label">生肖</span><span class="value">' + ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"][(now.getFullYear()-4)%12] + '年</span></div>' +
       '</div>' +
       '<div style="margin-top:10px;font-size:13px"><span style="color:#22c55e;font-weight:600">宜：</span><span style="color:var(--muted)">' + yi.join("、") + '</span></div>' +
-      '<div style="margin-top:4px;font-size:13px"><span style="color:#ef4444;font-weight:600">忌：</span><span style="color:var(--muted)">' + ji.join("、") + '</span></div>');
+      '<div style="margin-top:4px;font-size:13px"><span style="color:#ef4444;font-weight:600">忌：</span><span style="color:var(--muted)">' + ji.join("、") + '</span></div>';
+    setContent("calendar-content", html);
   }
+
+  /* ===== 4. 王者荣耀 ===== */
   var WZRY_SEASON = {name:"S45 赛季",title:"时空之影",start:"2026-08-21",end:"2026-12-15",note:"赛季持续约4个月"};
   var WZRY_BALANCE = [
     {hero:"影",type:"削弱",detail:"二技能飞刃攻击间隔延长，前期伤害速度变慢；后期攻速叠加后二技能释放速度加快"},
@@ -541,6 +683,8 @@
     html += '<div style="font-size:11px;color:var(--sub);margin-top:6px">数据来源：王者荣耀官网公告 · 仅供参考</div>';
     setContent("wzry-content", html);
   };
+
+  /* ===== 5. GitHub 热榜 ===== */
   function loadGithub() {
     setContent("github-content", '<span class="loading">加载中...</span>');
     var date = new Date();
@@ -560,10 +704,14 @@
           });
           html += '</ul>';
           setContent("github-content", html);
-        } else { setContent("github-content", '<span class="error">GitHub 数据加载失败</span>'); }
+        } else {
+          setContent("github-content", '<span class="error">GitHub 数据加载失败</span>');
+        }
       })
       .catch(function() { setContent("github-content", '<span class="error">GitHub API 暂时不可用</span>'); });
   }
+
+  /* ===== 6. 喜加一 ===== */
   function loadFreeGames() {
     setContent("freegame-content", '<span class="loading">加载中...</span>');
     fetch("https://www.gamerpower.com/api/giveaways?platform=epic-games-store,steam,gog&type=game")
@@ -574,15 +722,21 @@
           data.slice(0, 4).forEach(function(g) {
             html += '<div class="game-card">' +
               '<img class="game-thumb" src="' + g.thumbnail + '" alt="' + g.title + '" onerror="this.style.display=\'none\'">' +
-              '<div class="game-info"><div class="game-title">' + g.title + '</div>' +
+              '<div class="game-info">' +
+              '<div class="game-title">' + g.title + '</div>' +
               '<div class="game-platform">' + (g.platforms || g.type || "") + '</div>' +
-              '<div class="game-worth">免费 · 原价 ' + (g.worth || "未知") + '</div></div></div>';
+              '<div class="game-worth">免费 · 原价 ' + (g.worth || "未知") + '</div>' +
+              '</div></div>';
           });
           setContent("freegame-content", html);
-        } else { setContent("freegame-content", '<span class="error">暂无限免游戏信息</span>'); }
+        } else {
+          setContent("freegame-content", '<span class="error">暂无限免游戏信息</span>');
+        }
       })
       .catch(function() { setContent("freegame-content", '<span class="error">喜加一 API 暂时不可用</span>'); });
   }
+
+  /* ===== 7. MBTI 每日人格 ===== */
   var MBTI_TYPES = [
     {type:"INTJ",name:"建筑师",desc:"富有想象力和战略性的思想家，一切皆在计划之中。适合独立工作，擅长长期规划。"},
     {type:"INTP",name:"逻辑学家",desc:"具有创造力的发明家，对知识有着止不住的渴望。喜欢探索理论，擅长抽象思维。"},
@@ -604,8 +758,13 @@
   window.loadMbti = function() {
     var idx = Math.floor(Math.random() * MBTI_TYPES.length);
     var m = MBTI_TYPES[idx];
-    setContent("mbti-content", '<div class="mbti-type">' + m.type + '</div><div class="mbti-name">' + m.name + '</div><div class="mbti-desc">' + m.desc + '</div>');
+    var html = '<div class="mbti-type">' + m.type + '</div>' +
+      '<div class="mbti-name">' + m.name + '</div>' +
+      '<div class="mbti-desc">' + m.desc + '</div>';
+    setContent("mbti-content", html);
   };
+
+  /* ===== 8. 每日一签 ===== */
   var DIVINATIONS = [
     {level:"上上签",poem:"云开见月正分明\n不须进退问前程\n婚姻皆由天注定\n和合清吉万事成",meaning:"大吉大利，万事如意。所求之事皆能顺遂。"},
     {level:"上吉签",poem:"日出便见风云散\n光明清净照世间\n一向前途通大道\n万事清吉保平安",meaning:"前途光明，诸事顺遂。宜积极进取。"},
@@ -619,8 +778,15 @@
   window.loadDivination = function() {
     var idx = Math.floor(Math.random() * DIVINATIONS.length);
     var d = DIVINATIONS[idx];
-    setContent("divination-content", '<div class="divination-result"><div class="divination-level">' + d.level + '</div><div class="divination-poem">' + d.poem + '</div><div class="divination-meaning">' + d.meaning + '</div></div>');
+    var html = '<div class="divination-result">' +
+      '<div class="divination-level">' + d.level + '</div>' +
+      '<div class="divination-poem">' + d.poem + '</div>' +
+      '<div class="divination-meaning">' + d.meaning + '</div>' +
+      '</div>';
+    setContent("divination-content", html);
   };
+
+  /* ===== 9. 人民日报金句 ===== */
   var RMRB_QUOTES = [
     "岁月因青春慨然以赴而更加静好，世间因少年挺身向前而更加瑰丽。",
     "奋斗是青春最亮丽的底色，行动是青年最有效的磨砺。",
@@ -638,6 +804,8 @@
     var q = RMRB_QUOTES[Math.floor(Math.random() * RMRB_QUOTES.length)];
     setContent("rmrb-content", '<div class="rmrb-quote">' + q + '</div><div class="rmrb-source">—— 人民日报金句</div>');
   }
+
+  /* ===== 10. AI 科技新闻（Hacker News） ===== */
   function loadAiNews() {
     setContent("ainews-content", '<span class="loading">加载中...</span>');
     fetch("https://api-hot.imsyy.top/36kr")
@@ -658,6 +826,8 @@
       })
       .catch(function() { setContent("ainews-content", '<span class="error">科技新闻 API 暂时不可用</span>'); });
   }
+
+  /* ===== 11. 每日热点新闻 ===== */
   function loadDailyNews() {
     setContent("dailynews-content", '<span class="loading">加载中...</span>');
     fetch("https://api-hot.imsyy.top/zhihu")
@@ -678,6 +848,15 @@
       })
       .catch(function() { setContent("dailynews-content", '<span class="error">热点新闻 API 暂时不可用</span>'); });
   }
+
+  /* ===== 自动加载板块（点击触发的不自动加载） ===== */
+  loadCalendar();
+  loadGithub();
+  loadFreeGames();
+  loadRmrb();
+  loadAiNews();
+
+  /* ===== 12. 三角洲今日密码 ===== */
   function loadDzmm() {
     setContent("dzmm-content", '<span class="loading">加载中...</span>');
     fetch("https://openapi.dwo.cc/api/sjzmm")
@@ -704,6 +883,8 @@
       })
       .catch(function() { setContent("dzmm-content", '<span class="error">密码 API 暂时不可用</span>'); });
   }
+
+  /* ===== 13. 历史上的今天 ===== */
   function loadHistory() {
     setContent("history-content", '<span class="loading">加载中...</span>');
     fetch("https://openapi.dwo.cc/api/zijh_ls")
@@ -723,6 +904,8 @@
       })
       .catch(function() { setContent("history-content", '<span class="error">历史 API 暂时不可用</span>'); });
   }
+
+  /* ===== 14. 今日吃什么 ===== */
   var FOODS = [
     {name:"红烧肉",cat:"家常菜"},{name:"麻辣香锅",cat:"川菜"},{name:"兰州拉面",cat:"面食"},
     {name:"黄焖鸡米饭",cat:"快餐"},{name:"沙县小吃",cat:"快餐"},{name:"重庆小面",cat:"面食"},
@@ -747,6 +930,8 @@
         '<div class="food-cat">' + f.cat + '</div></div>');
     }, 300);
   };
+
+  /* ===== 15. 今日穿搭配色 ===== */
   var OUTFITS = [
     {name:"经典黑白灰",colors:["#1a1a1a","#4a4a4a","#f5f5f5"],desc:"永不出错的经典配色，简约高级"},
     {name:"大地色系",colors:["#8B7355","#D2B48C","#F5DEB3"],desc:"温暖自然，适合秋冬"},
@@ -773,6 +958,8 @@
         '<div class="outfit-desc">' + o.desc + '</div></div>');
     }, 300);
   };
+
+  /* ===== 16. 王者荣耀战力查询 ===== */
   window.queryWzryPower = function() {
     var hero = document.getElementById("wzry-hero-input").value.trim();
     if (!hero) { setContent("wzry-power-content", '<span style="color:#ef4444">请输入英雄名</span>'); return; }
@@ -802,6 +989,8 @@
       })
       .catch(function() { setContent("wzry-power-content", '<span class="error">战力 API 暂时不可用</span>'); });
   };
+
+  /* ===== 17. 汇率换算器 ===== */
   window.convertRate = function() {
     var amount = parseFloat(document.getElementById("rate-amount").value) || 0;
     var from = document.getElementById("rate-from").value;
@@ -824,6 +1013,8 @@
       })
       .catch(function() { document.getElementById("rate-result").innerHTML = '<span class="error">汇率 API 暂时不可用</span>'; });
   };
+
+  /* ===== 18. 随机驾考题目 ===== */
   var EXAMS = [
     {q:"机动车驾驶人初次申领驾驶证后的实习期是多长时间？",opts:["6个月","12个月","16个月","18个月"],answer:1,explain:"机动车驾驶人初次申领驾驶证后的实习期为12个月。"},
     {q:"驾驶机动车在高速公路上行驶，车速超过每小时100公里时，应当与同车道前车保持多少米以上的距离？",opts:["50米","80米","100米","150米"],answer:2,explain:"车速超过每小时100公里时，应与同车道前车保持100米以上距离。"},
@@ -857,14 +1048,11 @@
         '<div class="exam-answer"><b>正确答案：' + String.fromCharCode(65 + e.answer) + '</b> · ' + e.explain + '</div>');
     }, 300);
   };
-  loadCalendar();
-  loadGithub();
-  loadFreeGames();
-  loadRmrb();
-  loadAiNews();
-  loadDailyNews();
+
+  /* ===== 自动加载新增板块 ===== */
   loadDzmm();
   loadHistory();
+
 })();
 </script>
 </body>
