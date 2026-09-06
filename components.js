@@ -53,8 +53,8 @@
     return [
       '<header class="topbar">',
       '  <div class="left">',
-      '    <a class="brand" href="home.html">HEAN' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
-      '    <a class="home-btn" href="home.html" title="主页">',
+      '    <a class="brand" href="Core.html">HEAN' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
+      '    <a class="home-btn" href="Core.html" title="主页">',
       '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">',
       '        <path d="M3 11l9-8 9 8"/>',
       '        <path d="M5 10v10h14V10"/>',
