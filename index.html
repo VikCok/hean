@@ -7,40 +7,17 @@
 <link rel="icon" href="/assets/favicon.ico">
 <style>
   :root{
-    --bg:#ffffff;
-    --text:#333333;
-    --sub:#888888;
-    --muted:#555555;
-    --line:#e5e5e5;
-    --btn-border:#cccccc;
-    --btn-hover:#111111;
-    --panel:#ffffff;
-    --active-bg:#2563eb;
-    --active-text:#ffffff;
-    --input-border:#2563eb;
-    --clock-face:#f6f6f6;
+    --bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;
+    --btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;
+    --active-bg:#2563eb;--active-text:#ffffff;--input-border:#2563eb;--clock-face:#f6f6f6;
   }
   html.dark{
-    --bg:#121212;
-    --text:#e8e8e8;
-    --sub:#9a9a9a;
-    --muted:#aaaaaa;
-    --line:#2e2e2e;
-    --btn-border:#3f3f3f;
-    --btn-hover:#ffffff;
-    --panel:#1e1e1e;
-    --active-bg:#2563eb;
-    --active-text:#ffffff;
-    --input-border:#2563eb;
-    --clock-face:#262626;
+    --bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;--line:#2e2e2e;
+    --btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;
+    --active-bg:#2563eb;--active-text:#ffffff;--input-border:#2563eb;--clock-face:#262626;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
-    min-height:100vh;display:flex;flex-direction:column;
-    background:var(--bg);color:var(--text);
-    transition:background .2s,color .2s;
-  }
+  body{font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
   main{flex:1;display:flex;flex-direction:column;align-items:center;padding:44px 20px 36px}
   .top-info{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:960px;margin-bottom:18px;gap:16px}
   .digital-clock{font-size:48px;font-weight:700;letter-spacing:2px;font-variant-numeric:tabular-nums;color:var(--text);line-height:1}
@@ -51,6 +28,17 @@
   .cal-day{background:#fff;color:#2563eb;font-size:42px;font-weight:800;text-align:center;padding:8px 0;line-height:1}
   html.dark .cal-day{background:#1e1e1e;color:#60a5fa}
   .search-box{width:100%;max-width:960px}
+  .engine-tabs{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+  .engine-tabs button{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--btn-border);border-radius:6px;background:var(--panel);color:var(--muted);cursor:pointer;font-size:14px;transition:color .15s,border-color .15s}
+  .engine-tabs button.active{background:var(--active-bg);color:var(--active-text);border-color:var(--active-bg)}
+  .e-icon{width:18px;height:18px;border-radius:4px;flex:none;object-fit:contain;background:#fff;padding:1px}
+  .e-name{display:none}
+  #search-form{display:flex;gap:0}
+  #search-input{flex:1;min-height:46px;padding:0 16px;border:2px solid var(--input-border);border-radius:16px 0 0 16px;font-size:16px;outline:none;background:var(--panel);color:var(--text)}
+  #search-form button{min-height:46px;padding:0 24px;border:none;border-radius:0 16px 16px 0;background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer}
+  .quote{margin-top:20px;max-width:960px;text-align:center;line-height:1.8}
+  .quote-cn{font-size:15px;color:var(--muted)}
+  .quote-en{font-size:13px;color:var(--sub);margin-top:4px}
   .divider{width:100%;max-width:960px;height:1px;background:var(--line);margin:26px 0}
   .quick-links{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:960px;margin-bottom:6px}
   .quick-card{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:20px 24px;border:1px solid var(--btn-border);border-radius:12px;color:var(--text);text-decoration:none;transition:border-color .15s,background .15s}
@@ -58,7 +46,7 @@
   .quick-card-main{grid-row:span 2}
   .qc-title{font-size:20px;font-weight:700;display:flex;align-items:center;gap:8px}
   .qc-desc{font-size:14px;color:var(--sub)}
-  .qc-api{font-size:13px;color:var(--sub);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--panel);border:1px dashed var(--btn-border);border-radius:6px;padding:6px 8px;align-self:stretch;overflow-wrap:anywhere;line-height:1.7;white-space:pre-line}
+  .qc-api{font-size:13px;color:var(--sub);background:var(--panel);border:1px dashed var(--btn-border);border-radius:6px;padding:6px 8px;align-self:stretch;overflow-wrap:anywhere;line-height:1.7;white-space:pre-line}
   .quick-card-tall{grid-row:span 2;justify-content:flex-start;padding:22px 24px}
   .gc-block{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px dashed var(--btn-border);border-radius:6px;padding:6px 8px}
   .gc-title{font-size:13px;font-weight:700;color:var(--text)}
@@ -70,9 +58,7 @@
   .gc-clock .dot.active{fill:#f59e0b;stroke:#f59e0b}
   .gc-clock .tlabel{fill:var(--text);font-size:13px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
   .gc-clock .hand{stroke:var(--text);stroke-linecap:round}
-  .gc-clock .hand-hr{stroke-width:5}
-  .gc-clock .hand-min{stroke-width:3}
-  .gc-clock .hand-sec{stroke:#f59e0b;stroke-width:1.6}
+  .gc-clock .hand-hr{stroke-width:5}.gc-clock .hand-min{stroke-width:3}.gc-clock .hand-sec{stroke:#f59e0b;stroke-width:1.6}
   .gc-clock .hub{fill:var(--text)}
   .gc-info{display:flex;flex-direction:column;gap:2px;min-width:120px}
   .gc-info-label{font-size:11px;color:var(--sub)}
@@ -82,19 +68,63 @@
   .qc-mini{display:flex;gap:10px;align-items:center;justify-content:center;padding:12px;border:1px solid var(--btn-border);border-radius:12px}
   .qc-mini a{padding:6px 18px;border:1px solid var(--btn-border);border-radius:999px;color:var(--muted);font-size:14px;text-decoration:none;transition:color .15s,border-color .15s}
   .qc-mini a:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
-  .engine-tabs{display:flex;gap:8px;margin-bottom:10px}
-  .engine-tabs button{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--btn-border);border-radius:6px;background:var(--panel);color:var(--muted);cursor:pointer;font-size:14px;transition:color .15s,border-color .15s}
-  .engine-tabs button.active{background:var(--active-bg);color:var(--active-text);border-color:var(--active-bg)}
-  .e-icon{width:18px;height:18px;border-radius:4px;flex:none;object-fit:contain;background:#fff;padding:1px}
-  .e-name{display:none}
-  #search-form{display:flex;gap:0}
-  #search-input{flex:1;min-height:46px;padding:0 16px;border:2px solid var(--input-border);border-radius:16px 0 0 16px;font-size:16px;outline:none;background:var(--panel);color:var(--text)}
-  #search-form button{min-height:46px;padding:0 24px;border:none;border-radius:0 16px 16px 0;background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer}
-  .quote{margin-top:20px;max-width:960px;text-align:center;line-height:1.8}
-  .quote-cn{font-size:15px;color:var(--muted)}
-  .quote-en{font-size:13px;color:var(--sub);margin-top:4px}
-  @media (max-width:768px){.quick-links{grid-template-columns:1fr}.quick-card-main,.quick-card-tall{grid-row:auto}}
-  </style>
+  .extra-sections{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:960px;margin-top:16px}
+  .section-card{background:var(--panel);border:1px solid var(--btn-border);border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:10px}
+  .section-card.wide{grid-column:1 / -1}
+  .section-title{font-size:16px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+  .section-title .icon{font-size:18px}
+  .section-content{font-size:14px;color:var(--muted);line-height:1.8}
+  .section-content .loading{color:var(--sub);font-style:italic}
+  .section-content .error{color:#ef4444}
+  .section-select{padding:6px 12px;border:1px solid var(--btn-border);border-radius:6px;background:var(--panel);color:var(--text);font-size:14px;cursor:pointer;outline:none}
+  .section-btn{padding:6px 16px;border:1px solid var(--active-bg);border-radius:6px;background:var(--active-bg);color:#fff;font-size:13px;cursor:pointer;transition:background .15s}
+  .section-btn:hover{background:#1d4ed8}
+  .section-btn.secondary{background:transparent;color:var(--muted);border-color:var(--btn-border)}
+  .section-btn.secondary:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
+  .news-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .news-list li{display:flex;gap:8px;align-items:baseline}
+  .news-list .rank{flex:none;width:20px;height:20px;display:flex;align-items:center;justify-content:center;background:var(--active-bg);color:#fff;font-size:11px;font-weight:700;border-radius:4px}
+  .news-list .rank.other{background:var(--btn-border);color:var(--muted)}
+  .news-list a{color:var(--muted);text-decoration:none;font-size:13px;line-height:1.5;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .news-list a:hover{color:var(--active-bg)}
+  .news-list .meta{flex:none;font-size:11px;color:var(--sub)}
+  .game-card{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .game-card:last-child{border-bottom:none}
+  .game-thumb{flex:none;width:60px;height:34px;background:var(--line);border-radius:4px;object-fit:cover}
+  .game-info{flex:1;min-width:0}
+  .game-title{font-size:13px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .game-platform{font-size:11px;color:var(--sub);margin-top:2px}
+  .game-worth{font-size:11px;color:#22c55e;font-weight:600;margin-top:2px}
+  .tarot-card{text-align:center;padding:10px 0}
+  .tarot-name{font-size:18px;font-weight:700;color:var(--text)}
+  .tarot-meaning{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.7}
+  .mbti-type{font-size:28px;font-weight:800;color:var(--active-bg);letter-spacing:2px}
+  .mbti-name{font-size:15px;font-weight:600;color:var(--text);margin-top:4px}
+  .mbti-desc{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.7}
+  .fortune-item{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+  .fortune-item .label{color:var(--sub)}
+  .fortune-item .value{color:var(--text);font-weight:600}
+  .fortune-stars{color:#f59e0b;letter-spacing:1px}
+  .divination-result{text-align:center;padding:10px 0}
+  .divination-level{font-size:20px;font-weight:800;color:var(--active-bg)}
+  .divination-poem{font-size:14px;color:var(--text);margin-top:8px;line-height:1.8;white-space:pre-line}
+  .divination-meaning{font-size:12px;color:var(--sub);margin-top:8px}
+  .hero-item{display:flex;align-items:center;gap:10px;padding:6px 0}
+  .hero-avatar{flex:none;width:40px;height:40px;border-radius:6px;background:var(--line);object-fit:cover}
+  .hero-name{font-size:14px;font-weight:600;color:var(--text)}
+  .hero-title{font-size:12px;color:var(--sub)}
+  .calendar-detail{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px}
+  .calendar-detail .item{display:flex;flex-direction:column;gap:2px}
+  .calendar-detail .label{font-size:11px;color:var(--sub)}
+  .calendar-detail .value{font-weight:600;color:var(--text)}
+  .rmrb-quote{font-size:14px;color:var(--text);line-height:1.8;font-style:italic}
+  .rmrb-source{font-size:12px;color:var(--sub);margin-top:6px;text-align:right}
+  @media (max-width:768px){
+    .quick-links{grid-template-columns:1fr}
+    .quick-card-main,.quick-card-tall{grid-row:auto}
+    .extra-sections{grid-template-columns:1fr}
+  }
+</style>
 <script>
   try { if (localStorage.getItem('hean-theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
 </script>
@@ -166,26 +196,80 @@
       <a href="/core/news.html">新闻</a>
     </div>
   </nav>
+  <div class="extra-sections">
+    <div class="section-card">
+      <div class="section-title"><span class="icon">🔮</span>每日塔罗牌</div>
+      <div class="section-content" id="tarot-content"><span class="loading">正在抽牌...</span></div>
+      <button class="section-btn secondary" onclick="loadTarot()">重新抽牌</button>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span class="icon">⭐</span>今日运势</div>
+      <select class="section-select" id="zodiac-select" onchange="loadFortune()">
+        <option value="0">白羊座</option><option value="1">金牛座</option><option value="2">双子座</option>
+        <option value="3">巨蟹座</option><option value="4">狮子座</option><option value="5">处女座</option>
+        <option value="6">天秤座</option><option value="7">天蝎座</option><option value="8">射手座</option>
+        <option value="9">摩羯座</option><option value="10">水瓶座</option><option value="11">双鱼座</option>
+      </select>
+      <div class="section-content" id="fortune-content"><span class="loading">选择星座查看运势...</span></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span class="icon">📅</span>今日黄历</div>
+      <div class="section-content" id="calendar-content"><span class="loading">加载中...</span></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span class="icon">👑</span>王者荣耀</div>
+      <div class="section-content" id="wzry-content"><span class="loading">加载英雄数据...</span></div>
+      <button class="section-btn secondary" onclick="loadWzry()">换一个英雄</button>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span class="icon">🐙</span>GitHub 热榜</div>
+      <div class="section-content" id="github-content"><span class="loading">加载中...</span></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span class="icon">🎮</span>喜加一 · 限免游戏</div>
+      <div class="section-content" id="freegame-content"><span class="loading">加载中...</span></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span class="icon">🧠</span>MBTI 今日人格</div>
+      <div class="section-content" id="mbti-content"><span class="loading">加载中...</span></div>
+      <button class="section-btn secondary" onclick="loadMbti()">换一个</button>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span class="icon">🎋</span>每日一签</div>
+      <div class="section-content" id="divination-content"><span class="loading">点击求签...</span></div>
+      <button class="section-btn" onclick="loadDivination()">求签</button>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span class="icon">📰</span>人民日报 · 金句</div>
+      <div class="section-content" id="rmrb-content"><span class="loading">加载中...</span></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span class="icon">🤖</span>AI 科技新闻</div>
+      <div class="section-content" id="ainews-content"><span class="loading">加载中...</span></div>
+    </div>
+    <div class="section-card wide">
+      <div class="section-title"><span class="icon">📢</span>每日热点新闻</div>
+      <div class="section-content" id="dailynews-content"><span class="loading">加载中...</span></div>
+    </div>
+  </div>
 </main>
 <div id="site-footer"></div>
 <script src="/components.js"></script>
 <script>
-  (function() {
-    var cn = document.getElementById('daily-cn');
-    var en = document.getElementById('daily-en');
-    if (!cn) return;
-    fetch('https://api.t1qq.com/api/tool/daytry?key=aN4ga1sIvr4we5IfkAjhY68JOc&time=random')
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data && data.data) {
-          if (data.data.note) cn.textContent = data.data.note;
-          if (en && data.data.content) en.textContent = data.data.content;
-        }
-      })
-      .catch(function() {
-        cn.textContent = '路漫漫其修远兮，吾将上下而求索';
-      });
-  })();
+(function() {
+  var cn = document.getElementById('daily-cn');
+  var en = document.getElementById('daily-en');
+  if (!cn) return;
+  fetch('https://api.t1qq.com/api/tool/daytry?key=aN4ga1sIvr4we5IfkAjhY68JOc&time=random')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data && data.data) {
+        if (data.data.note) cn.textContent = data.data.note;
+        if (en && data.data.content) en.textContent = data.data.content;
+      }
+    })
+    .catch(function() { cn.textContent = '路漫漫其修远兮，吾将上下而求索'; });
+})();
 </script>
 <script>
 (function () {
@@ -324,7 +408,7 @@
     if (totalSec < 0) totalSec = 0;
     var hh = Math.floor(totalSec/3600);
     var mm = Math.floor((totalSec%3600)/60);
-    var ss = totalSec%60;
+    var ss = totalSec % 60;
     elCount.textContent = pad2(hh)+":"+pad2(mm)+":"+pad2(ss);
     for (i=0; i<FEED_TIMES.length; i++) {
       var d = document.getElementById("feed-dot-"+i);
@@ -339,6 +423,266 @@
   }
   tickFeed();
   setInterval(tickFeed, 1000);
+})();
+</script>
+<script>
+(function() {
+  "use strict";
+  function $(id) { return document.getElementById(id); }
+  function setContent(id, html) { var el = $(id); if (el) el.innerHTML = html; }
+  function todayKey() { var d = new Date(); return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(); }
+  function seededRandom(seed) { var x = Math.sin(seed) * 10000; return x - Math.floor(x); }
+
+  window.loadTarot = function() {
+    setContent("tarot-content", '<span class="loading">正在抽牌...</span>');
+    fetch("https://tarotapi.dev/api/v1/cards/random?n=1")
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.cards && data.cards[0]) {
+          var c = data.cards[0];
+          setContent("tarot-content", '<div class="tarot-card"><div class="tarot-name">' + (c.name || "未知") + '</div><div class="tarot-meaning">' + (c.meaning_up || c.desc || "暂无释义") + '</div></div>');
+        } else { setContent("tarot-content", '<span class="error">抽牌失败，请重试</span>'); }
+      })
+      .catch(function() { setContent("tarot-content", '<span class="error">塔罗牌 API 暂时不可用</span>'); });
+  };
+
+  var ZODIACS = [
+    {name:"白羊座",icon:"♈",traits:"热情勇敢，冲动好胜",luck:["整体运势不错，适合主动出击。","感情方面有新机会，把握时机。","工作中会遇到贵人相助。","财运平稳，不宜大额投资。","健康方面注意休息，避免熬夜。"]},
+    {name:"金牛座",icon:"♉",traits:"稳重务实，享受生活",luck:["整体运势平稳，适合稳步前进。","感情方面需要更多耐心和沟通。","工作中踏实肯干会有回报。","财运不错，有意外收入可能。","健康方面注意饮食均衡。"]},
+    {name:"双子座",icon:"♊",traits:"机智灵活，善于交际",luck:["整体运势活跃，社交运旺盛。","感情方面桃花朵朵开。","工作中创意灵感不断。","财运一般，注意理性消费。","健康方面注意呼吸系统。"]},
+    {name:"巨蟹座",icon:"♋",traits:"温柔体贴，重视家庭",luck:["整体运势温暖，家庭和睦。","感情方面甜蜜温馨。","工作中团队合作顺利。","财运稳定，适合储蓄。","健康方面注意肠胃健康。"]},
+    {name:"狮子座",icon:"♌",traits:"自信大方，领导力强",luck:["整体运势强劲，适合展现自我。","感情方面魅力四射。","工作中有晋升机会。","财运亨通，投资有望获利。","健康方面注意心脏保养。"]},
+    {name:"处女座",icon:"♍",traits:"细致严谨，追求完美",luck:["整体运势顺遂，细节决定成败。","感情方面需要放下完美主义。","工作中精益求精获认可。","财运不错，理财有方。","健康方面注意神经系统。"]},
+    {name:"天秤座",icon:"♎",traits:"优雅平和，追求和谐",luck:["整体运势和谐，人际关系良好。","感情方面桃花运旺。","工作中合作共赢。","财运平稳，适合合伙。","健康方面注意肾脏保养。"]},
+    {name:"天蝎座",icon:"♏",traits:"神秘深邃，意志坚定",luck:["整体运势深刻，适合深度思考。","感情方面激情四射。","工作中洞察力强获突破。","财运不错，有偏财机会。","健康方面注意生殖系统。"]},
+    {name:"射手座",icon:"♐",traits:"乐观自由，热爱冒险",luck:["整体运势开朗，适合外出旅行。","感情方面浪漫邂逅。","工作中开拓新领域。","财运一般，注意节制。","健康方面注意运动安全。"]},
+    {name:"摩羯座",icon:"♑",traits:"踏实努力，目标明确",luck:["整体运势上升，努力有回报。","感情方面稳定发展。","工作中事业运旺盛。","财运渐好，适合长期投资。","健康方面注意骨骼关节。"]},
+    {name:"水瓶座",icon:"♒",traits:"独立创新，思想前卫",luck:["整体运势独特，适合创新突破。","感情方面有惊喜。","工作中创意被采纳。","财运一般，适合科技投资。","健康方面注意小腿保养。"]},
+    {name:"双鱼座",icon:"♓",traits:"浪漫感性，富有想象",luck:["整体运势梦幻，灵感丰富。","感情方面浪漫甜蜜。","工作中艺术才华展现。","财运一般，避免冲动消费。","健康方面注意足部保养。"]}
+  ];
+  window.loadFortune = function() {
+    var idx = parseInt($("zodiac-select").value) || 0;
+    var z = ZODIACS[idx];
+    var seed = todayKey() + idx;
+    var r1 = Math.floor(seededRandom(seed) * z.luck.length);
+    var r2 = Math.floor(seededRandom(seed + 1) * 5) + 1;
+    var r3 = Math.floor(seededRandom(seed + 2) * 5) + 1;
+    var r4 = Math.floor(seededRandom(seed + 3) * 5) + 1;
+    var stars = function(n) { var s = ""; for (var i=0;i<5;i++) s += i<n?"★":"☆"; return s; };
+    setContent("fortune-content", '<div class="fortune-item"><span class="label">' + z.icon + ' ' + z.name + '</span><span class="value">' + z.traits + '</span></div>' +
+      '<div class="fortune-item"><span class="label">综合运势</span><span class="fortune-stars">' + stars(r2) + '</span></div>' +
+      '<div class="fortune-item"><span class="label">爱情运势</span><span class="fortune-stars">' + stars(r3) + '</span></div>' +
+      '<div class="fortune-item"><span class="label">财运指数</span><span class="fortune-stars">' + stars(r4) + '</span></div>' +
+      '<div style="margin-top:8px;font-size:13px;color:var(--muted);line-height:1.7">' + z.luck[r1] + '</div>');
+  };
+
+  var LUNAR_MONTHS = ["正","二","三","四","五","六","七","八","九","十","冬","腊"];
+  var LUNAR_DAYS = ["初一","初二","初三","初四","初五","初六","初七","初八","初九","初十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十"];
+  var YI_LIST = ["祭祀","祈福","求嗣","开光","出行","解除","订婚","纳采","裁衣","冠笄","嫁娶","动土","安床","入宅","移徙","安香","栽种","纳畜","牧养","纳财","开市","交易","立券","会亲友","求医","治病","破屋","坏垣","余事勿取"];
+  var JI_LIST = ["诸事不宜","开市","嫁娶","移徙","入宅","安葬","行丧","伐木","作灶","动土","破土","开渠","穿井","祭祀","祈福","求嗣","开光","出行","解除","订婚","纳采","裁衣","冠笄"];
+  function loadCalendar() {
+    var now = new Date();
+    var seed = todayKey();
+    var yi = [], ji = [];
+    for (var i = 0; i < 4; i++) {
+      var yiIdx = Math.floor(seededRandom(seed + i) * YI_LIST.length);
+      if (yi.indexOf(YI_LIST[yiIdx]) === -1) yi.push(YI_LIST[yiIdx]);
+      var jiIdx = Math.floor(seededRandom(seed + i + 10) * JI_LIST.length);
+      if (ji.indexOf(JI_LIST[jiIdx]) === -1) ji.push(JI_LIST[jiIdx]);
+    }
+    setContent("calendar-content", '<div class="calendar-detail">' +
+      '<div class="item"><span class="label">公历</span><span class="value">' + now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日</span></div>' +
+      '<div class="item"><span class="label">农历</span><span class="value">' + LUNAR_MONTHS[now.getMonth()] + '月' + LUNAR_DAYS[(now.getDate()-1)%30] + '</span></div>' +
+      '<div class="item"><span class="label">星期</span><span class="value">' + ["日","一","二","三","四","五","六"][now.getDay()] + '</span></div>' +
+      '<div class="item"><span class="label">生肖</span><span class="value">' + ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"][(now.getFullYear()-4)%12] + '年</span></div>' +
+      '</div>' +
+      '<div style="margin-top:10px;font-size:13px"><span style="color:#22c55e;font-weight:600">宜：</span><span style="color:var(--muted)">' + yi.join("、") + '</span></div>' +
+      '<div style="margin-top:4px;font-size:13px"><span style="color:#ef4444;font-weight:600">忌：</span><span style="color:var(--muted)">' + ji.join("、") + '</span></div>');
+  }
+
+  window.loadWzry = function() {
+    setContent("wzry-content", '<span class="loading">加载英雄数据...</span>');
+    fetch("https://pvp.qq.com/web201605/js/herolist.json")
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.length) {
+          var idx = Math.floor(Math.random() * data.length);
+          var hero = data[idx];
+          var skinName = hero.skin_name ? hero.skin_name.split("|")[0] : "默认皮肤";
+          setContent("wzry-content", '<div class="hero-item">' +
+            '<img class="hero-avatar" src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/' + hero.ename + '/' + hero.ename + '.jpg" alt="' + hero.cname + '" onerror="this.style.background=\'var(--line)\';this.src=\'\'">' +
+            '<div><div class="hero-name">' + hero.cname + '</div><div class="hero-title">' + (hero.title || "") + ' · ' + skinName + '</div></div></div>' +
+            '<div style="font-size:12px;color:var(--sub);margin-top:4px">数据来源：王者荣耀官网</div>');
+        } else { setContent("wzry-content", '<span class="error">英雄数据加载失败</span>'); }
+      })
+      .catch(function() { setContent("wzry-content", '<span class="error">王者荣耀 API 暂时不可用</span>'); });
+  };
+
+  function loadGithub() {
+    setContent("github-content", '<span class="loading">加载中...</span>');
+    var date = new Date();
+    date.setDate(date.getDate() - 30);
+    var dateStr = date.toISOString().split("T")[0];
+    fetch("https://api.github.com/search/repositories?q=created:>" + dateStr + "&sort=stars&order=desc&per_page=5")
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.items && data.items.length) {
+          var html = '<ul class="news-list">';
+          data.items.forEach(function(repo, i) {
+            html += '<li><span class="rank ' + (i<3?"":"other") + '">' + (i+1) + '</span>' +
+              '<a href="' + repo.html_url + '" target="_blank" rel="noopener" title="' + (repo.description || repo.full_name) + '">' + repo.full_name + '</a>' +
+              '<span class="meta">⭐' + (repo.stargazers_count > 1000 ? (repo.stargazers_count/1000).toFixed(1) + 'k' : repo.stargazers_count) + '</span></li>';
+          });
+          html += '</ul>';
+          setContent("github-content", html);
+        } else { setContent("github-content", '<span class="error">GitHub 数据加载失败</span>'); }
+      })
+      .catch(function() { setContent("github-content", '<span class="error">GitHub API 暂时不可用</span>'); });
+  }
+
+  function loadFreeGames() {
+    setContent("freegame-content", '<span class="loading">加载中...</span>');
+    fetch("https://www.gamerpower.com/api/giveaways?platform=epic-games-store,steam,gog&type=game")
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.length) {
+          var html = "";
+          data.slice(0, 4).forEach(function(g) {
+            html += '<div class="game-card">' +
+              '<img class="game-thumb" src="' + g.thumbnail + '" alt="' + g.title + '" onerror="this.style.display=\'none\'">' +
+              '<div class="game-info"><div class="game-title">' + g.title + '</div>' +
+              '<div class="game-platform">' + (g.platforms || g.type || "") + '</div>' +
+              '<div class="game-worth">免费 · 原价 ' + (g.worth || "未知") + '</div></div></div>';
+          });
+          setContent("freegame-content", html);
+        } else { setContent("freegame-content", '<span class="error">暂无限免游戏信息</span>'); }
+      })
+      .catch(function() { setContent("freegame-content", '<span class="error">喜加一 API 暂时不可用</span>'); });
+  }
+
+  var MBTI_TYPES = [
+    {type:"INTJ",name:"建筑师",desc:"富有想象力和战略性的思想家，一切皆在计划之中。适合独立工作，擅长长期规划。"},
+    {type:"INTP",name:"逻辑学家",desc:"具有创造力的发明家，对知识有着止不住的渴望。喜欢探索理论，擅长抽象思维。"},
+    {type:"ENTJ",name:"指挥官",desc:"大胆、富有想象力且意志强大的领导者，总能找到或创造解决方法。天生的领导者。"},
+    {type:"ENTP",name:"辩论家",desc:"聪明好奇的思想者，不会放弃任何智力上的挑战。喜欢辩论，思维敏捷。"},
+    {type:"INFJ",name:"提倡者",desc:"安静而神秘，同时鼓舞人心且不知疲倦的理想主义者。富有洞察力，关心他人。"},
+    {type:"INFP",name:"调停者",desc:"诗意、善良的利他主义者，总是热情地为正当理由提供帮助。富有同情心。"},
+    {type:"ENFJ",name:"主人公",desc:"富有魅力且鼓舞人心的领导者，有使听众着迷的能力。天生的导师。"},
+    {type:"ENFP",name:"竞选者",desc:"热情、有创造力、爱社交的自由精神，总能找到理由微笑。充满活力。"},
+    {type:"ISTJ",name:"物流师",desc:"实际且注重事实的个人，可靠性不容怀疑。严谨可靠，注重细节。"},
+    {type:"ISFJ",name:"守卫者",desc:"非常专注而温暖的守护者，时刻准备着保护爱着的人们。细心体贴。"},
+    {type:"ESTJ",name:"总经理",desc:"出色的管理者，在管理事情或人的方面无与伦比。组织能力强。"},
+    {type:"ESFJ",name:"执政官",desc:"极有同情心、爱交往、受欢迎的人们，总是热心提供帮助。社交达人。"},
+    {type:"ISTP",name:"鉴赏家",desc:"大胆而实际的实验家，擅长使用各种工具。动手能力强，冷静理性。"},
+    {type:"ISFP",name:"探险家",desc:"灵活、有魅力的艺术家，时刻准备着探索和体验新鲜事物。感性细腻。"},
+    {type:"ESTP",name:"企业家",desc:"聪明、精力充沛善于感知的人们，真心享受生活在边缘。行动力强。"},
+    {type:"ESFP",name:"表演者",desc:"自发的、精力充沛的表演者，生活在他们周围永不无聊。热情开朗。"}
+  ];
+  window.loadMbti = function() {
+    var idx = Math.floor(Math.random() * MBTI_TYPES.length);
+    var m = MBTI_TYPES[idx];
+    setContent("mbti-content", '<div class="mbti-type">' + m.type + '</div><div class="mbti-name">' + m.name + '</div><div class="mbti-desc">' + m.desc + '</div>');
+  };
+
+  var DIVINATIONS = [
+    {level:"上上签",poem:"云开见月正分明\n不须进退问前程\n婚姻皆由天注定\n和合清吉万事成",meaning:"大吉大利，万事如意。所求之事皆能顺遂。"},
+    {level:"上吉签",poem:"日出便见风云散\n光明清净照世间\n一向前途通大道\n万事清吉保平安",meaning:"前途光明，诸事顺遂。宜积极进取。"},
+    {level:"中吉签",poem:"劝君把定心莫虚\n天注衣禄自有余\n和合重重常吉庆\n时来终遇贵人扶",meaning:"平稳发展，有贵人相助。宜保持耐心。"},
+    {level:"中平签",poem:"衣食自然生处有\n劝君不用苦劳心\n但能孝悌存忠信\n福禄来成祸不侵",meaning:"平平淡淡，知足常乐。宜修身养性。"},
+    {level:"下下签",poem:"鱼龙混杂意相同\n耐守寒窗暂处穷\n玉石一别需仔细\n后来必有高人逢",meaning:"近期不顺，需耐心等待。宜守不宜攻。"},
+    {level:"上吉签",poem:"一帆风顺去安康\n出外求财大吉昌\n婚姻合伙皆如意\n生意兴隆财满堂",meaning:"财运亨通，出行顺利。宜把握机会。"},
+    {level:"中吉签",poem:"枯木逢春又发枝\n旧事重新再得宜\n凡事营谋皆遂意\n家门和顺福相随",meaning:"否极泰来，旧事成新。宜把握转机。"},
+    {level:"上上签",poem:"紫微高照运势通\n求财求官事事隆\n婚姻合和添贵子\n家门和顺福无穷",meaning:"福星高照，万事亨通。宜大展宏图。"}
+  ];
+  window.loadDivination = function() {
+    var idx = Math.floor(Math.random() * DIVINATIONS.length);
+    var d = DIVINATIONS[idx];
+    setContent("divination-content", '<div class="divination-result"><div class="divination-level">' + d.level + '</div><div class="divination-poem">' + d.poem + '</div><div class="divination-meaning">' + d.meaning + '</div></div>');
+  };
+
+  function loadRmrb() {
+    setContent("rmrb-content", '<span class="loading">加载中...</span>');
+    fetch("https://api.qhsou.com/api/rmrb.php")
+      .then(function(r) { return r.text(); })
+      .then(function(text) {
+        if (text && text.length > 10) {
+          setContent("rmrb-content", '<div class="rmrb-quote">' + text.substring(0, 200) + '</div><div class="rmrb-source">—— 人民日报</div>');
+        } else { setContent("rmrb-content", '<span class="error">金句加载失败</span>'); }
+      })
+      .catch(function() {
+        var quotes = ["岁月因青春慨然以赴而更加静好，世间因少年挺身向前而更加瑰丽。","奋斗是青春最亮丽的底色，行动是青年最有效的磨砺。","路虽远，行则将至；事虽难，做则必成。","青年一代有理想、有本领、有担当，国家就有前途，民族就有希望。"];
+        var q = quotes[Math.floor(Math.random() * quotes.length)];
+        setContent("rmrb-content", '<div class="rmrb-quote">' + q + '</div><div class="rmrb-source">—— 人民日报（备用）</div>');
+      });
+  }
+
+  function loadAiNews() {
+    setContent("ainews-content", '<span class="loading">加载中...</span>');
+    fetch("https://hacker-news.firebaseio.com/v0/topstories.json")
+      .then(function(r) { return r.json(); })
+      .then(function(ids) {
+        var aiKeywords = ["ai","gpt","llm","model","openai","anthropic","claude","gemini","deepmind","machine learning","neural","transformer","diffusion","stable diffusion","midjourney","copilot","agent","rag","embedding"];
+        var promises = ids.slice(0, 30).map(function(id) {
+          return fetch("https://hacker-news.firebaseio.com/v0/item/" + id + ".json").then(function(r) { return r.json(); });
+        });
+        return Promise.all(promises).then(function(items) {
+          var aiItems = items.filter(function(item) {
+            if (!item || !item.title) return false;
+            var title = item.title.toLowerCase();
+            return aiKeywords.some(function(kw) { return title.indexOf(kw) !== -1; });
+          });
+          if (aiItems.length === 0) aiItems = items.slice(0, 5);
+          var html = '<ul class="news-list">';
+          aiItems.slice(0, 5).forEach(function(item, i) {
+            var url = item.url || ("https://news.ycombinator.com/item?id=" + item.id);
+            html += '<li><span class="rank ' + (i<3?"":"other") + '">' + (i+1) + '</span>' +
+              '<a href="' + url + '" target="_blank" rel="noopener" title="' + item.title + '">' + item.title + '</a>' +
+              '<span class="meta">💬' + (item.descendants || 0) + '</span></li>';
+          });
+          html += '</ul>';
+          setContent("ainews-content", html);
+        });
+      })
+      .catch(function() { setContent("ainews-content", '<span class="error">AI 新闻加载失败</span>'); });
+  }
+
+  function loadDailyNews() {
+    setContent("dailynews-content", '<span class="loading">加载中...</span>');
+    fetch("https://hacker-news.firebaseio.com/v0/topstories.json")
+      .then(function(r) { return r.json(); })
+      .then(function(ids) {
+        var promises = ids.slice(0, 10).map(function(id) {
+          return fetch("https://hacker-news.firebaseio.com/v0/item/" + id + ".json").then(function(r) { return r.json(); });
+        });
+        return Promise.all(promises);
+      })
+      .then(function(items) {
+        var html = '<ul class="news-list">';
+        items.forEach(function(item, i) {
+          if (!item || !item.title) return;
+          var url = item.url || ("https://news.ycombinator.com/item?id=" + item.id);
+          var domain = "";
+          try { if (item.url) domain = new URL(item.url).hostname.replace("www.",""); } catch(e) {}
+          html += '<li><span class="rank ' + (i<3?"":"other") + '">' + (i+1) + '</span>' +
+            '<a href="' + url + '" target="_blank" rel="noopener" title="' + item.title + '">' + item.title + '</a>' +
+            '<span class="meta">' + (domain ? domain + ' · ' : '') + '⭐' + (item.score || 0) + '</span></li>';
+        });
+        html += '</ul>';
+        setContent("dailynews-content", html);
+      })
+      .catch(function() { setContent("dailynews-content", '<span class="error">热点新闻加载失败</span>'); });
+  }
+
+  loadTarot();
+  loadFortune();
+  loadCalendar();
+  loadWzry();
+  loadGithub();
+  loadFreeGames();
+  loadMbti();
+  loadRmrb();
+  loadAiNews();
+  loadDailyNews();
 })();
 </script>
 </body>
