@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HEAN 字母旋转动画</title>
+<title>HEAN 字母动画</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%}
@@ -13,7 +13,7 @@ body{
   font-family:"Microsoft YaHei","微软雅黑","PingFang SC",sans-serif;
   overflow:hidden;
 }
-.hean-rotate{
+.hean-stage{
   --hr-speed:0.9s;
   position:absolute;
   top:50%;left:50%;
@@ -21,7 +21,87 @@ body{
   width:var(--hr-size);
   height:var(--hr-size);
 }
-.hean-rotate span{
+.intro-quote{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  width:100%;
+  opacity:1;
+  transition:opacity 0.8s ease;
+  pointer-events:none;
+}
+.intro-quote .q-main{
+  font-size:calc(var(--hr-font) * 0.38);
+  font-weight:600;
+  color:var(--hr-color);
+  letter-spacing:2px;
+  line-height:1.6;
+}
+.intro-quote .q-src{
+  margin-top:14px;
+  font-size:calc(var(--hr-font) * 0.26);
+  color:var(--hr-color);
+  opacity:0.55;
+  letter-spacing:1px;
+}
+body.phase-highlight .intro-quote{opacity:0.1}
+.hean-intro{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  display:flex;
+  gap:calc(var(--hr-size) * 0.12);
+  opacity:0;
+  transition:opacity 0.6s ease;
+  pointer-events:none;
+}
+body.phase-highlight .hean-intro{opacity:1}
+.char-block{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:calc(var(--hr-size) * 0.03);
+}
+.cn-char{
+  font-size:calc(var(--hr-font) * 1.15);
+  font-weight:900;
+  color:var(--hr-color);
+  line-height:1;
+  transform:scale(0);
+  transition:transform 0.7s cubic-bezier(.34,1.56,.64,1);
+}
+body.phase-highlight .cn-char{transform:scale(1)}
+.en-label{
+  font-size:calc(var(--hr-font) * 0.42);
+  font-weight:900;
+  color:var(--hr-color);
+  letter-spacing:2px;
+  line-height:1;
+  opacity:0;
+  transform:translateY(12px);
+  transition:opacity 0.5s ease, transform 0.5s ease;
+}
+body.phase-label .en-label{opacity:1;transform:translateY(0)}
+body.phase-merge .cn-char{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0.5);
+  opacity:0;
+  transition:opacity 0.4s ease, transform 0.5s ease;
+}
+body.phase-merge .hean-intro{
+  gap:0;
+  align-items:center;
+  transition:gap 0.8s cubic-bezier(.34,1.3,.64,1);
+}
+body.phase-merge .en-label{
+  font-size:calc(var(--hr-font) * 0.95);
+  transition:font-size 0.8s cubic-bezier(.34,1.3,.64,1), opacity 0.3s ease, transform 0.5s ease;
+}
+body.phase-merge .char-block{
+  gap:0;
+}
+.anim-letter{
   position:absolute;
   top:50%;left:50%;
   width:1.15em;height:1.15em;
@@ -35,26 +115,45 @@ body{
   transition:transform var(--hr-speed) cubic-bezier(.45,0,.15,1);
   user-select:none;
   -webkit-user-select:none;
+  opacity:0;
 }
-.hean-rotate span.pos-0{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% - (var(--hr-size) * 0.20))); }
-.hean-rotate span.pos-1{ transform:translate(calc(-50% + (var(--hr-size) * 0.20)),calc(-50% - (var(--hr-size) * 0.20))); }
-.hean-rotate span.pos-2{ transform:translate(calc(-50% + (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); }
-.hean-rotate span.pos-3{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); }
+.anim-letter.pos-0{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% - (var(--hr-size) * 0.20))); }
+.anim-letter.pos-1{ transform:translate(calc(-50% + (var(--hr-size) * 0.20)),calc(-50% - (var(--hr-size) * 0.20))); }
+.anim-letter.pos-2{ transform:translate(calc(-50% + (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); }
+.anim-letter.pos-3{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); }
+body.phase-loop .anim-letter{opacity:1;transition:opacity 0.5s ease}
+body.phase-loop .intro-quote,
+body.phase-loop .hean-intro{opacity:0;transition:opacity 0.5s ease;pointer-events:none}
+body.phase-loop-done .intro-quote,
+body.phase-loop-done .hean-intro{display:none}
 </style>
 </head>
 <body>
 
-<div class="hean-rotate" id="hean-stage">
-  <span>H</span>
-  <span>E</span>
-  <span>A</span>
-  <span>N</span>
+<div class="hean-stage" id="hean-stage">
+  <div class="intro-quote" id="intro-quote">
+    <div class="q-main">䅁，轢禾也。从禾，安聲。</div>
+    <div class="q-src">东汉·许慎《说文解字》卷七</div>
+  </div>
+  <div class="hean-intro" id="hean-intro">
+    <div class="char-block">
+      <div class="en-label">HE</div>
+      <div class="cn-char">禾</div>
+    </div>
+    <div class="char-block">
+      <div class="en-label">AN</div>
+      <div class="cn-char">安</div>
+    </div>
+  </div>
+  <span class="anim-letter">H</span>
+  <span class="anim-letter">E</span>
+  <span class="anim-letter">A</span>
+  <span class="anim-letter">N</span>
 </div>
 
 <script>
 (function () {
   "use strict";
-
   var ROTATE_INTERVAL = 1900;
   var TRIGGER_AFTER   = 4;
   var HORIZONTAL_HOLD = 4000;
@@ -69,15 +168,14 @@ body{
   }
 
   var stage     = document.getElementById("hean-stage");
-  var letters   = stage.querySelectorAll("span");
+  var letters   = stage.querySelectorAll(".anim-letter");
   var positions = [0, 1, 3, 2];
   var rotateCount  = 0;
   var isAnimating  = false;
-  var nextAnim     = 3;
 
   function applyPositions() {
     for (var i = 0; i < letters.length; i++) {
-      letters[i].className = "pos-" + positions[i];
+      letters[i].className = "anim-letter pos-" + positions[i];
     }
   }
 
@@ -86,7 +184,6 @@ body{
     positions = positions.map(function (p) { return (p + 1) % 4; });
     applyPositions();
     rotateCount++;
-
     if (rotateCount >= TRIGGER_AFTER) {
       var h = positions[0], e = positions[1];
       if (h === 0 && e === 1) {
@@ -97,7 +194,6 @@ body{
 
   function anim3_horizontal() {
     isAnimating = true;
-
     var hOffsets = [-110, -37, 37, 110];
     for (var i = 0; i < letters.length; i++) {
       var off = hOffsets[i];
@@ -113,13 +209,54 @@ body{
       }
       positions = [0, 1, 3, 2];
       applyPositions();
-
       setTimeout(function () {
         isAnimating = false;
         rotateCount = 0;
-        nextAnim = 3;
       }, 900);
     }, HORIZONTAL_HOLD);
+  }
+
+  function startLoopFromHorizontal() {
+    document.body.classList.add('phase-loop');
+    var hOffsets = [-110, -37, 37, 110];
+    for (var i = 0; i < letters.length; i++) {
+      var off = hOffsets[i];
+      if (off >= 0) {
+        letters[i].style.transform = 'translate(calc(-50% + ' + off + 'px),-50%)';
+      } else {
+        letters[i].style.transform = 'translate(calc(-50% - ' + Math.abs(off) + 'px),-50%)';
+      }
+    }
+    setTimeout(function () {
+      document.body.classList.add('phase-loop-done');
+    }, 500);
+    setTimeout(function () {
+      for (var i = 0; i < letters.length; i++) {
+        letters[i].style.transform = '';
+      }
+      positions = [0, 1, 3, 2];
+      applyPositions();
+      setTimeout(function () {
+        isAnimating = false;
+        rotateCount = 0;
+        setInterval(rotateClockwise, ROTATE_INTERVAL);
+      }, 900);
+    }, HORIZONTAL_HOLD);
+  }
+
+  function startIntro() {
+    setTimeout(function () {
+      document.body.classList.add('phase-highlight');
+    }, 2500);
+    setTimeout(function () {
+      document.body.classList.add('phase-label');
+    }, 4000);
+    setTimeout(function () {
+      document.body.classList.add('phase-merge');
+    }, 5500);
+    setTimeout(function () {
+      startLoopFromHorizontal();
+    }, 7000);
   }
 
   function fitSize() {
@@ -131,7 +268,6 @@ body{
   fitSize();
   window.addEventListener('resize', fitSize);
 
-  applyPositions();
   syncTheme();
   try {
     new MutationObserver(syncTheme).observe(parent.document.documentElement, {
@@ -139,7 +275,8 @@ body{
       attributeFilter: ['class']
     });
   } catch (e) {}
-  setInterval(rotateClockwise, ROTATE_INTERVAL);
+
+  startIntro();
 })();
 </script>
 
