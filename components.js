@@ -3,7 +3,7 @@
  * 全站页面只需放置两个占位符并引入本文件：
  *   <div id="site-header"></div>   —— 顶栏渲染位置
  *   <div id="site-footer"></div>   —— 页脚渲染位置
- *   <script src="components.js"></script>
+ *   <script src="/components.js"></script>
  * 以后修改顶栏 / 页脚 / 主题相关样式与逻辑，只改这一个文件，全站生效。
  * 页面如需品牌右侧副标题（如 sky.html 的"禾安·光遇助手"），
  * 在引入本文件之前设置：<script>window.SITE_TAG="禾安·光遇助手";</script>
@@ -13,22 +13,20 @@
 
   /* ===== 动态计算基础目录 =====
    * 全站统一使用绝对路径（以 / 开头），彻底避免 Cloudflare Workers SPA 回退
-   * 导致的相对路径叠加问题（如 /core/core/core/.../home.html）。
-   * getBasePath() 保留兼容，但所有链接已改为绝对路径，不再依赖 base 前缀。 */
-  function getBasePath() {
-    return "";
-  }
+   * 导致的相对路径叠加问题（如 /core/core/core/.../home.html）。 */
+  function getBasePath() { return ""; }
 
   /* ===== 本地 file:// 环境相对路径前缀计算 =====
    * 通过当前页面引用 components.js 的 src 推断页面所在目录深度：
-   *   根目录页面引用 "components.js"   → 前缀 ""
-   *   core/ 目录页面引用 "../components.js" → 前缀 "../"
+   *   根目录页面引用 "/components.js"   → 前缀 ""
+   *   core/ 目录页面引用 "/components.js" → 前缀 "../"（通过script src中的路径推断）
    * 线上 http/https 环境不调用本函数，直接使用绝对路径。 */
   function getRelativeBase() {
     var scripts = document.querySelectorAll("script[src]");
     for (var i = 0; i < scripts.length; i++) {
       var src = scripts[i].getAttribute("src");
       if (src && src.indexOf("components.js") !== -1) {
+        /* 本地转换后 src 可能是 "components.js" 或 "../components.js" */
         var idx = src.lastIndexOf("components.js");
         return src.substring(0, idx);
       }
@@ -37,14 +35,15 @@
   }
 
   /* ===== 本地 file:// 环境路径转换 =====
-   * 把页面中所有以 "/" 开头的绝对路径链接和图片转换为相对路径，
-   * 使本地双击 HTML 文件也能正常跳转和显示图片（线上环境不执行此转换）。 */
+   * 把页面中所有以 "/" 开头的绝对路径资源转换为相对路径，
+   * 使本地双击 HTML 文件也能正常跳转和加载资源（线上环境不执行此转换）。
+   * 覆盖：a[href] / link[href]（favicon等）/ img[src] / script[src] / iframe[src] */
   function convertLocalPaths() {
     if (location.protocol !== "file:") return;
     var base = getRelativeBase();
-    document.querySelectorAll('a[href^="/"], img[src^="/"]').forEach(function (el) {
-      var isLink = el.tagName === "A";
-      var attr = isLink ? "href" : "src";
+    document.querySelectorAll('a[href^="/"], link[href^="/"], img[src^="/"], script[src^="/"], iframe[src^="/"]').forEach(function (el) {
+      var isHref = (el.tagName === "A" || el.tagName === "LINK");
+      var attr = isHref ? "href" : "src";
       var val = el.getAttribute(attr);
       if (val && val.charAt(0) === "/") {
         el.setAttribute(attr, base + val.substring(1));
