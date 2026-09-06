@@ -6,21 +6,48 @@
 <title>Summer&Hean · 关于本站</title>
 <link rel="icon" href="/assets/favicon.ico">
 <style>
-  :root{--bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;--btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;--active-bg:#333333;--active-text:#ffffff;--input-border:#333333}
-  html.dark{--bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;--line:#2e2e2e;--btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;--active-bg:#e8e8e8;--active-text:#121212;--input-border:#666666}
+  :root{
+    --bg:#ffffff;
+    --text:#333333;
+    --sub:#888888;
+    --muted:#555555;
+    --line:#e5e5e5;
+    --btn-border:#cccccc;
+    --btn-hover:#111111;
+    --panel:#ffffff;
+    --active-bg:#333333;
+    --active-text:#ffffff;
+    --input-border:#333333;
+  }
+  html.dark{
+    --bg:#121212;
+    --text:#e8e8e8;
+    --sub:#9a9a9a;
+    --muted:#aaaaaa;
+    --line:#2e2e2e;
+    --btn-border:#3f3f3f;
+    --btn-hover:#ffffff;
+    --panel:#1e1e1e;
+    --active-bg:#e8e8e8;
+    --active-text:#121212;
+    --input-border:#666666;
+  }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
-  main{flex:1}
+  body{
+    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;
+    background:var(--bg);color:var(--text);
+    transition:background .2s,color .2s;
+  }main{flex:1}
   .page{max-width:1080px;margin:0 auto;padding:40px 24px 56px}
   .page h1{font-size:28px;font-weight:700}
   .page .kicker{font-size:13px;color:var(--sub);letter-spacing:2px;margin:8px 0 28px}
   .page h2{font-size:18px;font-weight:600;margin:28px 0 10px}
   .page p{color:var(--muted);font-size:15px;line-height:1.9;margin-bottom:10px}
   .page ul{margin:0 0 12px 20px;color:var(--muted);font-size:15px;line-height:1.9}
-  .page li{margin-bottom:6px}
-</style>
+  .page li{margin-bottom:6px}</style>
 <script>
-  try { if (localStorage.getItem('hean-theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
+  try { if (localStorage.getItem('hean-theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
 </script>
 </head>
 <body>
@@ -28,8 +55,10 @@
 <main class="page">
   <h1>关于本站</h1>
   <p class="kicker">ABOUT · HEAN</p>
+
   <h2>站点简介</h2>
   <p>HEAN 禾安（hean.me）是一个个人站点，也是一块属于自己的网络空间。它从一个简单的聚合搜索页出发，逐步生长出游戏、兴趣、动态等分区，记录学习、体验与生活的碎片。</p>
+
   <h2>这里有什么</h2>
   <ul>
     <li>聚合搜索：首页集成了 Bing、百度、Google 三个搜索引擎，一键切换、即搜即走。</li>
@@ -37,8 +66,10 @@
     <li>内容分区：cs2、光遇（天空）、导航、新闻等页面，按兴趣持续填充。</li>
     <li>主题切换：顶栏提供暗黑 / 白色双主题，跟随心情切换浏览体验。</li>
   </ul>
+
   <h2>技术说明</h2>
   <p>本站为纯静态站点，使用原生 HTML / CSS / JavaScript 编写，不依赖任何框架与构建工具，资源（图标、背景图）统一存放于 assets/ 目录。所有页面可离线打开，部署简单，维护轻量。</p>
+
   <h2>联系与建议</h2>
   <p>如果你对本站有任何建议，或希望与我交流，可以通过域名 hean.me 找到这里。每一份反馈都会被认真对待。</p>
 </main>

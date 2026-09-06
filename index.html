@@ -36,6 +36,7 @@
   main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:40px 24px}
   .hero-logo{width:340px;height:340px;border:none;background:transparent;display:block}
   .hero-title{font-size:64px;font-weight:800;letter-spacing:8px;color:var(--text)}
+  .hero-divider{width:200px;height:1px;background:var(--line);margin:0 auto}
   .hero-btn-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
   .hero-btn{
     display:inline-flex;align-items:center;justify-content:center;
@@ -49,14 +50,15 @@
   .hero-btn-primary:hover{background:#1d4ed8 !important;border-color:#1d4ed8 !important;color:#ffffff !important}
 </style>
 <script>
-  try { if (localStorage.getItem('hean-theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
+  try { if (localStorage.getItem('hean-theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
 </script>
 </head>
 <body>
 <div id="site-header"></div>
 <main>
   <iframe class="hero-logo" src="/movelogo.html" frameborder="0" scrolling="no" title="HEAN logo"></iframe>
-  <h1 class="hero-title">从这出发</h1>
+  <div class="hero-divider"></div>
+  <h1 class="hero-title">从这里开始</h1>
   <div class="hero-btn-row">
     <a class="hero-btn hero-btn-primary" href="/core/home.html">前往主页</a>
     <a class="hero-btn" href="/core/nav.html">更多功能</a>
