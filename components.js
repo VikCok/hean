@@ -11,22 +11,15 @@
 (function () {
   "use strict";
 
-  /* ===== 公共样式：顶栏 / 图标按钮 / 主题开关 / 页脚 =====
-   * 以 <style> 注入到页面 <head> 末尾（位于页面原有样式之后，
-   * 同名选择器由后定义的覆盖，确保统一外观由本文件控制） */
   var COMMON_CSS = [
     "/* ===== 公共组件样式（components.js 注入） ===== */",
-    /* 顶栏：左侧品牌与导航按钮，右侧主题开关 */
     ".topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line)}",
     ".left{display:flex;align-items:center;gap:14px}",
     ".brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;letter-spacing:1px;text-decoration:none;color:var(--text)}",
-    /* 品牌右侧页面副标签：与品牌相同字体与颜色 */
     ".brand .brand-tag{font-size:18px;font-weight:700;letter-spacing:1px;color:var(--text)}",
-    /* 主页 / 导航页 胶囊按钮（带图标，无文字，悬停有 title 提示） */
     ".home-btn,.nav-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--btn-border);border-radius:999px;color:var(--muted);font-size:14px;text-decoration:none;transition:color .15s,border-color .15s}",
     ".home-btn:hover,.nav-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}",
     ".home-btn svg,.nav-btn svg{width:16px;height:16px}",
-    /* 日间/夜间切换：圆形按钮（内嵌太阳/月亮 SVG，无滑块） */
     ".mode-btn{display:flex;align-items:center;justify-content:center;flex:none;width:34px;height:34px;border:1px solid var(--btn-border);border-radius:50%;background:var(--panel);cursor:pointer;transition:background .25s,border-color .25s}",
     ".mode-btn:hover{border-color:var(--btn-hover)}",
     ".mode-btn .icon{width:16px;height:16px}",
@@ -34,27 +27,24 @@
     "body.dark .mode-btn .icon-sun{display:none}",
     "body.dark .mode-btn .icon-moon{display:block}",
     ".mode-btn:focus-visible{outline:2px solid var(--btn-hover);outline-offset:2px}",
-    /* 页脚：版权 + 免责声明 / 关于本站 */
     "footer{padding:18px 20px;text-align:center;font-size:13px;color:var(--sub);border-top:1px solid var(--line)}",
     "footer p+p{margin-top:6px}",
     "footer a{color:var(--muted);text-decoration:none;margin:0 4px;transition:color .15s}",
     "footer a:hover{color:var(--btn-hover)}",
     "footer .sep{color:var(--line);margin:0 2px}",
-    /* 回到顶部按钮：右下角圆形，滚动进度超过 70% 时淡入显示 */
     ".back-top{position:fixed;right:24px;bottom:32px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--btn-border);border-radius:50%;background:var(--panel);color:var(--muted);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .25s,visibility .25s,transform .25s,color .15s,border-color .15s;z-index:999}",
     ".back-top.show{opacity:1;visibility:visible;transform:translateY(0)}",
     ".back-top:hover{color:var(--btn-hover);border-color:var(--btn-hover)}",
     ".back-top svg{width:18px;height:18px}"
   ].join("\n");
 
-  /* ===== 顶栏 HTML：品牌 + 主页/导航页图标按钮 + 主题开关 ===== */
   function headerHtml() {
     var tag = window.SITE_TAG || "";
     return [
       '<header class="topbar">',
       '  <div class="left">',
-      '    <a class="brand" href="Core.html">HEAN' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
-      '    <a class="home-btn" href="Core.html" title="主页">',
+      '    <a class="brand" href="home.html">HEAN' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
+      '    <a class="home-btn" href="home.html" title="主页">',
       '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">',
       '        <path d="M3 11l9-8 9 8"/>',
       '        <path d="M5 10v10h14V10"/>',
@@ -80,7 +70,6 @@
     ].join("\n");
   }
 
-  /* ===== 页脚 HTML：免责声明 / 关于本站 + 版权 ===== */
   function footerHtml() {
     return [
       "<footer>",
@@ -90,14 +79,12 @@
     ].join("\n");
   }
 
-  /* 注入公共样式到 <head> 末尾 */
   function injectCss() {
     var style = document.createElement("style");
     style.textContent = COMMON_CSS;
     document.head.appendChild(style);
   }
 
-  /* 渲染顶栏与页脚（替换占位 div），随后初始化主题与回到顶部按钮 */
   function mount() {
     injectCss();
     var h = document.getElementById("site-header");
@@ -108,19 +95,16 @@
     initBackTop();
   }
 
-  /* ===== 主题切换：localStorage 存储 key=hean-theme，实现夜间模式跨页记忆 ===== */
   function initTheme() {
     var btn = document.getElementById("mode-btn");
     if (!btn) return;
     var KEY = "hean-theme";
-
     try {
       if (localStorage.getItem(KEY) === "dark") {
         document.body.classList.add("dark");
         btn.setAttribute("aria-checked", "true");
       }
     } catch (e) {}
-
     btn.addEventListener("click", function () {
       var dark = document.body.classList.toggle("dark");
       btn.setAttribute("aria-checked", dark ? "true" : "false");
@@ -130,9 +114,7 @@
     });
   }
 
-  /* ===== 回到顶部按钮：滚动进度超过 70% 显示，点击平滑回顶 ===== */
   function initBackTop() {
-    /* 按钮 HTML：圆形 + 向上箭头 SVG（与主题变量适配） */
     var btn = document.createElement("button");
     btn.type = "button";
     btn.className = "back-top";
@@ -141,8 +123,6 @@
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
       '<path d="M12 19V5M5 12l7-7 7 7"/></svg>';
     document.body.appendChild(btn);
-
-    /* 滚动进度 = 已滚高度 / 可滚总高度，超过 70% 时显示 */
     function onScroll() {
       var doc = document.documentElement;
       var max = doc.scrollHeight - window.innerHeight;
@@ -151,13 +131,11 @@
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-
     btn.addEventListener("click", function () {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 
-  /* 脚本位于 </body> 前：DOM 已就绪，直接挂载（同时兼容延迟加载场景） */
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mount);
   } else {
