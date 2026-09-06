@@ -19,6 +19,40 @@
     return "";
   }
 
+  /* ===== 本地 file:// 环境相对路径前缀计算 =====
+   * 通过当前页面引用 components.js 的 src 推断页面所在目录深度：
+   *   根目录页面引用 "components.js"   → 前缀 ""
+   *   core/ 目录页面引用 "../components.js" → 前缀 "../"
+   * 线上 http/https 环境不调用本函数，直接使用绝对路径。 */
+  function getRelativeBase() {
+    var scripts = document.querySelectorAll("script[src]");
+    for (var i = 0; i < scripts.length; i++) {
+      var src = scripts[i].getAttribute("src");
+      if (src && src.indexOf("components.js") !== -1) {
+        var idx = src.lastIndexOf("components.js");
+        return src.substring(0, idx);
+      }
+    }
+    return "";
+  }
+
+  /* ===== 本地 file:// 环境路径转换 =====
+   * 把页面中所有以 "/" 开头的绝对路径链接转换为相对路径，
+   * 使本地双击 HTML 文件也能正常跳转（线上环境不执行此转换）。 */
+  function convertLocalPaths() {
+    if (location.protocol !== "file:") return;
+    var base = getRelativeBase();
+    /* 把所有以 "/" 开头的绝对路径链接转换为相对路径：
+     *   根目录页面(base=""):  /core/home.html → core/home.html
+     *   core目录页面(base="../"): /core/home.html → ../core/home.html */
+    document.querySelectorAll('a[href^="/"]').forEach(function (a) {
+      var href = a.getAttribute("href");
+      if (href && href.charAt(0) === "/") {
+        a.setAttribute("href", base + href.substring(1));
+      }
+    });
+  }
+
   /* ===== 公共样式：顶栏 / 图标按钮 / 主题开关 / 页脚 =====
    * 以 <style> 注入到页面 <head> 末尾（位于页面原有样式之后，
    * 同名选择器由后定义的覆盖，确保统一外观由本文件控制） */
@@ -108,7 +142,7 @@
     document.head.appendChild(style);
   }
 
-  /* 渲染顶栏与页脚（替换占位 div），随后初始化主题与回到顶部按钮 */
+  /* 渲染顶栏与页脚（替换占位 div），随后初始化主题、回到顶部按钮与本地路径转换 */
   function mount() {
     injectCss();
     var h = document.getElementById("site-header");
@@ -117,6 +151,7 @@
     if (f) f.outerHTML = footerHtml();
     initTheme();
     initBackTop();
+    convertLocalPaths(); /* 仅本地 file:// 环境生效，把绝对路径转相对路径 */
   }
 
   /* ===== 主题切换：localStorage 存储 key=hean-theme，实现夜间模式跨页记忆 ===== */
