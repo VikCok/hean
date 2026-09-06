@@ -63,19 +63,20 @@ body.phase-popup .intro-quote{opacity:0;transition:opacity 0.5s ease 0.3s}
 }
 .hp-he,.hp-an{
   font-size:calc(var(--hr-font) * 1.15);
-  font-weight:900;
+  font-weight:540;
   color:var(--hr-color);
   line-height:1;
   transform:scale(0);
-  transition:transform 2.7s cubic-bezier(.25,.46,.45,.94);
+  transition:transform 2.7s linear, font-weight 2.7s linear;
 }
 body.phase-popup .hean-popup{opacity:1}
-body.phase-popup .hp-he,body.phase-popup .hp-an{transform:scale(1)}
+body.phase-popup .hp-he,body.phase-popup .hp-an{transform:scale(1);font-weight:900}
 body.phase-merge .hean-popup{gap:0.08em;transition:gap 2s linear}
 .hean-label{
   position:absolute;top:50%;left:50%;
   transform:translate(-50%,-50%);
   display:flex;
+  justify-content:center;
   gap:0.08em;
   font-size:var(--hr-font);
   width:2.38em;
