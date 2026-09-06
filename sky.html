@@ -7,60 +7,23 @@
 <link rel="icon" href="/assets/favicon.ico">
 <style>
   :root{
-    --bg:#ffffff;
-    --text:#333333;
-    --sub:#888888;
-    --muted:#555555;
-    --line:#e5e5e5;
-    --btn-border:#cccccc;
-    --btn-hover:#111111;
-    --panel:#ffffff;
-    --active-bg:#333333;
-    --active-text:#ffffff;
-    --input-border:#333333;
-    --clock-face:#f6f6f6;
-    --band-bg:#f3f3f3;
+    --bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;--line:#e5e5e5;
+    --btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;--active-bg:#333333;
+    --active-text:#ffffff;--input-border:#333333;--clock-face:#f6f6f6;--band-bg:#f3f3f3;
   }
   html.dark{
-    --bg:#121212;
-    --text:#e8e8e8;
-    --sub:#9a9a9a;
-    --muted:#aaaaaa;
-    --line:#2e2e2e;
-    --btn-border:#3f3f3f;
-    --btn-hover:#ffffff;
-    --panel:#1e1e1e;
-    --active-bg:#e8e8e8;
-    --active-text:#121212;
-    --input-border:#666666;
-    --clock-face:#262626;
-    --band-bg:#1a1a1a;
+    --bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;--line:#2e2e2e;
+    --btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;--active-bg:#e8e8e8;
+    --active-text:#121212;--input-border:#666666;--clock-face:#262626;--band-bg:#1a1a1a;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
-    min-height:100vh;display:flex;flex-direction:column;
-    background:var(--bg);color:var(--text);
-    transition:background .2s,color .2s;
-  }
+  body{font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
   main{flex:1}
-  .page{
-    width:100%;max-width:1080px;margin:0 auto;
-    padding:40px 24px 56px;
-  }
-  .gc-block-big{
-    display:flex;flex-direction:column;gap:12px;
-    background:var(--panel);border:1px solid var(--btn-border);
-    border-radius:16px;padding:28px 32px;
-    max-width:960px;
-  }
+  .page{width:100%;max-width:1080px;margin:0 auto;padding:40px 24px 56px}
+  .gc-block-big{display:flex;flex-direction:column;gap:12px;background:var(--panel);border:1px solid var(--btn-border);border-radius:16px;padding:28px 32px;max-width:960px}
   .gc-block-big>*{position:relative;z-index:1}
   .gc-title-big{font-size:22px;font-weight:800;color:var(--text)}
-  .yiyan{
-    display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
-    max-width:960px;margin:16px 0;
-    font-size:15px;color:var(--muted);line-height:1.8;
-  }
+  .yiyan{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;max-width:960px;margin:16px 0;font-size:15px;color:var(--muted);line-height:1.8}
   .yiyan-src{font-size:13px;color:var(--sub)}
   .gc-next{font-size:15px;font-weight:700;color:var(--text)}
   .gc-clock-wrap{display:flex;align-items:center;gap:48px;flex-wrap:wrap}
@@ -76,28 +39,16 @@
   .gc-clock .hub{fill:var(--text)}
   .gc-info{display:flex;flex-direction:column;gap:8px;min-width:260px}
   .gc-info-label{font-size:14px;color:var(--sub)}
-  .gc-num{
-    font-size:32px;font-weight:700;letter-spacing:1px;
-    font-variant-numeric:tabular-nums;
-  }
+  .gc-num{font-size:32px;font-weight:700;letter-spacing:1px;font-variant-numeric:tabular-nums}
   .gc-state{font-size:18px;font-weight:700;color:var(--sub)}
   .gc-state.active{color:#f59e0b}
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:960px}
   .card-title{font-size:16px;font-weight:700;color:var(--text)}
-  .task-block{
-    display:flex;flex-direction:column;gap:10px;
-    background:var(--panel);border:1px solid var(--btn-border);
-    border-radius:12px;padding:20px 24px;
-    max-width:960px;
-  }
+  .task-block{display:flex;flex-direction:column;gap:10px;background:var(--panel);border:1px solid var(--btn-border);border-radius:12px;padding:20px 24px;max-width:960px}
   .task-text{font-size:15px;color:var(--muted);line-height:1.9;white-space:pre-line}
   .refresh-line{font-size:12px;color:var(--sub);display:flex;align-items:baseline;gap:6px}
   .refresh-line b{font-variant-numeric:tabular-nums;color:var(--text)}
-  .mf-block,.db-block{
-    display:flex;flex-direction:column;gap:10px;
-    background:var(--panel);border:1px solid var(--btn-border);
-    border-radius:12px;padding:20px 24px;
-  }
+  .mf-block,.db-block{display:flex;flex-direction:column;gap:10px;background:var(--panel);border:1px solid var(--btn-border);border-radius:12px;padding:20px 24px}
   .db-img{width:100%;height:auto;border-radius:8px;display:block}
   .db-text{font-size:14px;color:var(--sub)}
   .cards-gap-top{margin-top:16px}
@@ -105,50 +56,19 @@
   .lzwz-imgs{display:flex;gap:8px;flex-wrap:wrap}
   .lzwz-imgs img{height:96px;width:auto;border-radius:8px;border:1px solid var(--btn-border)}
   .djs-days{font-size:20px;font-weight:800;color:#f59e0b}
-  .gg-block{
-    display:flex;flex-direction:column;gap:10px;
-    background:var(--panel);border:1px solid var(--btn-border);
-    border-radius:12px;padding:20px 24px;
-    max-width:960px;margin-top:16px;
-  }
+  .gg-block{display:flex;flex-direction:column;gap:10px;background:var(--panel);border:1px solid var(--btn-border);border-radius:12px;padding:20px 24px;max-width:960px;margin-top:16px}
   .gg-title{font-size:15px;font-weight:700;color:var(--text)}
-  .gg-text{
-    font-size:14px;color:var(--muted);line-height:1.9;white-space:pre-line;
-    display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5;
-    overflow:hidden;
-  }
+  .gg-text{font-size:14px;color:var(--muted);line-height:1.9;white-space:pre-line;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5;overflow:hidden}
   .gg-text.open{-webkit-line-clamp:unset}
-  .gg-more{
-    align-self:flex-start;margin-top:4px;padding:4px 14px;
-    border:1px solid var(--btn-border);border-radius:999px;background:var(--panel);
-    color:var(--muted);font-size:12px;cursor:pointer;transition:color .15s,border-color .15s;
-  }
+  .gg-more{align-self:flex-start;margin-top:4px;padding:4px 14px;border:1px solid var(--btn-border);border-radius:999px;background:var(--panel);color:var(--muted);font-size:12px;cursor:pointer;transition:color .15s,border-color .15s}
   .gg-more:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
   .db-block-alone{margin-top:16px}
-  .bottom-band{
-    background:var(--band-bg);
-    border-top:1px solid var(--line);
-    padding:20px;
-  }
-  .band-links{
-    max-width:1080px;margin:0 auto;
-    display:flex;align-items:center;justify-content:center;
-    gap:10px;flex-wrap:wrap;
-  }
-  .footer-btn{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:6px 16px;border:1px solid var(--btn-border);border-radius:999px;
-    color:var(--muted);font-size:13px;text-decoration:none;
-    transition:color .15s,border-color .15s;
-  }
+  .bottom-band{background:var(--band-bg);border-top:1px solid var(--line);padding:20px}
+  .band-links{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+  .footer-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border:1px solid var(--btn-border);border-radius:999px;color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s,border-color .15s}
   .footer-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
-  .footer-note{
-    max-width:1080px;margin:10px auto 0;text-align:center;
-    font-size:12px;color:var(--sub);line-height:1.8;
-  }
-  @media (max-width:768px){
-    .cards{grid-template-columns:1fr}
-  }
+  .footer-note{max-width:1080px;margin:10px auto 0;text-align:center;font-size:12px;color:var(--sub);line-height:1.8}
+  @media (max-width:768px){.cards{grid-template-columns:1fr}}
 </style>
 <script>
   try { if (localStorage.getItem('hean-theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
@@ -222,12 +142,12 @@
   <div class="band-links">
     <a class="footer-btn" href="https://weibo.com/u/6355968578" target="_blank" rel="noopener">光遇官方微博</a>
     <a class="footer-btn" href="https://sky.163.com" target="_blank" rel="noopener">光遇官网</a>
-    <a class="footer-btn" href="/core/home.html">HEAN 主页</a>
+    <a class="footer-btn" href="/index.html">HEAN 主页</a>
   </div>
   <p class="footer-note">本站为非官方工具，与 TGC [Thatgamecompany] 无关联。游戏内活动与红石信息可能变化，请同时留意社区更新</p>
 </div>
 <div id="site-footer"></div>
-<script>window.SITE_TAG="禾安·光遇助手";</script>
+<script>window.SITE_BRAND="禾安";window.SITE_TAG="光遇助手";</script>
 <script src="/components.js"></script>
 <script>
 (function () {
@@ -235,7 +155,6 @@
   var FEED_TIMES = [[8, 0], [10, 0], [12, 0], [16, 0], [18, 0], [20, 0]];
   var FEED_DUR = 30;
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
-
   (function buildClock() {
     var svg = document.getElementById("gc-clock");
     if (!svg) return;
@@ -258,7 +177,6 @@
       svg.appendChild(txt);
     });
   })();
-
   function tickFeed() {
     var elNow = document.getElementById("gc-now");
     var elCount = document.getElementById("gc-countdown");
@@ -272,24 +190,18 @@
     var h = now.getUTCHours(), m = now.getUTCMinutes(), s = now.getUTCSeconds();
     var curMin = h * 60 + m;
     var i;
-
     elNow.textContent = pad2(h) + ":" + pad2(m) + ":" + pad2(s);
-
     var elRef = document.getElementById("task-refresh");
     if (elRef) {
       var refSec = (1440 - curMin) * 60 - s;
       if (refSec < 0) refSec = 0;
-      elRef.textContent = pad2(Math.floor(refSec / 3600)) + ":" +
-                          pad2(Math.floor((refSec % 3600) / 60)) + ":" +
-                          pad2(refSec % 60);
+      elRef.textContent = pad2(Math.floor(refSec / 3600)) + ":" + pad2(Math.floor((refSec % 3600) / 60)) + ":" + pad2(refSec % 60);
     }
-
     var activeIdx = -1;
     for (i = 0; i < FEED_TIMES.length; i++) {
       var start = FEED_TIMES[i][0] * 60 + FEED_TIMES[i][1];
       if (curMin >= start && curMin < start + FEED_DUR) { activeIdx = i; break; }
     }
-
     var nextIdx = -1, nextStart = 0;
     for (i = 0; i < FEED_TIMES.length; i++) {
       var st = FEED_TIMES[i][0] * 60 + FEED_TIMES[i][1];
@@ -297,21 +209,14 @@
     }
     var crossDay = false;
     if (nextIdx === -1) { nextIdx = 0; nextStart = FEED_TIMES[0][0] * 60; crossDay = true; }
-
     var totalSec;
     if (activeIdx >= 0) {
       if (elLabel) elLabel.textContent = "本次派发剩余";
-      if (elState) {
-        elState.textContent = "老奶奶正在派发馒头";
-        elState.classList.add("active");
-      }
+      if (elState) { elState.textContent = "老奶奶正在派发馒头"; elState.classList.add("active"); }
       totalSec = (FEED_TIMES[activeIdx][0] * 60 + FEED_TIMES[activeIdx][1] + FEED_DUR) * 60 - (curMin * 60 + s);
     } else {
       if (elLabel) elLabel.textContent = "距离下次干饭";
-      if (elState) {
-        elState.textContent = "现在没饭吃";
-        elState.classList.remove("active");
-      }
+      if (elState) { elState.textContent = "现在没饭吃"; elState.classList.remove("active"); }
       var diffMin = nextStart - curMin;
       if (diffMin <= 0) diffMin += 1440;
       totalSec = diffMin * 60 - s;
@@ -321,31 +226,19 @@
     var mm = Math.floor((totalSec % 3600) / 60);
     var ss = totalSec % 60;
     elCount.textContent = pad2(hh) + ":" + pad2(mm) + ":" + pad2(ss);
-
     for (i = 0; i < FEED_TIMES.length; i++) {
       var d = document.getElementById("feed-dot-" + i);
       if (d) d.classList.toggle("active", i === activeIdx);
     }
-
     var hrAng = ((h % 12) * 30 + m * 0.5) * Math.PI / 180;
     var minAng = (m * 6 + s * 0.1) * Math.PI / 180;
     var secAng = s * 6 * Math.PI / 180;
-    if (handHr) {
-      handHr.setAttribute("x2", 130 + 45 * Math.sin(hrAng));
-      handHr.setAttribute("y2", 130 - 45 * Math.cos(hrAng));
-    }
-    if (handMin) {
-      handMin.setAttribute("x2", 130 + 62 * Math.sin(minAng));
-      handMin.setAttribute("y2", 130 - 62 * Math.cos(minAng));
-    }
-    if (handSec) {
-      handSec.setAttribute("x2", 130 + 70 * Math.sin(secAng));
-      handSec.setAttribute("y2", 130 - 70 * Math.cos(secAng));
-    }
+    if (handHr) { handHr.setAttribute("x2", 130 + 45 * Math.sin(hrAng)); handHr.setAttribute("y2", 130 - 45 * Math.cos(hrAng)); }
+    if (handMin) { handMin.setAttribute("x2", 130 + 62 * Math.sin(minAng)); handMin.setAttribute("y2", 130 - 62 * Math.cos(minAng)); }
+    if (handSec) { handSec.setAttribute("x2", 130 + 70 * Math.sin(secAng)); handSec.setAttribute("y2", 130 - 70 * Math.cos(secAng)); }
   }
   tickFeed();
   setInterval(tickFeed, 1000);
-
   fetch("/qmkproxy/api/gy_mr_rw/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -353,15 +246,10 @@
       if (!el || !data.data || !data.data.task_list || !data.data.task_list.length) return;
       var list = data.data.task_list;
       var today = list[0].date;
-      var tasks = list.filter(function (t) { return t.date === today; })
-                      .map(function (t) { return t.quest_cn; });
+      var tasks = list.filter(function (t) { return t.date === today; }).map(function (t) { return t.quest_cn; });
       el.textContent = tasks.length ? tasks.map(function (t, i) { return (i + 1) + ". " + t; }).join("\n") : "今日暂无任务";
     })
-    .catch(function () {
-      var el = document.getElementById("task-text");
-      if (el) el.textContent = "今日任务加载失败";
-    });
-
+    .catch(function () { var el = document.getElementById("task-text"); if (el) el.textContent = "今日任务加载失败"; });
   fetch("/qmkproxy/api/gy/yiyan/yiyan.php")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -372,11 +260,7 @@
         if (src) src.textContent = data.data.from ? "—— " + data.data.from : "";
       }
     })
-    .catch(function () {
-      var el = document.getElementById("yiyan-text");
-      if (el) el.textContent = "光遇一言加载失败";
-    });
-
+    .catch(function () { var el = document.getElementById("yiyan-text"); if (el) el.textContent = "光遇一言加载失败"; });
   fetch("/qmkproxy/api/gy/appgg/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -398,42 +282,25 @@
         }, 50);
       }
     })
-    .catch(function () {
-      var t = document.getElementById("gg-title");
-      if (t) t.textContent = "公告加载失败";
-    });
-
+    .catch(function () { var t = document.getElementById("gg-title"); if (t) t.textContent = "公告加载失败"; });
   fetch("/qmkproxy/gyapi/rwt/db/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var t = document.getElementById("db-text");
       var img = document.getElementById("db-img");
       if (t && data.date) t.textContent = data.date + " · 复刻先祖";
-      if (img && data.image) {
-        img.src = data.image;
-      }
+      if (img && data.image) img.src = data.image;
     })
-    .catch(function () {
-      var t = document.getElementById("db-text");
-      if (t) t.textContent = "代币加载失败";
-    });
-
+    .catch(function () { var t = document.getElementById("db-text"); if (t) t.textContent = "代币加载失败"; });
   fetch("/qmkproxy/gyapi/rwt/rl/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var el = document.getElementById("rl-text");
       if (el && data.text) {
-        el.textContent = data.text
-          .replace(/#超话创作官[\s\S]*$/, "")
-          .replace(/\n{2,}/g, "\n")
-          .trim();
+        el.textContent = data.text.replace(/#超话创作官[\s\S]*$/, "").replace(/\n{2,}/g, "\n").trim();
       }
     })
-    .catch(function () {
-      var el = document.getElementById("rl-text");
-      if (el) el.textContent = "日历加载失败";
-    });
-
+    .catch(function () { var el = document.getElementById("rl-text"); if (el) el.textContent = "日历加载失败"; });
   fetch("/qmkproxy/gyapi/rwt/lsd/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -446,11 +313,7 @@
       });
       el.textContent = keep.length ? keep.join("\n") : data.text.trim();
     })
-    .catch(function () {
-      var el = document.getElementById("lsd-text");
-      if (el) el.textContent = "活动加载失败";
-    });
-
+    .catch(function () { var el = document.getElementById("lsd-text"); if (el) el.textContent = "活动加载失败"; });
   fetch("/t1proxy/api/sky/sc/lzwz?key=aN4ga1sIvr4we5IfkAjhY68JOc")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -475,24 +338,15 @@
         });
       }
     })
-    .catch(function () {
-      var el = document.getElementById("lzwz-text");
-      if (el) el.textContent = "大蜡位置加载失败";
-    });
-
+    .catch(function () { var el = document.getElementById("lzwz-text"); if (el) el.textContent = "大蜡位置加载失败"; });
   fetch("/t1proxy/api/sky/sc/gf/djs?key=aN4ga1sIvr4we5IfkAjhY68JOc")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var d1 = document.getElementById("djs-days");
       if (d1 && data.data && data.data.days) d1.textContent = data.data.days;
     })
-    .catch(function () {
-      var d1 = document.getElementById("djs-days");
-      if (d1) d1.textContent = "季节剩余加载失败";
-    });
-
+    .catch(function () { var d1 = document.getElementById("djs-days"); if (d1) d1.textContent = "季节剩余加载失败"; });
 })();
 </script>
-
 </body>
 </html>
