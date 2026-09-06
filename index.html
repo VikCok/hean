@@ -6,43 +6,23 @@
 <title>HEAN</title>
 <link rel="icon" href="assets/favicon.ico">
 <style>
-  /* ===== 主题变量：日间模式（默认） ===== */
   :root{
-    --bg:#ffffff;
-    --text:#333333;
-    --sub:#888888;
-    --muted:#555555;
-    --line:#e5e5e5;
-    --btn-border:#cccccc;
-    --btn-hover:#111111;
-    --panel:#ffffff;
+    --bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;
+    --line:#e5e5e5;--btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;
   }
-  /* ===== 主题变量：暗黑模式 ===== */
   body.dark{
-    --bg:#121212;
-    --text:#e8e8e8;
-    --sub:#9a9a9a;
-    --muted:#aaaaaa;
-    --line:#2e2e2e;
-    --btn-border:#3f3f3f;
-    --btn-hover:#ffffff;
-    --panel:#1e1e1e;
+    --bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;
+    --line:#2e2e2e;--btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;
   }
-  /* 基础重置 */
   *{margin:0;padding:0;box-sizing:border-box}
-  /* 页面基础：flex 纵向布局撑满视口 */
   body{
     font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
     min-height:100vh;display:flex;flex-direction:column;
-    background:var(--bg);color:var(--text);
-    transition:background .2s,color .2s;
+    background:var(--bg);color:var(--text);transition:background .2s,color .2s;
   }
   main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:40px 24px}
-  /* 大标题：动态HEAN动画logo（iframe嵌入movelogo.html） */
   .hero-logo{width:340px;height:340px;border:none;background:transparent;display:block}
-  /* 副标题：从这出发 */
   .hero-title{font-size:64px;font-weight:800;letter-spacing:8px;color:var(--text)}
-  /* 大按钮：禾安聚合，跳转到 home.html */
   .hero-btn{
     display:inline-flex;align-items:center;justify-content:center;
     padding:18px 64px;border:2px solid var(--btn-border);border-radius:999px;
@@ -56,11 +36,8 @@
 <body>
 <div id="site-header"></div>
 <main>
-  <!-- 大标题：动态HEAN动画logo -->
   <iframe class="hero-logo" src="movelogo.html" frameborder="0" scrolling="no" title="HEAN logo"></iframe>
-  <!-- 副标题：从这出发 -->
   <h1 class="hero-title">从这出发</h1>
-  <!-- 大按钮：进入禾安聚合主页 -->
   <a class="hero-btn" href="/core/home.html">禾安聚合</a>
 </main>
 <div id="site-footer"></div>

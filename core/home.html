@@ -6,93 +6,37 @@
 <title>HEAN 禾安</title>
 <link rel="icon" href="../assets/favicon.ico">
 <style>
-  /* ===== 主题变量：日间模式（默认） ===== */
   :root{
-    --bg:#ffffff;
-    --text:#333333;
-    --sub:#888888;
-    --muted:#555555;
-    --line:#e5e5e5;
-    --btn-border:#cccccc;
-    --btn-hover:#111111;
-    --panel:#ffffff;
-    --active-bg:#333333;
-    --active-text:#ffffff;
-    --input-border:#333333;
-    --clock-face:#f6f6f6;
+    --bg:#ffffff;--text:#333333;--sub:#888888;--muted:#555555;
+    --line:#e5e5e5;--btn-border:#cccccc;--btn-hover:#111111;--panel:#ffffff;
+    --active-bg:#333333;--active-text:#ffffff;--input-border:#333333;--clock-face:#f6f6f6;
   }
-  /* ===== 主题变量：暗黑模式（body 加 dark 类时覆盖） ===== */
   body.dark{
-    --bg:#121212;
-    --text:#e8e8e8;
-    --sub:#9a9a9a;
-    --muted:#aaaaaa;
-    --line:#2e2e2e;
-    --btn-border:#3f3f3f;
-    --btn-hover:#ffffff;
-    --panel:#1e1e1e;
-    --active-bg:#e8e8e8;
-    --active-text:#121212;
-    --input-border:#666666;
-    --clock-face:#262626;
+    --bg:#121212;--text:#e8e8e8;--sub:#9a9a9a;--muted:#aaaaaa;
+    --line:#2e2e2e;--btn-border:#3f3f3f;--btn-hover:#ffffff;--panel:#1e1e1e;
+    --active-bg:#e8e8e8;--active-text:#121212;--input-border:#666666;--clock-face:#262626;
   }
-  /* 基础重置 + 页面骨架：flex 纵向布局，主题切换过渡 */
   *{margin:0;padding:0;box-sizing:border-box}
   body{
     font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
     min-height:100vh;display:flex;flex-direction:column;
-    background:var(--bg);color:var(--text);
-    transition:background .2s,color .2s;
+    background:var(--bg);color:var(--text);transition:background .2s,color .2s;
   }
-  /* 主体区域：垂直居中排列 */
   main{flex:1;display:flex;flex-direction:column;align-items:center;padding:44px 20px 36px}
-  .main-title{
-    font-size:clamp(40px,8vw,72px);font-weight:800;letter-spacing:6px;
-    text-align:center;line-height:1.2;
-  }
-  .sub-title{
-    margin-top:10px;margin-bottom:30px;text-align:center;
-    font-size:15px;color:var(--sub);letter-spacing:2px;
-  }
-  /* 搜索框容器（宽幅 960px） */
+  .main-title{font-size:clamp(40px,8vw,72px);font-weight:800;letter-spacing:6px;text-align:center;line-height:1.2}
+  .sub-title{margin-top:10px;margin-bottom:30px;text-align:center;font-size:15px;color:var(--sub);letter-spacing:2px}
   .search-box{width:100%;max-width:960px}
-  .divider{
-    width:100%;max-width:960px;height:1px;background:var(--line);
-    margin:26px 0;
-  }
-  /* 快捷入口：双列卡片网格（导航页大卡片 + 光遇/CS2 + 小按钮） */
-  .quick-links{
-    display:grid;grid-template-columns:1fr 1fr;gap:12px;
-    width:100%;max-width:960px;margin-bottom:6px;
-  }
-  /* 快捷入口卡片 */
-  .quick-card{
-    display:flex;flex-direction:column;justify-content:center;gap:8px;
-    padding:20px 24px;border:1px solid var(--btn-border);border-radius:12px;
-    color:var(--text);text-decoration:none;
-    transition:border-color .15s,background .15s;
-  }
+  .divider{width:100%;max-width:960px;height:1px;background:var(--line);margin:26px 0}
+  .quick-links{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:960px;margin-bottom:6px}
+  .quick-card{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:20px 24px;border:1px solid var(--btn-border);border-radius:12px;color:var(--text);text-decoration:none;transition:border-color .15s,background .15s}
   .quick-card:hover{border-color:var(--btn-hover);background:var(--panel)}
   .quick-card-main{grid-row:span 2}
   .qc-title{font-size:20px;font-weight:700;display:flex;align-items:center;gap:8px}
   .qc-desc{font-size:14px;color:var(--sub)}
-  .qc-api{
-    font-size:13px;color:var(--sub);
-    font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
-    background:var(--panel);border:1px dashed var(--btn-border);
-    border-radius:6px;padding:6px 8px;align-self:stretch;
-    overflow-wrap:anywhere;line-height:1.7;
-    white-space:pre-line;
-  }
+  .qc-api{font-size:13px;color:var(--sub);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--panel);border:1px dashed var(--btn-border);border-radius:6px;padding:6px 8px;align-self:stretch;overflow-wrap:anywhere;line-height:1.7;white-space:pre-line}
   .quick-card-tall{grid-row:span 2;justify-content:flex-start;padding:22px 24px}
-  .gc-block{
-    display:flex;flex-direction:column;gap:6px;
-    background:var(--panel);border:1px dashed var(--btn-border);
-    border-radius:6px;padding:6px 8px;
-  }
+  .gc-block{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px dashed var(--btn-border);border-radius:6px;padding:6px 8px}
   .gc-title{font-size:13px;font-weight:700;color:var(--text)}
-  .gc-status{font-size:13px;color:var(--sub);font-weight:600}
-  /* 干饭圆形时钟：表盘 / 白色实心时间点 / 时间文字 / 指针 */
   .gc-next{font-size:14px;font-weight:700;color:var(--text)}
   .gc-clock-wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
   .gc-clock{flex:none;width:200px;height:200px}
@@ -107,67 +51,33 @@
   .gc-clock .hub{fill:var(--text)}
   .gc-info{display:flex;flex-direction:column;gap:2px;min-width:120px}
   .gc-info-label{font-size:11px;color:var(--sub)}
-  .gc-num{
-    font-size:18px;font-weight:700;letter-spacing:1px;
-    font-variant-numeric:tabular-nums;
-  }
+  .gc-num{font-size:18px;font-weight:700;letter-spacing:1px;font-variant-numeric:tabular-nums}
   .gc-state{font-size:13px;font-weight:700;color:var(--sub)}
   .gc-state.active{color:#f59e0b}
-  .qc-mini{
-    display:flex;gap:10px;align-items:center;justify-content:center;
-    padding:12px;border:1px solid var(--btn-border);border-radius:12px;
-  }
-  .qc-mini a{
-    padding:6px 18px;border:1px solid var(--btn-border);border-radius:999px;
-    color:var(--muted);font-size:14px;text-decoration:none;
-    transition:color .15s,border-color .15s;
-  }
+  .qc-mini{display:flex;gap:10px;align-items:center;justify-content:center;padding:12px;border:1px solid var(--btn-border);border-radius:12px}
+  .qc-mini a{padding:6px 18px;border:1px solid var(--btn-border);border-radius:999px;color:var(--muted);font-size:14px;text-decoration:none;transition:color .15s,border-color .15s}
   .qc-mini a:hover{color:var(--btn-hover);border-color:var(--btn-hover)}
-  /* 搜索引擎标签栏：图标 + 名称 */
   .engine-tabs{display:flex;gap:8px;margin-bottom:10px}
-  .engine-tabs button{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:6px 14px;border:1px solid var(--btn-border);border-radius:6px;
-    background:var(--panel);color:var(--muted);cursor:pointer;font-size:14px;
-    transition:color .15s,border-color .15s;
-  }
+  .engine-tabs button{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--btn-border);border-radius:6px;background:var(--panel);color:var(--muted);cursor:pointer;font-size:14px;transition:color .15s,border-color .15s}
   .engine-tabs button.active{background:var(--active-bg);color:var(--active-text);border-color:var(--active-bg)}
-  .e-icon{
-    width:18px;height:18px;border-radius:4px;flex:none;
-    object-fit:contain;background:#fff;padding:1px;
-  }
+  .e-icon{width:18px;height:18px;border-radius:4px;flex:none;object-fit:contain;background:#fff;padding:1px}
   #search-form{display:flex;gap:0}
-  #search-input{
-    flex:1;min-height:46px;padding:0 16px;border:2px solid var(--input-border);
-    border-radius:8px 0 0 8px;font-size:16px;outline:none;
-    background:var(--panel);color:var(--text);
-  }
-  #search-form button{
-    min-height:46px;padding:0 24px;border:none;border-radius:0 8px 8px 0;
-    background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer;
-  }
-  /* 每日一言：文本与署名并排 */
-  .quote{
-    margin-top:20px;max-width:960px;text-align:center;
-    font-size:15px;color:var(--muted);line-height:1.8;
-  }
+  #search-input{flex:1;min-height:46px;padding:0 16px;border:2px solid var(--input-border);border-radius:8px 0 0 8px;font-size:16px;outline:none;background:var(--panel);color:var(--text)}
+  #search-form button{min-height:46px;padding:0 24px;border:none;border-radius:0 8px 8px 0;background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer}
+  .quote{margin-top:20px;max-width:960px;text-align:center;font-size:15px;color:var(--muted);line-height:1.8}
   .quote-line{display:flex;align-items:baseline;justify-content:center;gap:12px;flex-wrap:wrap}
   .quote #quote-src{font-size:13px;color:var(--sub)}
-  /* ===== 移动端适配：窄屏（≤768px）快捷入口改为单列，一排只允许一个栏位 ===== */
   @media (max-width:768px){
     .quick-links{grid-template-columns:1fr}
-    /* 原双列下跨两行的主卡/长卡，单列时取消跨行避免错位 */
     .quick-card-main,.quick-card-tall{grid-row:auto}
   }
-  </style>
+</style>
 </head>
 <body>
-
 <div id="site-header"></div>
 <main>
   <h1 class="main-title">HEAN 禾安</h1>
   <p class="sub-title">Vik Hean Core</p>
-
   <section class="search-box">
     <div class="engine-tabs" id="engine-tabs">
       <button type="button" data-engine="bing" class="active"><img class="e-icon" src="../assets/logo-bing.png" alt="Bing">微软Bing</button>
@@ -179,11 +89,9 @@
       <button type="submit">搜索</button>
     </form>
   </section>
-
   <section class="quote">
-    <p class="quote-line"><span id="quote-text">加载中…</span><span id="quote-src"></span></p>
+    <p class="quote-line"><span id="jinrishici-sentence">正在加载今日诗词....</span></p>
   </section>
-
   <div class="divider"></div>
   <nav class="quick-links">
     <a class="quick-card quick-card-main" href="/core/nav.html">
@@ -197,13 +105,10 @@
         <div class="gc-next" id="gc-next">计算中…</div>
         <div class="gc-clock-wrap">
           <svg class="gc-clock" id="gc-clock" viewBox="0 0 260 260" role="img" aria-label="干饭时间时钟">
-            <!-- 表盘：无刻度线，仅标注 6 个时间点（由脚本生成圆点与文字） -->
             <circle class="face" cx="130" cy="130" r="118"/>
-            <!-- 三根指针：时针 / 分针 / 秒针（初始指向 12 点，脚本每秒更新） -->
             <line class="hand hand-hr" id="hand-hr" x1="130" y1="130" x2="130" y2="85"/>
             <line class="hand hand-min" id="hand-min" x1="130" y1="130" x2="130" y2="68"/>
             <line class="hand hand-sec" id="hand-sec" x1="130" y1="130" x2="130" y2="60"/>
-            <!-- 中心轴点 -->
             <circle class="hub" cx="130" cy="130" r="5"/>
           </svg>
           <div class="gc-info">
@@ -226,38 +131,28 @@
     </div>
   </nav>
 </main>
-
 <div id="site-footer"></div>
 <script src="../components.js"></script>
+<script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
 <script>
 (function () {
   "use strict";
-
-  /* ===== 搜索引擎配置 =====
-     三个引擎的搜索地址前缀，切换标签后提交搜索即跳转对应引擎 */
   var engines = {
     bing: "https://www.bing.com/search?q=",
     baidu: "https://www.baidu.com/s?wd=",
     google: "https://www.google.com/search?q=",
   };
   var current = "bing";
-
   var tabs = document.getElementById("engine-tabs");
   var input = document.getElementById("search-input");
   var form = document.getElementById("search-form");
-
-  /* 引擎标签切换：更新当前引擎并高亮选中态 */
   tabs.addEventListener("click", function (e) {
     var btn = e.target.closest("button");
     if (!btn) return;
     current = btn.getAttribute("data-engine");
-    tabs.querySelectorAll("button").forEach(function (b) {
-      b.classList.toggle("active", b === btn);
-    });
+    tabs.querySelectorAll("button").forEach(function (b) { b.classList.toggle("active", b === btn); });
     input.focus();
   });
-
-  /* 搜索提交：空关键词忽略，否则新窗口打开当前引擎的搜索结果 */
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var q = input.value.trim();
@@ -265,21 +160,7 @@
     window.open(engines[current] + encodeURIComponent(q), "_blank");
   });
 
-  /* ===== 每日一言（扇贝每日一句 API）：每次刷新拉取最新，中文为主文本，英文+作者为署名 ===== */
-  fetch("https://apiv3.shanbay.com/weapps/dailyquote/quote")
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-      document.getElementById("quote-text").textContent = data.translation || data.content || "";
-      var src = "";
-      if (data.content) src += data.content;
-      if (data.author) src += (src ? " —— " : "") + data.author;
-      document.getElementById("quote-src").textContent = src;
-    })
-    .catch(function () {
-      document.getElementById("quote-text").textContent = "每日一言加载失败，请稍后刷新重试。";
-    });
-
-  /* ===== 光遇今日任务（展示在首页光遇卡片） ===== */
+  /* 光遇今日任务 */
   fetch("https://api.qmkjcm.cn/api/gy_mr_rw/")
     .then(function (res) { return res.json(); })
     .then(function (data) {
@@ -287,8 +168,7 @@
       if (!el || !data.data || !data.data.task_list || !data.data.task_list.length) return;
       var list = data.data.task_list;
       var today = list[0].date;
-      var tasks = list.filter(function (t) { return t.date === today; })
-                      .map(function (t) { return t.quest_cn; });
+      var tasks = list.filter(function (t) { return t.date === today; }).map(function (t) { return t.quest_cn; });
       el.textContent = tasks.length ? "今日任务：\n" + tasks.map(function (t, i) { return (i + 1) + ". " + t; }).join("\n") : "今日暂无任务";
     })
     .catch(function () {
@@ -296,18 +176,16 @@
       if (el) el.textContent = "今日任务加载失败";
     });
 
-  /* ===== CS2 箱子刷新倒计时 =====
-     刷新时间：北京时间每周三 09:00（换算为 UTC 01:00） */
+  /* CS2 箱子刷新倒计时 */
   function nextCs2Reset() {
     var now = new Date();
     var t = new Date(now);
-    t.setUTCHours(1, 0, 0, 0); /* 北京时间周三 09:00 = UTC 01:00 */
-    var dayDiff = (3 - t.getUTCDay() + 7) % 7; /* 距下一个周三的天数 */
+    t.setUTCHours(1, 0, 0, 0);
+    var dayDiff = (3 - t.getUTCDay() + 7) % 7;
     if (dayDiff === 0 && now.getTime() >= t.getTime()) dayDiff = 7;
     t.setUTCDate(t.getUTCDate() + dayDiff);
     return t;
   }
-  /* 每秒刷新 CS2 刷新倒计时（天/时/分/秒） */
   function tickCs2() {
     var el = document.getElementById("cs2-api");
     if (!el) return;
@@ -322,26 +200,17 @@
   tickCs2();
   setInterval(tickCs2, 1000);
 
-  /* ===== 老奶奶干饭时间（圆形时钟版） =====
-     6 个派发时段（北京时间 08:00/10:00/12:00/16:00/18:00/20:00，各 30 分钟）。
-     时钟为无刻度表盘，圆周上按 60° 间隔标注 6 个时间点：
-     08:00 位于正上方，顺时针依次 10:00 / 12:00 / 16:00 / 18:00 / 20:00，
-     每个时间点内侧放一个白色实心圆点，当前派发时段圆点高亮为橙色。 */
+  /* 老奶奶干饭时间（圆形时钟） */
   var FEED_TIMES = [[8, 0], [10, 0], [12, 0], [16, 0], [18, 0], [20, 0]];
   var FEED_DUR = 30;
-  /* 数字补零：8 -> "08" */
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
-
-  /* 构建时钟：为每个时间点生成白色实心圆点 + 时间文字 */
   (function buildClock() {
     var svg = document.getElementById("gc-clock");
     if (!svg) return;
     var NS = "http://www.w3.org/2000/svg";
     var cx = 130, cy = 130;
     FEED_TIMES.forEach(function (t, i) {
-      /* 角度：-90°（正上方）为起点，每 60° 顺时针排列一个时间点 */
       var ang = (-90 + i * 60) * Math.PI / 180;
-      /* 白色实心圆点：位于半径 82 处（时间文字内侧） */
       var dot = document.createElementNS(NS, "circle");
       dot.setAttribute("cx", cx + 82 * Math.cos(ang));
       dot.setAttribute("cy", cy + 82 * Math.sin(ang));
@@ -349,7 +218,6 @@
       dot.setAttribute("class", "dot");
       dot.setAttribute("id", "feed-dot-" + i);
       svg.appendChild(dot);
-      /* 时间文字（如 08:00）：位于半径 110 处（圆点外侧） */
       var txt = document.createElementNS(NS, "text");
       txt.setAttribute("x", cx + 110 * Math.cos(ang));
       txt.setAttribute("y", cy + 110 * Math.sin(ang));
@@ -358,8 +226,6 @@
       svg.appendChild(txt);
     });
   })();
-
-  /* 每秒刷新：当前时间、干饭状态、倒计时与三根指针 */
   function tickFeed() {
     var elNow = document.getElementById("gc-now");
     var elCount = document.getElementById("gc-countdown");
@@ -370,22 +236,16 @@
     var handMin = document.getElementById("hand-min");
     var handSec = document.getElementById("hand-sec");
     if (!elNow) return;
-    var now = new Date(Date.now() + 8 * 3600 * 1000); /* 北京时间 */
+    var now = new Date(Date.now() + 8 * 3600 * 1000);
     var h = now.getUTCHours(), m = now.getUTCMinutes(), s = now.getUTCSeconds();
     var curMin = h * 60 + m;
     var i;
-
-    /* 右侧：当前时间精确到秒 */
     elNow.textContent = pad2(h) + ":" + pad2(m) + ":" + pad2(s);
-
-    /* 判断当前是否在某个派发时段内（用于高亮圆点） */
     var activeIdx = -1;
     for (i = 0; i < FEED_TIMES.length; i++) {
       var start = FEED_TIMES[i][0] * 60 + FEED_TIMES[i][1];
       if (curMin >= start && curMin < start + FEED_DUR) { activeIdx = i; break; }
     }
-
-    /* 计算下一次派发时段（今天之后或明天） */
     var nextIdx = -1, nextStart = 0;
     for (i = 0; i < FEED_TIMES.length; i++) {
       var st = FEED_TIMES[i][0] * 60 + FEED_TIMES[i][1];
@@ -393,26 +253,16 @@
     }
     var crossDay = false;
     if (nextIdx === -1) { nextIdx = 0; nextStart = FEED_TIMES[0][0] * 60; crossDay = true; }
-
-    /* 倒计时秒数：派发中为本时段剩余，非派发为距下次开始 */
     var totalSec;
     if (activeIdx >= 0) {
       elNext.textContent = "老奶奶正在派发馒头";
       if (elLabel) elLabel.textContent = "本次派发剩余";
-      /* 右侧状态行：派发时段内显示橙色高亮的派发提示 */
-      if (elState) {
-        elState.textContent = "老奶奶正在派发馒头";
-        elState.classList.add("active");
-      }
+      if (elState) { elState.textContent = "老奶奶正在派发馒头"; elState.classList.add("active"); }
       totalSec = (FEED_TIMES[activeIdx][0] * 60 + FEED_TIMES[activeIdx][1] + FEED_DUR) * 60 - (curMin * 60 + s);
     } else {
       elNext.textContent = (crossDay ? "明天 " : "今天 ") + "干饭：" + pad2(FEED_TIMES[nextIdx][0]) + ":" + pad2(FEED_TIMES[nextIdx][1]);
       if (elLabel) elLabel.textContent = "距离下次干饭";
-      /* 右侧状态行：非派发时段显示"现在没饭吃"（常规灰色） */
-      if (elState) {
-        elState.textContent = "现在没饭吃";
-        elState.classList.remove("active");
-      }
+      if (elState) { elState.textContent = "现在没饭吃"; elState.classList.remove("active"); }
       var diffMin = nextStart - curMin;
       if (diffMin <= 0) diffMin += 1440;
       totalSec = diffMin * 60 - s;
@@ -421,36 +271,21 @@
     var hh = Math.floor(totalSec / 3600);
     var mm = Math.floor((totalSec % 3600) / 60);
     var ss = totalSec % 60;
-    /* 倒计时与当前时间同字号同格式，精确到秒 */
     elCount.textContent = pad2(hh) + ":" + pad2(mm) + ":" + pad2(ss);
-
-    /* 高亮当前时段对应的圆点（白色实心圆 -> 橙色） */
     for (i = 0; i < FEED_TIMES.length; i++) {
       var d = document.getElementById("feed-dot-" + i);
       if (d) d.classList.toggle("active", i === activeIdx);
     }
-
-    /* 指针角度：时针 / 分针 / 秒针（从表盘中心向外） */
     var hrAng = ((h % 12) * 30 + m * 0.5) * Math.PI / 180;
     var minAng = (m * 6 + s * 0.1) * Math.PI / 180;
     var secAng = s * 6 * Math.PI / 180;
-    if (handHr) {
-      handHr.setAttribute("x2", 130 + 45 * Math.sin(hrAng));
-      handHr.setAttribute("y2", 130 - 45 * Math.cos(hrAng));
-    }
-    if (handMin) {
-      handMin.setAttribute("x2", 130 + 62 * Math.sin(minAng));
-      handMin.setAttribute("y2", 130 - 62 * Math.cos(minAng));
-    }
-    if (handSec) {
-      handSec.setAttribute("x2", 130 + 70 * Math.sin(secAng));
-      handSec.setAttribute("y2", 130 - 70 * Math.cos(secAng));
-    }
+    if (handHr) { handHr.setAttribute("x2", 130 + 45 * Math.sin(hrAng)); handHr.setAttribute("y2", 130 - 45 * Math.cos(hrAng)); }
+    if (handMin) { handMin.setAttribute("x2", 130 + 62 * Math.sin(minAng)); handMin.setAttribute("y2", 130 - 62 * Math.cos(minAng)); }
+    if (handSec) { handSec.setAttribute("x2", 130 + 70 * Math.sin(secAng)); handSec.setAttribute("y2", 130 - 70 * Math.cos(secAng)); }
   }
   tickFeed();
   setInterval(tickFeed, 1000);
 })();
 </script>
-
 </body>
 </html>
