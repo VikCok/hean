@@ -27,79 +27,76 @@ body{
   text-align:center;
   width:100%;
   opacity:1;
-  transition:opacity 0.8s ease;
+  transition:opacity 0.5s ease;
   pointer-events:none;
 }
-.intro-quote .q-main{
-  font-size:calc(var(--hr-font) * 0.38);
+.q-main{
+  font-size:calc(var(--hr-font) * 0.30);
   font-weight:600;
   color:var(--hr-color);
-  letter-spacing:2px;
-  line-height:1.6;
-}
-.intro-quote .q-src{
-  margin-top:14px;
-  font-size:calc(var(--hr-font) * 0.26);
-  color:var(--hr-color);
-  opacity:0.55;
+  white-space:nowrap;
   letter-spacing:1px;
+  line-height:1.5;
 }
-body.phase-highlight .intro-quote{opacity:0.1}
-.hean-intro{
+.q-src{
+  margin-top:10px;
+  font-size:calc(var(--hr-font) * 0.22);
+  color:var(--hr-color);
+  opacity:0.5;
+  white-space:nowrap;
+  letter-spacing:1px;
+  transition:opacity 0.4s ease;
+}
+.qc{transition:opacity 0.4s ease;display:inline}
+body.phase-extract .qc:not(.qc-keep){opacity:0}
+body.phase-extract .q-src{opacity:0}
+body.phase-popup .intro-quote{opacity:0;transition:opacity 0.4s ease}
+.hean-popup{
   position:absolute;top:50%;left:50%;
   transform:translate(-50%,-50%);
   display:flex;
-  gap:calc(var(--hr-size) * 0.12);
+  gap:0.35em;
   opacity:0;
-  transition:opacity 0.6s ease;
   pointer-events:none;
 }
-body.phase-highlight .hean-intro{opacity:1}
-.char-block{
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:calc(var(--hr-size) * 0.03);
-}
-.cn-char{
+.hp-he,.hp-an{
   font-size:calc(var(--hr-font) * 1.15);
   font-weight:900;
   color:var(--hr-color);
   line-height:1;
   transform:scale(0);
-  transition:transform 0.7s cubic-bezier(.34,1.56,.64,1);
+  transition:transform 0.6s cubic-bezier(.34,1.56,.64,1);
 }
-body.phase-highlight .cn-char{transform:scale(1)}
-.en-label{
-  font-size:calc(var(--hr-font) * 0.42);
+body.phase-popup .hean-popup{opacity:1}
+body.phase-popup .hp-he,body.phase-popup .hp-an{transform:scale(1)}
+body.phase-merge .hean-popup{gap:0.12em;transition:gap 0.5s linear}
+.hean-label{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  display:flex;
+  gap:0.35em;
+  opacity:0;
+  pointer-events:none;
+}
+.hl-he,.hl-an{
+  font-size:calc(var(--hr-font) * 0.48);
   font-weight:900;
   color:var(--hr-color);
-  letter-spacing:2px;
+  letter-spacing:1px;
   line-height:1;
-  opacity:0;
-  transform:translateY(12px);
-  transition:opacity 0.5s ease, transform 0.5s ease;
+  transform:translateY(-1.6em) scale(0);
+  transition:transform 0.5s cubic-bezier(.34,1.56,.64,1),font-size 0.5s ease;
 }
-body.phase-label .en-label{opacity:1;transform:translateY(0)}
-body.phase-merge .cn-char{
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%) scale(0.5);
-  opacity:0;
-  transition:opacity 0.4s ease, transform 0.5s ease;
+body.phase-label .hean-label{opacity:1}
+body.phase-label .hl-he,body.phase-label .hl-an{transform:translateY(-1.6em) scale(1)}
+body.phase-replace .hp-he,body.phase-replace .hp-an{opacity:0;transition:opacity 0.3s ease}
+body.phase-replace .hl-he,body.phase-replace .hl-an{
+  transform:translateY(0) scale(1);
+  font-size:calc(var(--hr-font) * 1.0);
 }
-body.phase-merge .hean-intro{
-  gap:0;
-  align-items:center;
-  transition:gap 0.8s cubic-bezier(.34,1.3,.64,1);
-}
-body.phase-merge .en-label{
+body.phase-magnet .hean-label{gap:0;transition:gap 0.45s cubic-bezier(.5,1.8,.5,1)}
+body.phase-magnet .hl-he,body.phase-magnet .hl-an{
   font-size:calc(var(--hr-font) * 0.95);
-  transition:font-size 0.8s cubic-bezier(.34,1.3,.64,1), opacity 0.3s ease, transform 0.5s ease;
-}
-body.phase-merge .char-block{
-  gap:0;
 }
 .anim-letter{
   position:absolute;
@@ -112,7 +109,7 @@ body.phase-merge .char-block{
   color:var(--hr-color);
   line-height:1;
   transform:translate(-50%,-50%);
-  transition:transform var(--hr-speed) cubic-bezier(.45,0,.15,1);
+  transition:transform var(--hr-speed) cubic-bezier(.45,0,.15,1),font-size 0.5s ease;
   user-select:none;
   -webkit-user-select:none;
   opacity:0;
@@ -123,27 +120,29 @@ body.phase-merge .char-block{
 .anim-letter.pos-3{ transform:translate(calc(-50% - (var(--hr-size) * 0.20)),calc(-50% + (var(--hr-size) * 0.20))); }
 body.phase-loop .anim-letter{opacity:1;transition:opacity 0.5s ease}
 body.phase-loop .intro-quote,
-body.phase-loop .hean-intro{opacity:0;transition:opacity 0.5s ease;pointer-events:none}
+body.phase-loop .hean-popup,
+body.phase-loop .hean-label{opacity:0;transition:opacity 0.4s ease;pointer-events:none}
 body.phase-loop-done .intro-quote,
-body.phase-loop-done .hean-intro{display:none}
+body.phase-loop-done .hean-popup,
+body.phase-loop-done .hean-label{display:none}
 </style>
 </head>
 <body>
 
 <div class="hean-stage" id="hean-stage">
   <div class="intro-quote" id="intro-quote">
-    <div class="q-main">䅁，轢禾也。从禾，安聲。</div>
+    <div class="q-main">
+      <span class="qc">䅁</span><span class="qc">，</span><span class="qc">轢</span><span class="qc">禾</span><span class="qc">也</span><span class="qc">。</span><span class="qc">从</span><span class="qc qc-keep">禾</span><span class="qc">，</span><span class="qc qc-keep">安</span><span class="qc">聲</span><span class="qc">。</span>
+    </div>
     <div class="q-src">东汉·许慎《说文解字》卷七</div>
   </div>
-  <div class="hean-intro" id="hean-intro">
-    <div class="char-block">
-      <div class="en-label">HE</div>
-      <div class="cn-char">禾</div>
-    </div>
-    <div class="char-block">
-      <div class="en-label">AN</div>
-      <div class="cn-char">安</div>
-    </div>
+  <div class="hean-popup" id="hean-popup">
+    <div class="hp-he">禾</div>
+    <div class="hp-an">安</div>
+  </div>
+  <div class="hean-label" id="hean-label">
+    <div class="hl-he">HE</div>
+    <div class="hl-an">AN</div>
   </div>
   <span class="anim-letter">H</span>
   <span class="anim-letter">E</span>
@@ -156,7 +155,8 @@ body.phase-loop-done .hean-intro{display:none}
   "use strict";
   var ROTATE_INTERVAL = 1900;
   var TRIGGER_AFTER   = 4;
-  var HORIZONTAL_HOLD = 4000;
+  var HORIZONTAL_HOLD = 5000;
+  var HORIZONTAL_OFFSETS = [-110, -37, 37, 110];
 
   function syncTheme() {
     try {
@@ -179,6 +179,25 @@ body.phase-loop-done .hean-intro{display:none}
     }
   }
 
+  function setHorizontal() {
+    for (var i = 0; i < letters.length; i++) {
+      var off = HORIZONTAL_OFFSETS[i];
+      if (off >= 0) {
+        letters[i].style.transform = 'translate(calc(-50% + ' + off + 'px),-50%)';
+      } else {
+        letters[i].style.transform = 'translate(calc(-50% - ' + Math.abs(off) + 'px),-50%)';
+      }
+    }
+  }
+
+  function clearHorizontal() {
+    for (var i = 0; i < letters.length; i++) {
+      letters[i].style.transform = '';
+    }
+    positions = [0, 1, 3, 2];
+    applyPositions();
+  }
+
   function rotateClockwise() {
     if (isAnimating) return;
     positions = positions.map(function (p) { return (p + 1) % 4; });
@@ -194,21 +213,9 @@ body.phase-loop-done .hean-intro{display:none}
 
   function anim3_horizontal() {
     isAnimating = true;
-    var hOffsets = [-110, -37, 37, 110];
-    for (var i = 0; i < letters.length; i++) {
-      var off = hOffsets[i];
-      if (off >= 0) {
-        letters[i].style.transform = 'translate(calc(-50% + ' + off + 'px),-50%)';
-      } else {
-        letters[i].style.transform = 'translate(calc(-50% - ' + Math.abs(off) + 'px),-50%)';
-      }
-    }
+    setHorizontal();
     setTimeout(function () {
-      for (var i = 0; i < letters.length; i++) {
-        letters[i].style.transform = '';
-      }
-      positions = [0, 1, 3, 2];
-      applyPositions();
+      clearHorizontal();
       setTimeout(function () {
         isAnimating = false;
         rotateCount = 0;
@@ -216,26 +223,17 @@ body.phase-loop-done .hean-intro{display:none}
     }, HORIZONTAL_HOLD);
   }
 
-  function startLoopFromHorizontal() {
+  function startLoop() {
     document.body.classList.add('phase-loop');
-    var hOffsets = [-110, -37, 37, 110];
-    for (var i = 0; i < letters.length; i++) {
-      var off = hOffsets[i];
-      if (off >= 0) {
-        letters[i].style.transform = 'translate(calc(-50% + ' + off + 'px),-50%)';
-      } else {
-        letters[i].style.transform = 'translate(calc(-50% - ' + Math.abs(off) + 'px),-50%)';
-      }
-    }
+    setHorizontal();
     setTimeout(function () {
       document.body.classList.add('phase-loop-done');
     }, 500);
     setTimeout(function () {
       for (var i = 0; i < letters.length; i++) {
-        letters[i].style.transform = '';
+        letters[i].style.fontSize = 'calc(var(--hr-font) * 1.15)';
       }
-      positions = [0, 1, 3, 2];
-      applyPositions();
+      clearHorizontal();
       setTimeout(function () {
         isAnimating = false;
         rotateCount = 0;
@@ -246,17 +244,26 @@ body.phase-loop-done .hean-intro{display:none}
 
   function startIntro() {
     setTimeout(function () {
-      document.body.classList.add('phase-highlight');
+      document.body.classList.add('phase-extract');
     }, 2500);
     setTimeout(function () {
-      document.body.classList.add('phase-label');
-    }, 4000);
+      document.body.classList.add('phase-popup');
+    }, 2700);
     setTimeout(function () {
       document.body.classList.add('phase-merge');
-    }, 5500);
+    }, 3200);
     setTimeout(function () {
-      startLoopFromHorizontal();
-    }, 7000);
+      document.body.classList.add('phase-label');
+    }, 4700);
+    setTimeout(function () {
+      document.body.classList.add('phase-replace');
+    }, 5200);
+    setTimeout(function () {
+      document.body.classList.add('phase-magnet');
+    }, 5700);
+    setTimeout(function () {
+      startLoop();
+    }, 6300);
   }
 
   function fitSize() {
