@@ -77,6 +77,7 @@ body.phase-merge .hean-popup{gap:0.08em;transition:gap 2s linear}
   transform:translate(-50%,-50%);
   display:flex;
   gap:0.08em;
+  width:2.38em;
   opacity:0;
   pointer-events:none;
   transition:opacity 0.3s ease;
@@ -88,7 +89,16 @@ body.phase-merge .hean-popup{gap:0.08em;transition:gap 2s linear}
   letter-spacing:1px;
   line-height:1;
   transform:translateY(-1.6em) scale(0);
-  transition:transform 2s cubic-bezier(.34,1.2,.64,1),font-size 2s ease;
+  transition:transform 2s cubic-bezier(.32,1.4,.5,1),font-size 2s ease;
+}
+body.phase-label .hl-he,body.phase-label .hl-an{
+  flex:1;
+  display:flex;
+  justify-content:center;
+}
+body.phase-replace .hl-he,body.phase-replace .hl-an,
+body.phase-magnet .hl-he,body.phase-magnet .hl-an{
+  flex:none;
 }
 body.phase-label .hean-label{opacity:1}
 body.phase-label .hl-he,body.phase-label .hl-an{transform:translateY(-1.6em) scale(1)}
@@ -108,7 +118,7 @@ body.phase-magnet .hl-he,body.phase-magnet .hl-an{
 <div class="hean-stage" id="hean-stage">
   <div class="intro-quote" id="intro-quote">
     <div class="q-main">
-      <span class="qc">䅁</span><span class="qc">，</span><span class="qc">轢</span><span class="qc">禾</span><span class="qc">也</span><span class="qc">。</span><span class="qc">从</span><span class="qc qc-keep">禾</span><span class="qc">，</span><span class="qc qc-keep">安</span><span class="qc">聲</span><span class="qc">。</span>
+      <span class="qc">䅁</span><span class="qc">, </span><span class="qc">轢</span><span class="qc">禾</span><span class="qc">也</span><span class="qc">。</span><span class="qc">从</span><span class="qc qc-keep">禾</span><span class="qc">, </span><span class="qc qc-keep">安</span><span class="qc">聲</span>
     </div>
     <div class="q-src">东汉·许慎《说文解字》卷七</div>
   </div>
