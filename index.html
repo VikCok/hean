@@ -35,7 +35,7 @@
   }
   main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:40px 24px}
   .hero-logo{width:340px;height:340px;border:none;background:transparent;display:block}
-  .hero-title{font-size:51px;font-weight:640;letter-spacing:6px;color:var(--text)}
+  .hero-title{font-size:51px;font-weight:640;letter-spacing:6px;color:var(--text);text-align:center;max-width:90%;line-height:1.4;word-break:break-word}
   .hero-divider{width:200px;height:1px;background:var(--line);margin:0 auto}
   .hero-btn-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
   .hero-btn{
@@ -58,7 +58,7 @@
 <main>
   <iframe class="hero-logo" src="/movelogodn.html" frameborder="0" scrolling="no" title="HEAN logo"></iframe>
   <div class="hero-divider"></div>
-  <h1 class="hero-title">你好！</h1>
+  <h1 class="hero-title" id="hero-quote">正在加载...</h1>
   <div class="hero-btn-row">
     <a class="hero-btn hero-btn-primary" href="/core/home.html">前往主页</a>
     <a class="hero-btn" href="/core/nav.html">更多功能</a>
@@ -66,5 +66,19 @@
 </main>
 <div id="site-footer"></div>
 <script src="/components.js"></script>
+<script>
+  (function() {
+    var el = document.getElementById('hero-quote');
+    if (!el) return;
+    fetch('https://v1.jinrishici.com/rensheng/lizhi')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.content) el.textContent = data.content;
+      })
+      .catch(function() {
+        el.textContent = '路漫漫其修远兮';
+      });
+  })();
+</script>
 </body>
 </html>
