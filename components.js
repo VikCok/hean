@@ -12,15 +12,10 @@
   "use strict";
 
   /* ===== 动态计算基础目录 =====
-   * 用 document.currentScript 直接获取当前 components.js 标签的 src，
-   * 去掉文件名后得到路径前缀。根目录页面 → ""，core/ 子目录页面 → "../"。
-   * 比遍历所有 script[src] 更可靠，避免匹配到其他含 "components.js" 字样的脚本。 */
+   * 全站统一使用绝对路径（以 / 开头），彻底避免 Cloudflare Workers SPA 回退
+   * 导致的相对路径叠加问题（如 /core/core/core/.../home.html）。
+   * getBasePath() 保留兼容，但所有链接已改为绝对路径，不再依赖 base 前缀。 */
   function getBasePath() {
-    var script = document.currentScript;
-    if (script) {
-      var src = script.getAttribute("src") || "";
-      return src.replace(/components\.js.*$/, "");
-    }
     return "";
   }
 
@@ -66,18 +61,17 @@
   /* ===== 顶栏 HTML：品牌 + 主页/导航页图标按钮 + 主题开关 ===== */
   function headerHtml() {
     var tag = window.SITE_TAG || "";
-    var base = getBasePath();
     return [
       '<header class="topbar">',
       '  <div class="left">',
-      '    <a class="brand" href="' + base + 'core/home.html">HEAN<span class="brand-dot">.</span><span class="brand-me">me</span>' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
-      '    <a class="home-btn" href="' + base + 'core/home.html" title="主页">',
+      '    <a class="brand" href="/core/home.html">HEAN<span class="brand-dot">.</span><span class="brand-me">me</span>' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
+      '    <a class="home-btn" href="/core/home.html" title="主页">',
       '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">',
       '        <path d="M3 11l9-8 9 8"/>',
       '        <path d="M5 10v10h14V10"/>',
       "      </svg>",
       "    </a>",
-      '    <a class="nav-btn" href="' + base + 'core/nav.html" title="导航页">',
+      '    <a class="nav-btn" href="/core/nav.html" title="导航页">',
       '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',
       '        <circle cx="12" cy="12" r="10"/>',
       '        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
@@ -99,10 +93,9 @@
 
   /* ===== 页脚 HTML：免责声明 / 关于本站 + 版权 ===== */
   function footerHtml() {
-    var base = getBasePath();
     return [
       "<footer>",
-      '  <p><a href="' + base + 'disclaimer.html">免责声明</a><span class="sep">|</span><a href="' + base + 'about.html">关于本站</a></p>',
+      '  <p><a href="/disclaimer.html">免责声明</a><span class="sep">|</span><a href="/about.html">关于本站</a></p>',
       "  <p>Copyright © 2026 hean.me All Rights Reserved</p>",
       "</footer>"
     ].join("\n");
