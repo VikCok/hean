@@ -1,5 +1,5 @@
 /* ===== HEAN 站点公共组件 =====
- * 统一负责：顶栏（品牌 + 主页/导航图标按钮 + 菜单按钮）、侧边抽屉菜单（主题切换 + 快捷导航）、页脚、回到顶部。
+ * 统一负责：顶栏（品牌 + 主页/导航图标按钮 + 主题切换 + 菜单按钮）、侧边抽屉菜单（主题切换 + 快捷导航）、页脚、回到顶部。
  * 全站页面只需放置两个占位符并引入本文件：
  *   <div id="site-header"></div>   —— 顶栏渲染位置
  *   <div id="site-footer"></div>   —— 页脚渲染位置
@@ -41,14 +41,22 @@
   var COMMON_CSS = [
     ".topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line)}",
     ".left{display:flex;align-items:center;gap:14px}",
+    ".right{display:flex;align-items:center;gap:10px}",
     ".brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;letter-spacing:1px;text-decoration:none;color:var(--text)}",
     ".brand .brand-tag{font-size:18px;font-weight:700;letter-spacing:1px;color:var(--text)}",
     ".brand .brand-logo{width:28px;height:28px;object-fit:contain;flex:none}",
-    ".home-btn,.nav-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid #2563eb;border-radius:999px;color:#2563eb;font-size:14px;text-decoration:none;transition:color .15s,border-color .15s}",
-    ".home-btn:hover,.nav-btn:hover{color:#1d4ed8;border-color:#1d4ed8}",
+    ".home-btn,.nav-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid #2563eb;border-radius:999px;background:#2563eb;color:#ffffff;font-size:14px;text-decoration:none;transition:background .15s,border-color .15s}",
+    ".home-btn:hover,.nav-btn:hover{background:#1d4ed8;border-color:#1d4ed8;color:#ffffff}",
     ".home-btn svg,.nav-btn svg{width:16px;height:16px}",
-    ".menu-btn{display:flex;align-items:center;justify-content:center;flex:none;width:34px;height:34px;border:1px solid #2563eb;border-radius:50%;background:var(--panel);color:#2563eb;cursor:pointer;transition:background .25s,border-color .25s,color .25s}",
-    ".menu-btn:hover{border-color:#1d4ed8;color:#1d4ed8}",
+    ".theme-toggle-btn{display:flex;align-items:center;justify-content:center;flex:none;width:34px;height:34px;border:1px solid #2563eb;border-radius:50%;background:#2563eb;color:#ffffff;cursor:pointer;transition:background .25s,border-color .25s}",
+    ".theme-toggle-btn:hover{background:#1d4ed8;border-color:#1d4ed8}",
+    ".theme-toggle-btn svg{width:18px;height:18px}",
+    ".theme-toggle-btn .theme-icon-sun{display:block}",
+    ".theme-toggle-btn .theme-icon-moon{display:none}",
+    "html.dark .theme-toggle-btn .theme-icon-sun{display:none}",
+    "html.dark .theme-toggle-btn .theme-icon-moon{display:block}",
+    ".menu-btn{display:flex;align-items:center;justify-content:center;flex:none;width:34px;height:34px;border:1px solid #2563eb;border-radius:50%;background:#2563eb;color:#ffffff;cursor:pointer;transition:background .25s,border-color .25s}",
+    ".menu-btn:hover{background:#1d4ed8;border-color:#1d4ed8}",
     ".menu-btn svg{width:18px;height:18px}",
     ".menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;z-index:1000}",
     ".menu-overlay.show{opacity:1;visibility:visible}",
@@ -99,13 +107,24 @@
       "      </svg>",
       "    </a>",
       "  </div>",
-      '  <button class="menu-btn" id="menu-btn" type="button" aria-label="打开菜单">',
-      '    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">',
-      '      <line x1="4" y1="7" x2="20" y2="7"/>',
-      '      <line x1="4" y1="12" x2="20" y2="12"/>',
-      '      <line x1="4" y1="17" x2="20" y2="17"/>',
-      "    </svg>",
-      "  </button>",
+      '  <div class="right">',
+      '    <button class="theme-toggle-btn" id="theme-toggle-btn" type="button" aria-label="切换日间/夜间模式">',
+      '      <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">',
+      '        <circle cx="12" cy="12" r="4.2"/>',
+      '        <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/>',
+      "      </svg>",
+      '      <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">',
+      '        <path d="M21 12.8A9 9 0 1 1 11.2 3a7.2 7.2 0 0 0 9.8 9.8z"/>',
+      "      </svg>",
+      "    </button>",
+      '    <button class="menu-btn" id="menu-btn" type="button" aria-label="打开菜单">',
+      '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">',
+      '        <line x1="4" y1="7" x2="20" y2="7"/>',
+      '        <line x1="4" y1="12" x2="20" y2="12"/>',
+      '        <line x1="4" y1="17" x2="20" y2="17"/>',
+      "      </svg>",
+      "    </button>",
+      "  </div>",
       "</header>",
       '<div class="menu-overlay" id="menu-overlay"></div>',
       '<aside class="side-menu" id="side-menu" aria-label="站点菜单">',
@@ -169,23 +188,28 @@
   }
 
   function initTheme() {
-    var btn = document.getElementById("menu-theme-btn");
+    var topBtn = document.getElementById("theme-toggle-btn");
+    var menuBtn = document.getElementById("menu-theme-btn");
     var label = document.getElementById("theme-label");
-    if (!btn) return;
     var KEY = "hean-theme";
+
     function updateLabel() {
       if (label) {
         label.textContent = document.documentElement.classList.contains("dark") ? "切换浅色模式" : "切换深色模式";
       }
     }
     updateLabel();
-    btn.addEventListener("click", function () {
+
+    function toggleTheme() {
       var dark = document.documentElement.classList.toggle("dark");
       try {
         localStorage.setItem(KEY, dark ? "dark" : "light");
       } catch (e) {}
       updateLabel();
-    });
+    }
+
+    if (topBtn) topBtn.addEventListener("click", toggleTheme);
+    if (menuBtn) menuBtn.addEventListener("click", toggleTheme);
   }
 
   function initMenu() {
@@ -194,6 +218,7 @@
     var overlay = document.getElementById("menu-overlay");
     var closeBtn = document.getElementById("menu-close");
     if (!menuBtn || !sideMenu || !overlay) return;
+
     function openMenu() {
       sideMenu.classList.add("show");
       overlay.classList.add("show");
@@ -204,6 +229,7 @@
       overlay.classList.remove("show");
       document.body.style.overflow = "";
     }
+
     menuBtn.addEventListener("click", openMenu);
     if (closeBtn) closeBtn.addEventListener("click", closeMenu);
     overlay.addEventListener("click", closeMenu);
@@ -224,6 +250,7 @@
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
       '<path d="M12 19V5M5 12l7-7 7 7"/></svg>';
     document.body.appendChild(btn);
+
     function onScroll() {
       var doc = document.documentElement;
       var max = doc.scrollHeight - window.innerHeight;
@@ -232,6 +259,7 @@
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
+
     btn.addEventListener("click", function () {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
