@@ -35,6 +35,9 @@
     ".brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;letter-spacing:1px;text-decoration:none;color:var(--text)}",
     /* 品牌右侧页面副标签：与品牌相同字体与颜色 */
     ".brand .brand-tag{font-size:18px;font-weight:700;letter-spacing:1px;color:var(--text)}",
+    /* 品牌标识 HEAN.me：红色句号 + 白色微软雅黑小写me */
+    ".brand .brand-dot{color:#ff0000;font-weight:900}",
+    ".brand .brand-me{color:#ffffff;font-family:\"Microsoft YaHei\",\"微软雅黑\",sans-serif;font-weight:700;letter-spacing:0}",
     /* 主页 / 导航页 胶囊按钮（带图标，无文字，悬停有 title 提示） */
     ".home-btn,.nav-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--btn-border);border-radius:999px;color:var(--muted);font-size:14px;text-decoration:none;transition:color .15s,border-color .15s}",
     ".home-btn:hover,.nav-btn:hover{color:var(--btn-hover);border-color:var(--btn-hover)}",
@@ -67,7 +70,7 @@
     return [
       '<header class="topbar">',
       '  <div class="left">',
-      '    <a class="brand" href="' + base + 'core/home.html">HEAN' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
+      '    <a class="brand" href="' + base + 'core/home.html">HEAN<span class="brand-dot">.</span><span class="brand-me">me</span>' + (tag ? '<span class="brand-tag">' + tag + "</span>" : "") + "</a>",
       '    <a class="home-btn" href="' + base + 'core/home.html" title="主页">',
       '      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">',
       '        <path d="M3 11l9-8 9 8"/>',
