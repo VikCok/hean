@@ -42,6 +42,22 @@
     transition:background .2s,color .2s;
   }
   main{flex:1;display:flex;flex-direction:column;align-items:center;padding:44px 20px 36px}
+  .main-title{
+    font-size:clamp(40px,8vw,72px);font-weight:800;letter-spacing:6px;
+    text-align:center;line-height:1.2;
+  }
+  .sub-title{
+    margin-top:10px;margin-bottom:30px;text-align:center;
+    font-size:15px;color:var(--sub);letter-spacing:2px;
+  }
+  .top-info{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:960px;margin-bottom:18px;gap:16px}
+  .digital-clock{font-size:48px;font-weight:700;letter-spacing:2px;font-variant-numeric:tabular-nums;color:var(--text);line-height:1}
+  .calendar-card{flex:none;width:120px;border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+  .cal-header{background:#2563eb;color:#fff;padding:6px 10px;display:flex;flex-direction:column;gap:2px}
+  .cal-month{font-size:12px;font-weight:600}
+  .cal-weekday{font-size:11px;opacity:0.85}
+  .cal-day{background:#fff;color:#2563eb;font-size:42px;font-weight:800;text-align:center;padding:8px 0;line-height:1}
+  html.dark .cal-day{background:#1e1e1e;color:#60a5fa}
   .search-box{width:100%;max-width:960px}
   .divider{
     width:100%;max-width:960px;height:1px;background:var(--line);
@@ -140,7 +156,7 @@
     .quick-links{grid-template-columns:1fr}
     .quick-card-main,.quick-card-tall{grid-row:auto}
   }
-  </style>
+</style>
 <script>
   try { if (localStorage.getItem('hean-theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
 </script>
@@ -149,6 +165,16 @@
 
 <div id="site-header"></div>
 <main>
+  <div class="top-info">
+    <div class="digital-clock" id="digital-clock">--:--</div>
+    <div class="calendar-card">
+      <div class="cal-header">
+        <span class="cal-month" id="cal-month">----年--月</span>
+        <span class="cal-weekday" id="cal-weekday">星期--</span>
+      </div>
+      <div class="cal-day" id="cal-day">-</div>
+    </div>
+  </div>
   <section class="search-box">
     <div class="engine-tabs" id="engine-tabs">
       <button type="button" data-engine="bing" class="active"><img class="e-icon" src="/assets/logo-bing.png" alt="Bing"><span class="e-name">Bing</span></button>
@@ -212,6 +238,24 @@
 <script>
 (function () {
   "use strict";
+
+  var WEEKDAYS = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+  function tickTopInfo() {
+    var now = new Date();
+    var clockEl = document.getElementById("digital-clock");
+    if (clockEl) {
+      clockEl.textContent = (now.getHours() < 10 ? "0" + now.getHours() : now.getHours()) + ":" +
+                             (now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes());
+    }
+    var monthEl = document.getElementById("cal-month");
+    var weekdayEl = document.getElementById("cal-weekday");
+    var dayEl = document.getElementById("cal-day");
+    if (monthEl) monthEl.textContent = now.getFullYear() + "年" + (now.getMonth() + 1) + "月";
+    if (weekdayEl) weekdayEl.textContent = WEEKDAYS[now.getDay()];
+    if (dayEl) dayEl.textContent = now.getDate();
+  }
+  tickTopInfo();
+  setInterval(tickTopInfo, 1000);
 
   var engines = {
     bing: "https://www.bing.com/search?q=",
