@@ -106,9 +106,12 @@ body.phase-label .hl-he,body.phase-label .hl-an{transform:translateY(-1.6em) sca
 body.phase-replace .hp-he,body.phase-replace .hp-an{opacity:0;transition:opacity 0.4s ease}
 body.phase-replace .hl-he,body.phase-replace .hl-an{
   transform:translateY(0) scale(1);
-  font-size:calc(var(--hr-font) * 1.0);
 }
-body.phase-magnet .hean-label{gap:0;transition:gap 2s cubic-bezier(.5,1.6,.5,1)}
+body.phase-magnet .hean-label{gap:0;transition:gap 0.8s cubic-bezier(.5,1.6,.5,1)}
+body.phase-magnet .hl-he,body.phase-magnet .hl-an{
+  font-size:calc(var(--hr-font) * 1.0);
+  transition:transform 2s cubic-bezier(.32,1.4,.5,1),font-size 1.2s cubic-bezier(.34,1.56,.64,1) 0.8s;
+}
 </style>
 </head>
 <body>
