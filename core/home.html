@@ -146,12 +146,9 @@
     min-height:46px;padding:0 24px;border:none;border-radius:0 16px 16px 0;
     background:var(--active-bg);color:var(--active-text);font-size:15px;cursor:pointer;
   }
-  .quote{
-    margin-top:20px;max-width:960px;text-align:center;
-    font-size:15px;color:var(--muted);line-height:1.8;
-  }
-  .quote-line{display:flex;align-items:baseline;justify-content:center;gap:12px;flex-wrap:wrap}
-  .quote #quote-src{font-size:13px;color:var(--sub)}
+  .quote{margin-top:20px;max-width:960px;text-align:center;line-height:1.8}
+  .quote-cn{font-size:15px;color:var(--muted)}
+  .quote-en{font-size:13px;color:var(--sub);margin-top:4px}
   @media (max-width:768px){
     .quick-links{grid-template-columns:1fr}
     .quick-card-main,.quick-card-tall{grid-row:auto}
@@ -189,7 +186,8 @@
   </section>
 
   <section class="quote">
-    <p class="quote-line"><span id="daily-saying">正在加载...</span></p>
+    <p class="quote-cn" id="daily-cn">正在加载...</p>
+    <p class="quote-en" id="daily-en"></p>
   </section>
 
   <div class="divider"></div>
@@ -236,15 +234,19 @@
 <script src="/components.js"></script>
 <script>
   (function() {
-    var el = document.getElementById('daily-saying');
-    if (!el) return;
-    fetch('https://uapis.cn/api/v1/saying')
+    var cn = document.getElementById('daily-cn');
+    var en = document.getElementById('daily-en');
+    if (!cn) return;
+    fetch('https://api.t1qq.com/api/tool/daytry?key=aN4ga1sIvr4we5IfkAjhY68JOc&time=random')
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        if (data && data.text) el.textContent = data.text;
+        if (data && data.data) {
+          if (data.data.note) cn.textContent = data.data.note;
+          if (en && data.data.content) en.textContent = data.data.content;
+        }
       })
       .catch(function() {
-        el.textContent = '路漫漫其修远兮，吾将上下而求索';
+        cn.textContent = '路漫漫其修远兮，吾将上下而求索';
       });
   })();
 </script>
